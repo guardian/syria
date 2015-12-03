@@ -1,0 +1,17 @@
+@import "fonts";
+@import "mq";
+@import "general";
+@import "share";
+
+.interactive-container {
+	overflow: hidden;
+}
+
+.sy-territory-img {
+	float: left;
+	p {
+		color: #333;
+		@include fs-textSans(3);
+		padding: 12px 20px;
+	}
+}
