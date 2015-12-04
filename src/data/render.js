@@ -26,7 +26,7 @@ function getLocationsAtDate(areas, date) {
         .value();
 }
 
-function render(areas, geo, date, diffDate) {
+function render(areas, airstrikes, geo, date, diffDate) {
     date = moment(date);
 
     var width = 300, height = 260;
@@ -57,7 +57,7 @@ function render(areas, geo, date, diffDate) {
     var points = getLocationsAtDate(areas, date)
     points.forEach((point, i) => {
         if (point) {
-            var geoCoords = point.geo.split(' ').map(n => Number(n)).reverse();
+            var geoCoords = point.geo.split(' ').map(n => parseFloat(n)).reverse();
             var screenCoords = projection(geoCoords);
             var isis = point.controller === 'Islamic State';
             context.beginPath();
@@ -75,6 +75,17 @@ function render(areas, geo, date, diffDate) {
         }
     })
 
+    airstrikes
+        .filter(a => a.moment <= date && a.moment > diffDate)
+        .forEach(airstrike => {
+            var geoCoords = airstrike.geo.split(' ').map(n => parseFloat(n)).reverse();
+            var screenCoords = projection(geoCoords);
+            context.beginPath();
+            context.arc(screenCoords[0], screenCoords[1] , 1, 0, 2*Math.PI);
+            context.fillStyle = airstrike.airforce === 'Russia' ? '#005689' : 'orange';
+            context.fill();
+        })
+
     context.drawImage(fgImg, 0, 0, fgImg.width, fgImg.height, 0, 0, width, height);
 
     var filename = filepath(`data-out/frames/${date.format('YYYY-MM-DD')}.png`);
@@ -84,6 +95,9 @@ function render(areas, geo, date, diffDate) {
 
 function main() {
     var rows = require(filepath('data-out/areas.json'));
+    var airstrikes = require(filepath('data-out/airstrikes.json'));
+    airstrikes.forEach(a => a.moment = moment(a.date, 'MMM D, YYYY HH:mm'));
+
     var areas = _(rows)
         .forEach(row => row.moment = moment(row.date, 'MMMM D, YYYY'))
         .groupBy('geo')
@@ -104,7 +118,7 @@ function main() {
     var pairs = frameMoments.map((date,i) => [date, frameMoments[i-1]]);
 
     pairs.forEach(([frameDate, diffDate]) => {
-        render(areas, geo, frameDate, diffDate);
+        render(areas, airstrikes, geo, frameDate, diffDate);
     })
 }
 
