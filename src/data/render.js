@@ -9,9 +9,8 @@ const Image = Canvas.Image;
 
 var filepath = file => path.join(__dirname, '../..', file);
 
-
-let fgImg = new Image;
-fgImg.src = fs.readFileSync(filepath('src/img/fg.png'));
+let syriaMask = new Image;
+syriaMask.src = fs.readFileSync(filepath('src/img/syria-mask.png'));
 
 function writePNG(canvas, filename) {
     console.log(`Writing ${filename}`)
@@ -55,25 +54,34 @@ function render(areas, airstrikes, geo, date, diffDate) {
     var previousPoints = diffDate && getLocationsAtDate(areas, diffDate);
 
     var points = getLocationsAtDate(areas, date)
-    points.forEach((point, i) => {
-        if (point) {
-            var geoCoords = point.geo.split(' ').map(n => parseFloat(n)).reverse();
-            var screenCoords = projection(geoCoords);
-            var isis = point.controller === 'Islamic State';
-            context.beginPath();
-            context.arc(screenCoords[0], screenCoords[1] , 1.5, 0, 2*Math.PI);
-            if (diffDate) {
-                var wasIsis = previousPoints[i] && previousPoints[i].controller === 'Islamic State';
-                if (isis && !wasIsis) context.fillStyle = '#5ebfba'; // gained
-                else if (!isis && wasIsis) context.fillStyle = '#dc4b72'; // lost
-                else if (isis && wasIsis) context.fillStyle = '#333'; // stable isis
-                else if (!isis && !wasIsis) context.fillStyle = '#ccc'; // stable other
-            } else {
-                context.fillStyle = isis ? '#333' : '#ccc';
+
+    function renderTerritory(colors) {
+        points.forEach((point, i) => {
+            if (point) {
+                var geoCoords = point.geo.split(' ').map(n => parseFloat(n)).reverse();
+                var screenCoords = projection(geoCoords);
+                var isis = point.controller === 'Islamic State';
+                var fillColor;
+                context.beginPath();
+                context.arc(screenCoords[0], screenCoords[1] , 1.5, 0, 2*Math.PI);
+                if (diffDate) {
+                    var wasIsis = previousPoints[i] && previousPoints[i].controller === 'Islamic State';
+                    if (isis && !wasIsis) fillColor = colors.gain; // gained
+                    else if (!isis && wasIsis) fillColor = colors.loss; // lost
+                    else if (isis && wasIsis) fillColor = colors.isis; // stable isis
+                    else if (!isis && !wasIsis) fillColor = colors.other; // stable other
+                } else {
+                    fillColor = isis ? colors.isis : colors.other;
+                }
+                if (fillColor) {
+                    context.fillStyle = fillColor;
+                    context.fill();
+                }
             }
-            context.fill();
-        }
-    })
+        })
+    }
+
+    renderTerritory({isis: '#333', gain: '#5ebfba', loss: '#dc4b72', other: '#ccc'});
 
     airstrikes
         .filter(a => a.moment <= date && a.moment > diffDate)
@@ -86,7 +94,7 @@ function render(areas, airstrikes, geo, date, diffDate) {
             context.fill();
         })
 
-    context.drawImage(fgImg, 0, 0, fgImg.width, fgImg.height, 0, 0, width, height);
+    context.drawImage(syriaMask, 0, 0, syriaMask.width, syriaMask.height, 0, 0, width, height);
 
     var filename = filepath(`data-out/frames/${date.format('YYYY-MM-DD')}.png`);
     writePNG(canvas, filename);
