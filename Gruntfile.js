@@ -78,7 +78,7 @@ module.exports = function(grunt) {
                 'files': { 'build/boot.js': ['src/js/boot.js'] }
             },
             'bootjsprod': {
-                'options': { 'data': { 'assetPath': deploy.domain + deploy.versionedPath } },
+                'options': { 'data': { 'assetPath': deploy.domain + deploy.versionedPath + '/'} },
                 'files': { 'build/boot.js': ['src/js/boot.js'] }
             }
         },
