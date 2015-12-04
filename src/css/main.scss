@@ -41,11 +41,49 @@
 .sy-past__imgs {
 	white-space: nowrap;
 	img {
-		display: inline-block;
 		max-width: 300px;
-		width: 50%;
+		width: 100%;
 	}
+}
+.sy-past__img-container {
+	width: 50%;
+	display: inline-block;
+	vertical-align: top;
+}
 
+.sy-past__img-key {
+	@include f-textSans;
+	font-size: 16px;
+	line-height: 20px;
+	color: #767676;
+	margin-left: 18px;
+	margin-top: 12px;
+}
+
+.sy-past__img-key__asterisk {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background: url(../src/img/airstrike-asterisk.png);
+	margin-right: 2px;
+    vertical-align: middle;
+    margin-top: -4px;
+}
+
+.sy-past__img-key__gains,
+.sy-past__img-key__losses {
+	width: 12px;
+	height: 12px;
+	display: inline-block;
+	border-radius: 100px;
+}
+.sy-past__img-key__gains {
+	background-color: #005685
+}
+
+.sy-past__img-key__losses {
+	background-color: #dc4b72
+	margin-bottom: 6px;
 }
 
 .sy-past-container__heading {

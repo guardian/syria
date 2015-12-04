@@ -2,16 +2,29 @@
 
     <div class="sy-past-container">
         <h2 class="sy-past-container__heading">{{=it.copy.pastHeader}}</h2>
-        <p class="sy-past-container__copy">{{=it.copy.pastCopy}}</h2>
+        <p class="sy-past-container__copy">{{=it.copy.pastCopy}}</p>
 
         {{~it.past :p:i}}
         <div class="sy-past">
             <h3 class="sy-past__header">{{=p.header}}</h3>
-            <p class="sy-past__copy">{{=p.copy}}</p>
             <div class="sy-past__imgs">
-                <img src="{{=it.assetPath}}data-out/frames/{{=p.id}}-airstrikes.png">
-                <img src="{{=it.assetPath}}data-out/frames/{{=p.id}}-territory.png">
+                <div class="sy-past__img-container sy-past__img-container--airstrike">
+                    <img src="{{=it.assetPath}}data-out/frames/{{=p.id}}-airstrikes.png">
+                    <div class="sy-past__img-key">
+                        <i class="sy-past__img-key__asterisk"></i>
+                        Airstrikes
+                    </div>
+                </div>
+                <div class="sy-past__img-container sy-past__img-container--territory">
+                    <img src="{{=it.assetPath}}data-out/frames/{{=p.id}}-territory.png">
+                    <div class="sy-past__img-key">
+                        <div><i class="sy-past__img-key__losses"></i> Lost control</div>
+                        <div><i class="sy-past__img-key__gains"></i> Gained control</div>
+                    </div>
+                </div>
+
             </div>
+            <p class="sy-past__copy">{{=p.copy}}</p>
         </div>
         {{~}}
 
