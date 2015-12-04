@@ -1,6 +1,6 @@
 Setup
 -----
-`npm install`
+`$ npm install`
 
 Data processing
 ---------------
