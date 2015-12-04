@@ -17,4 +17,5 @@ Airstrike / territory rendering
 Running
 --------
 `$ npm start`
-`http://localhost:8000/test-inline.html`
+
+Open `http://localhost:8000/test-inline.html`
