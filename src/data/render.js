@@ -12,6 +12,9 @@ var filepath = file => path.join(__dirname, '../..', file);
 let syriaMask = new Image;
 syriaMask.src = fs.readFileSync(filepath('src/img/syria-mask.png'));
 
+let airstrikeAsterisk = new Image;
+airstrikeAsterisk.src = fs.readFileSync(filepath('src/img/airstrike-asterisk-7px.png'));
+
 function writePNG(canvas, filename) {
     console.log(`Writing ${filename}`)
     fs.writeFileSync(filename, canvas.toBuffer());
@@ -86,16 +89,13 @@ function render(areas, airstrikes, geo, date, diffDate) {
             .forEach(airstrike => {
                 var geoCoords = airstrike.geo.split(' ').map(n => parseFloat(n)).reverse();
                 var screenCoords = projection(geoCoords);
-                context.beginPath();
-                context.arc(screenCoords[0], screenCoords[1] , 1, 0, 2*Math.PI);
-                context.fillStyle = airstrike.airforce === 'Russia' ? colors.russia : colors.coalition;
-                context.fill();
+                var x = Math.round(screenCoords[0] - (airstrikeAsterisk.width/2));
+                var y = Math.round(screenCoords[1] - (airstrikeAsterisk.height/2));
+                context.drawImage(airstrikeAsterisk, x, y);
             })
     }
 
-    function drawMask() {
-        context.drawImage(syriaMask, 0, 0, syriaMask.width, syriaMask.height, 0, 0, width, height);
-    }
+    var drawMask = () => context.drawImage(syriaMask, 0, 0, syriaMask.width, syriaMask.height, 0, 0, width, height);
 
     function saveFile(suffix) {
         var filename = filepath(`data-out/frames/${date.format('YYYY-MM-DD')}-${suffix}.png`);
