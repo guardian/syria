@@ -2,6 +2,8 @@ Setup
 -----
 `$ npm install`
 
+Create data output directories: `$ mkdir -p data-out/frames`
+
 Data processing
 ---------------
 ```
@@ -10,8 +12,7 @@ $ npm run parseairstrikes
 $ npm run geo
 ```
 
-You will need to create output directories first:
-`$ mkdir -p data-out/frames`
+
 
 Airstrike / territory rendering
 --------------------------------
