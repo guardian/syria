@@ -41,19 +41,18 @@ function render(areas, airstrikes, geo, date, diffDate) {
     var path = d3.geo.path()
         .projection(projection)
         .context(context);
-
-    // white clear
-    context.fillStyle="white";
-    context.fillRect(0,0,width,height);
-
-    // GEO
-    context.fillStyle = context.strokeStyle = '#f1f1f1';
-    path(geo);
-    context.fill();
-
     var previousPoints = diffDate && getLocationsAtDate(areas, diffDate);
-
     var points = getLocationsAtDate(areas, date)
+
+    function clearCanvas() {
+        // white clear
+        context.fillStyle="white";
+        context.fillRect(0,0,width,height);
+        // GEO
+        context.fillStyle = context.strokeStyle = '#f1f1f1';
+        path(geo);
+        context.fill();
+    }
 
     function renderTerritory(colors) {
         points.forEach((point, i) => {
@@ -81,23 +80,39 @@ function render(areas, airstrikes, geo, date, diffDate) {
         })
     }
 
-    renderTerritory({isis: '#333', gain: '#5ebfba', loss: '#dc4b72', other: '#ccc'});
+    function renderAirstrikes(colors) {
+        airstrikes
+            .filter(a => a.moment <= date && a.moment > diffDate)
+            .forEach(airstrike => {
+                var geoCoords = airstrike.geo.split(' ').map(n => parseFloat(n)).reverse();
+                var screenCoords = projection(geoCoords);
+                context.beginPath();
+                context.arc(screenCoords[0], screenCoords[1] , 1, 0, 2*Math.PI);
+                context.fillStyle = airstrike.airforce === 'Russia' ? colors.russia : colors.coalition;
+                context.fill();
+            })
+    }
 
-    airstrikes
-        .filter(a => a.moment <= date && a.moment > diffDate)
-        .forEach(airstrike => {
-            var geoCoords = airstrike.geo.split(' ').map(n => parseFloat(n)).reverse();
-            var screenCoords = projection(geoCoords);
-            context.beginPath();
-            context.arc(screenCoords[0], screenCoords[1] , 1, 0, 2*Math.PI);
-            context.fillStyle = airstrike.airforce === 'Russia' ? '#005689' : 'orange';
-            context.fill();
-        })
+    function drawMask() {
+        context.drawImage(syriaMask, 0, 0, syriaMask.width, syriaMask.height, 0, 0, width, height);
+    }
 
-    context.drawImage(syriaMask, 0, 0, syriaMask.width, syriaMask.height, 0, 0, width, height);
+    function saveFile(suffix) {
+        var filename = filepath(`data-out/frames/${date.format('YYYY-MM-DD')}-${suffix}.png`);
+        writePNG(canvas, filename);
+    }
 
-    var filename = filepath(`data-out/frames/${date.format('YYYY-MM-DD')}.png`);
-    writePNG(canvas, filename);
+    // airstrikes
+    clearCanvas();
+    renderTerritory({isis: '#ccc'});
+    renderAirstrikes({russia: '#005689', coalition: 'orange'});
+    saveFile('airstrikes');
+
+    // territory
+    clearCanvas();
+    renderTerritory({isis: '#94b8cd', gain: '#005685', loss: '#dc4b72'});
+    saveFile('territory');
+
 }
 
 

@@ -1,10 +1,19 @@
 <div class="interactive-container">
 
-    {{~it.imgs :img:i}}
-        <div class="sy-territory-img">
-            <img src="{{=it.assetPath}}{{=img.src}}">
-            <p>{{=img.date}}</p>
-        </div>
-    {{~}}
+    <div class="sy-past-container">
+        <h2 class="sy-past-container__heading">{{=it.copy.pastHeader}}</h2>
+        <p class="sy-past-container__copy">{{=it.copy.pastCopy}}</h2>
 
+        {{~it.past :p:i}}
+        <div class="sy-past">
+            <h3 class="sy-past__header">{{=p.header}}</h3>
+            <p class="sy-past__copy">{{=p.copy}}</p>
+            <div class="sy-past__imgs">
+                <img src="{{=it.assetPath}}data-out/frames/{{=p.id}}-airstrikes.png">
+                <img src="{{=it.assetPath}}data-out/frames/{{=p.id}}-territory.png">
+            </div>
+        </div>
+        {{~}}
+
+    </div>
 </div>

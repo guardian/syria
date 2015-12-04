@@ -7,11 +7,74 @@
 	overflow: hidden;
 }
 
-.sy-territory-img {
-	float: left;
-	p {
-		color: #333;
-		@include fs-textSans(3);
-		padding: 12px 20px;
+.sy-past {
+	box-sizing: border-box;
+	border-top: 1px solid #dfdfdf;
+	margin-bottom: 36px;
+
+	@include mq(desktop) {
+		float: left;
+		width: calc(50% - 10px);
+		&:nth-child(2n+1) {
+			margin-right: 20px;
+			clear: both;
+		}
+	}
+}
+
+.sy-past__header{
+	@include f-header;
+	font-weight: 500;
+	font-size: 26px;
+	line-height: 30px;
+	margin: 12px 0;
+}
+
+.sy-past__copy{
+	color: #767676;
+	@include f-textSans;
+	font-size: 16px;
+	line-height: 24px;
+	margin: 12px 0;
+}
+
+.sy-past__imgs {
+	white-space: nowrap;
+	img {
+		display: inline-block;
+		max-width: 300px;
+		width: 50%;
+	}
+
+}
+
+.sy-past-container__heading {
+	@include f-header;
+	font-size: 30px;
+	line-height: 34px;
+	font-weight: 500;
+	margin: 12px 0;
+	@include mq(leftCol) {
+		padding-left: 160px;
+	}
+	@include mq(wide) {
+		padding-left: 240px;
+	}
+}
+
+.sy-past-container__copy {
+	color: #333;
+	@include f-bodyCopy;
+	font-size: 16px;
+	line-height: 24px;
+	font-weight: 400;
+	margin: 12px 0;
+	max-width: 640px;
+	margin-bottom: 48px;
+	@include mq(leftCol) {
+		padding-left: 160px;
+	}
+	@include mq(wide) {
+		padding-left: 240px;
 	}
 }
