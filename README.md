@@ -1,3 +1,6 @@
+Setup
+-----
+`npm install`
 
 Data processing
 ---------------
