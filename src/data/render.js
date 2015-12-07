@@ -7,10 +7,9 @@ import moment from 'moment';
 
 const Image = Canvas.Image;
 
-var filepath = file => path.join(__dirname, '../..', file);
+const MAP_WIDTH = 300, MAP_HEIGHT = 260;
 
-let syriaMask = new Image;
-syriaMask.src = fs.readFileSync(filepath('src/img/syria-mask.png'));
+var filepath = file => path.join(__dirname, '../..', file);
 
 let airstrikeAsterisk = new Image;
 airstrikeAsterisk.src = fs.readFileSync(filepath('src/img/airstrike-asterisk-7px.png'));
@@ -31,26 +30,27 @@ function getLocationsAtDate(areas, date) {
 function render(areas, airstrikes, geo, date, diffDate) {
     date = moment(date);
 
-    var width = 300, height = 260;
-    var projection = d3.geo.mercator()
-        .center([38.9, 34.85])
-        .scale(width*7.9)
-        .translate([width / 2, height / 2]);
-
     var canvas = new Canvas();
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = MAP_WIDTH;
+    canvas.height = MAP_HEIGHT;
     var context = canvas.getContext('2d');
-    var path = d3.geo.path()
-        .projection(projection)
-        .context(context);
+
+    var projection = d3.geo.mercator().scale(1).translate([0, 0]);
+    var path = d3.geo.path().projection(projection).context(context);
+
+    var b = path.bounds(geo),
+        s = 1 / Math.max((b[1][0] - b[0][0]) / MAP_WIDTH, (b[1][1] - b[0][1]) / MAP_HEIGHT),
+        t = [(MAP_WIDTH - s * (b[1][0] + b[0][0])) / 2, (MAP_HEIGHT - s * (b[1][1] + b[0][1])) / 2];
+
+    projection.scale(s).translate(t);
+
     var previousPoints = diffDate && getLocationsAtDate(areas, diffDate);
     var points = getLocationsAtDate(areas, date)
 
     function clearCanvas() {
         // white clear
         context.fillStyle="white";
-        context.fillRect(0,0,width,height);
+        context.fillRect(0, 0, MAP_WIDTH, MAP_HEIGHT);
         // GEO
         context.fillStyle = context.strokeStyle = '#f1f1f1';
         path(geo);
@@ -94,8 +94,6 @@ function render(areas, airstrikes, geo, date, diffDate) {
                 context.drawImage(airstrikeAsterisk, x, y);
             })
     }
-
-    var drawMask = () => context.drawImage(syriaMask, 0, 0, syriaMask.width, syriaMask.height, 0, 0, width, height);
 
     function saveFile(suffix) {
         var filename = filepath(`data-out/frames/${date.format('YYYY-MM-DD')}-${suffix}.png`);
