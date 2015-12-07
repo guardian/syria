@@ -36,10 +36,18 @@
 
 .sy-header {
     @include f-header;
+    font-size: 30px;
+    line-height: 34px;
     font-weight: 500;
-    font-size: 26px;
-    line-height: 30px;
-    margin: 4px 0 12px;
+    margin: 36px 0 12px;
+}
+
+.sy-subheader {
+    @include f-header;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 28px;
+    margin: 3px 0 12px;
 }
 
 .sy-copy {
@@ -47,21 +55,20 @@
     max-width: 640px;
 }
 
-.sy-main__heading {
-    @include f-header;
-    font-size: 30px;
-    line-height: 34px;
-    font-weight: 500;
-    margin: 12px 0;
-}
-
 .sy-dashboard {
-    img {
-        display: block;
-        width: 100%;
-    }
+    margin: 0 auto;
+    max-width: 650px;
 }
 
+.sy-dashboard__bg,
+.sy-dashboard__strikes {
+    display: block;
+    width: 100%;
+}
+
+.sy-dashboard__strikes {
+    margin-top: -76.9%;
+}
 
 .sy-past {
     box-sizing: border-box;

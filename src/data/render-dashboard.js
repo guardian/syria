@@ -8,7 +8,7 @@ import moment from 'moment';
 
 const Image = Canvas.Image;
 
-const MAP_WIDTH = 500, MAP_HEIGHT = 433;
+const MAP_WIDTH = 650, MAP_HEIGHT = 500;
 
 var filepath = file => path.join(__dirname, '../..', file);
 
@@ -17,7 +17,9 @@ function writePNG(canvas, filename) {
     fs.writeFileSync(filename, canvas.toBuffer());
 }
 
-function render(country, geo) {
+function main() {
+    var geo = require(filepath('data-out/dashboard-geo.json'));
+
     var canvas = new Canvas();
     canvas.width = MAP_WIDTH;
     canvas.height = MAP_HEIGHT;
@@ -47,7 +49,7 @@ function render(country, geo) {
     path(interiors);
     context.stroke();
 
-    writePNG(canvas, `data-out/dashboard/${country}.png`);
+    writePNG(canvas, 'data-out/dashboard/bg.png');
 }
 
-render('geo', require(filepath('data-out/dashboard-geo.json')));
+main();

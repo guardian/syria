@@ -1,20 +1,25 @@
 <div class="interactive-container">
 
     <div class="sy-container sy-main">
-        <h2 class="sy-main__heading">{{=it.copy.dashboardHeader}}</h2>
+        <h2 class="sy-header">{{=it.copy.dashboardHeader}}</h2>
         <p class="sy-copy">{{=it.copy.dashboardCopy}}</p>
-        <img src="{{=it.assetPath}}data-out/dashboard/geo.png" />
+        <div class="sy-dashboard">
+            <img class="sy-dashboard__bg" src="{{=it.assetPath}}data-out/dashboard/bg.png" />
+            <canvas class="sy-dashboard__strikes js-dashboard-strikes" width="650" height="500"></canvas>
+        </div>
+        <div class="js-dashboard-text"></div>
+        <input class="js-dashboard-window" type="range" min="0" step="1" style="width: 100%" />
     </div>
 
     <div class="sy-container">
         <div class="sy-main">
-            <h2 class="sy-main__heading">{{=it.copy.pastHeader}}</h2>
+            <h2 class="sy-header">{{=it.copy.pastHeader}}</h2>
             <p class="sy-copy">{{=it.copy.pastCopy}}</p>
         </div>
 
         {{~it.past :p:i}}
         <div class="sy-past">
-            <h3 class="sy-header">{{=p.header}}</h3>
+            <h3 class="sy-subheader">{{=p.header}}</h3>
             <div class="sy-past__imgs">
                 <div class="sy-past__img-container sy-past__img-container--airstrike">
                     <img src="{{=it.assetPath}}data-out/historical/{{=p.id}}-airstrikes.png">
