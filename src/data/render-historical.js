@@ -28,8 +28,6 @@ function getLocationsAtDate(areas, date) {
 }
 
 function render(areas, airstrikes, geo, date, diffDate) {
-    date = moment(date);
-
     var canvas = new Canvas();
     canvas.width = MAP_WIDTH;
     canvas.height = MAP_HEIGHT;
@@ -126,7 +124,7 @@ function main() {
             return _.sortBy(rows, 'moment');
         }).value();
 
-    var geo = require(filepath('data-out/geo.json'));
+    var geo = require(filepath('data-out/syria-geo.json'));
 
     var frameDates = [
         '2014-01-01', '2014-06-01',

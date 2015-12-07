@@ -10,7 +10,7 @@
     "fast": "node_modules/.bin/grunt devfast",
     "parseterritory": "./node_modules/.bin/babel-node --harmony src/data/parse-territory.js",
     "parseairstrikes": "./node_modules/.bin/babel-node --harmony src/data/parse-airstrikes.js",
-    "render": "./node_modules/.bin/babel-node --harmony src/data/render.js",
+    "renderhistorical": "./node_modules/.bin/babel-node --harmony src/data/render-historical.js",
     "geo": "./src/data/geo.sh",
     "deploy": "node_modules/.bin/grunt deploy"
   },

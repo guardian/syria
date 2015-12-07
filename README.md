@@ -14,9 +14,9 @@ $ npm run geo
 
 
 
-Airstrike / territory rendering
+Airstrike / territory historical rendering
 --------------------------------
-`$ npm run render`
+`$ npm run renderhistorical`
 
 Running
 --------
