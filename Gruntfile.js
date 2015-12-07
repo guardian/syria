@@ -108,7 +108,7 @@ module.exports = function(grunt) {
                         cwd: '.',
                         src: [
                             'build/main.js', 'build/main.js.map', 'build/main.css', 'build/main.css.map',
-                            'data-out/frames/*.png'
+                            'data-out/historical/*.png', 'data-out/dashboard/*.png'
                         ],
                         dest: deploy.versionedPath,
                         params: { CacheControl: 'max-age=60' }

@@ -4,10 +4,18 @@
 @import "share";
 
 .interactive-container {
+    @include fs-bodyCopy(2);
+    color: #333;
     overflow: hidden;
 }
 
 .sy-container {
+    margin-bottom: 48px;
+    border-top: 1px solid #bdbdbd;
+    &:first-child {
+        border-top: 0;
+    }
+
     &::after {
         content: "";
         display: block;
@@ -16,12 +24,27 @@
 }
 
 .sy-main {
+    margin-bottom: 48px;
+
     @include mq(leftCol) {
         padding-left: 160px;
     }
     @include mq(wide) {
         padding-left: 240px;
     }
+}
+
+.sy-header {
+    @include f-header;
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 30px;
+    margin: 4px 0 12px;
+}
+
+.sy-copy {
+    margin: 12px 0;
+    max-width: 640px;
 }
 
 .sy-main__heading {
@@ -32,13 +55,13 @@
     margin: 12px 0;
 }
 
-.sy-main__copy {
-    color: #333;
-    @include fs-bodyCopy(2);
-    margin: 12px 0;
-    max-width: 640px;
-    margin-bottom: 48px;
+.sy-dashboard {
+    img {
+        display: block;
+        width: 100%;
+    }
 }
+
 
 .sy-past {
     box-sizing: border-box;
@@ -55,20 +78,8 @@
     }
 }
 
-.sy-past__header {
-    @include f-header;
-    font-weight: 500;
-    font-size: 26px;
-    line-height: 30px;
-    margin: 12px 0;
-}
-
 .sy-past__copy {
     color: #767676;
-    @include f-textSans;
-    font-size: 16px;
-    line-height: 24px;
-    margin: 12px 0;
 }
 
 .sy-past__imgs {

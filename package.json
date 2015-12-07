@@ -11,6 +11,7 @@
     "parseterritory": "./node_modules/.bin/babel-node --harmony src/data/parse-territory.js",
     "parseairstrikes": "./node_modules/.bin/babel-node --harmony src/data/parse-airstrikes.js",
     "renderhistorical": "./node_modules/.bin/babel-node --harmony src/data/render-historical.js",
+    "renderdashboard": "./node_modules/.bin/babel-node --harmony src/data/render-dashboard.js",
     "geo": "./src/data/geo.sh",
     "deploy": "node_modules/.bin/grunt deploy"
   },

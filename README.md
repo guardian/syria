@@ -2,7 +2,11 @@ Setup
 -----
 `$ npm install`
 
-Create data output directories: `$ mkdir -p data-out/frames`
+Create data output directories:
+```
+$ mkdir -p data-out/historical
+$ mkdir -p data-out/dashboard
+```
 
 Data processing
 ---------------

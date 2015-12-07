@@ -94,7 +94,7 @@ function render(areas, airstrikes, geo, date, diffDate) {
     }
 
     function saveFile(suffix) {
-        var filename = filepath(`data-out/frames/${date.format('YYYY-MM-DD')}-${suffix}.png`);
+        var filename = filepath(`data-out/historical/${date.format('YYYY-MM-DD')}-${suffix}.png`);
         writePNG(canvas, filename);
     }
 
@@ -124,7 +124,7 @@ function main() {
             return _.sortBy(rows, 'moment');
         }).value();
 
-    var geo = require(filepath('data-out/syria-geo.json'));
+    var geo = require(filepath('data-out/historical-geo.json'));
 
     var frameDates = [
         '2014-01-01', '2014-06-01',
