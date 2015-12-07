@@ -1,8 +1,15 @@
 <div class="interactive-container">
 
-    <div class="sy-past-container">
-        <h2 class="sy-past-container__heading">{{=it.copy.pastHeader}}</h2>
-        <p class="sy-past-container__copy">{{=it.copy.pastCopy}}</p>
+    <div class="sy-container sy-main">
+        <h2 class="sy-main__heading">{{=it.copy.dashboardHeader}}</h2>
+        <p class="sy-main__copy">{{=it.copy.dashboardCopy}}</p>
+    </div>
+
+    <div class="sy-container">
+        <div class="sy-main">
+            <h2 class="sy-main__heading">{{=it.copy.pastHeader}}</h2>
+            <p class="sy-main__copy">{{=it.copy.pastCopy}}</p>
+        </div>
 
         {{~it.past :p:i}}
         <div class="sy-past">
@@ -27,6 +34,6 @@
             <p class="sy-past__copy">{{=p.copy}}</p>
         </div>
         {{~}}
-
     </div>
+
 </div>

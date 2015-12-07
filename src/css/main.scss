@@ -7,6 +7,39 @@
     overflow: hidden;
 }
 
+.sy-container {
+    &::after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+}
+
+.sy-main {
+    @include mq(leftCol) {
+        padding-left: 160px;
+    }
+    @include mq(wide) {
+        padding-left: 240px;
+    }
+}
+
+.sy-main__heading {
+    @include f-header;
+    font-size: 30px;
+    line-height: 34px;
+    font-weight: 500;
+    margin: 12px 0;
+}
+
+.sy-main__copy {
+    color: #333;
+    @include fs-bodyCopy(2);
+    margin: 12px 0;
+    max-width: 640px;
+    margin-bottom: 48px;
+}
+
 .sy-past {
     box-sizing: border-box;
     border-top: 1px solid #dfdfdf;
@@ -15,7 +48,7 @@
     @include mq(desktop) {
         float: left;
         width: calc(50% - 10px);
-        &:nth-child(2n+1) {
+        &:nth-child(2n) {
             margin-right: 20px;
             clear: both;
         }
@@ -41,6 +74,8 @@
 .sy-past__imgs {
     white-space: nowrap;
     img {
+        display: block;
+        margin: 0 auto;
         max-width: 300px;
         width: 100%;
     }
@@ -83,35 +118,4 @@
 
 .sy-past__img-key__losses {
     background-color: #dc4b72;
-}
-
-.sy-past-container__heading {
-    @include f-header;
-    font-size: 30px;
-    line-height: 34px;
-    font-weight: 500;
-    margin: 12px 0;
-    @include mq(leftCol) {
-        padding-left: 160px;
-    }
-    @include mq(wide) {
-        padding-left: 240px;
-    }
-}
-
-.sy-past-container__copy {
-    color: #333;
-    @include f-bodyCopy;
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 400;
-    margin: 12px 0;
-    max-width: 640px;
-    margin-bottom: 48px;
-    @include mq(leftCol) {
-        padding-left: 160px;
-    }
-    @include mq(wide) {
-        padding-left: 240px;
-    }
 }
