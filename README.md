@@ -13,14 +13,18 @@ Data processing
 ```
 $ npm run parseterritory
 $ npm run parseairstrikes
+$ npm run parseir
 $ npm run geo
 ```
 
 
 
-Airstrike / territory historical rendering
+Airstrike / territory rendering
 --------------------------------
-`$ npm run renderhistorical`
+```
+$ npm run renderhistorical
+$ npm run renderdashboard
+```
 
 Running
 --------
