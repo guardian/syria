@@ -5,3 +5,4 @@ bower_components
 build
 deploy
 data-out
+npm-debug.log
