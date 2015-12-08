@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var d3 = require('d3');
+var _ = require('lodash');
 
 var filepath = file => path.join(__dirname, '../..', file);
 
@@ -12,7 +13,7 @@ function parseTSV(s) {
     var headers = rows[0].split('\t');
     return rows.slice(1).map(row => {
         var ret = {};
-        row.split('\t').forEach((cell, i) => ret[headers[i]] = cell);
+        row.split('\t').forEach((cell, i) => ret[headers[i]] = cell.trim());
         return ret;
     });
 }
@@ -44,16 +45,27 @@ function processLocations(country, fn) {
 function processAirstrikes(locations, fn, outfn) {
     var input = fs.readFileSync(filepath(fn)).toString();
 
-    var out = parseTSV(input).map(row => {
-        var geo = locations[row.place.trim()];
-        if (!geo) {
-            console.warn(`Unknown location ${row.place}, ignoring...`);
-            return undefined;
-        }
+    var rows = _.sortBy(parseTSV(input), 'date');
 
-        return {geo, 'strikes': parseInt(row.strikes), 'date': row.date.trim()};
-    }).filter(r => r)// TODO: .sort((a, b) => a.date > b.date);
+    var meta = {'start': rows[0].date, 'end': rows[rows.length - 1].date};
 
+    var locations = _(rows)
+        .groupBy('place')
+        .map((rows, placeName) => {
+            var geo = locations[placeName];
+            if (!geo) {
+                console.warn(`Unknown location ${placeName}, ignoring...`);
+                return undefined;
+            }
+            var strikes = rows.map(row => {
+                return {'count': parseInt(row.strikes), 'date': row.date};
+            });
+            return {geo, strikes};
+        })
+        .filter(r => r)
+        .value();
+
+    var out = {meta, locations};
     fs.writeFileSync(filepath(outfn), JSON.stringify(out));
 }
 

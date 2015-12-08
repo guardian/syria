@@ -1,14 +1,17 @@
 <div class="interactive-container">
 
-    <div class="sy-container sy-main">
-        <h2 class="sy-header">{{=it.copy.dashboardHeader}}</h2>
-        <p class="sy-copy">{{=it.copy.dashboardCopy}}</p>
+    <div class="sy-container">
+        <div class="sy-main">
+            <h2 class="sy-header">{{=it.copy.dashboardHeader}}</h2>
+            <p class="sy-copy">{{=it.copy.dashboardCopy}}</p>
+        </div>
         <div class="sy-dashboard">
             <img class="sy-dashboard__bg" src="{{=it.assetPath}}data-out/dashboard/bg.png" />
+            <canvas class="sy-dashboard__locations js-dashboard-locations" width="650" height="500"></canvas>
             <canvas class="sy-dashboard__strikes js-dashboard-strikes" width="650" height="500"></canvas>
+            <div class="js-dashboard-text"></div>
+            <input class="js-dashboard-window" type="range" min="0" step="1" style="width: 100%" />
         </div>
-        <div class="js-dashboard-text"></div>
-        <input class="js-dashboard-window" type="range" min="0" step="1" style="width: 100%" />
     </div>
 
     <div class="sy-container">
