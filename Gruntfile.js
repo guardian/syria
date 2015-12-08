@@ -122,7 +122,7 @@ module.exports = function(grunt) {
                             'data-out/historical/*.png', 'data-out/dashboard/*.png'
                         ].concat(embeds.map(function (embed) { return 'build/' + embed + '.js'; })),
                         dest: deploy.versionedPath,
-                        params: { CacheControl: 'max-age=60' }
+                        params: { CacheControl: 'max-age=600' }
                     }
                 ]
             }
