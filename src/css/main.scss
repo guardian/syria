@@ -1,7 +1,19 @@
 @import "fonts";
 @import "mq";
-@import "general";
-@import "share";
+
+// Link styles don't exist on the app
+a {
+    &,
+    &:hover,
+    &:active {
+        color: #005689;
+    }
+
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
 
 .interactive-container {
     @include fs-bodyCopy(2);

@@ -2,6 +2,6 @@
 	"credentialsFile": "$HOME/.aws/credentials",
 	"profile": "visuals",
 	"bucket": "gdn-cdn",
-	"path": "2015/12/syria-past",
+	"path": "2015/12/syria/embed",
 	"domain": "https://interactive.guim.co.uk/"
 }

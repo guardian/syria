@@ -1,0 +1,14 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="<%= assetPath %>build/main.css" />
+</head>
+<body>
+    <div class="interactive-container js-interactive"></div>
+    <script src="<%= assetPath %>build/<%= embed %>.js"></script>
+    <script>
+        init(document.body.querySelector('.js-interactive'), {'assetPath': '<%= assetPath %>'});
+    </script>
+</body>
+</html>

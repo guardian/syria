@@ -54,6 +54,7 @@
       "ded/bowser": "github:ded/bowser@^1.0.0",
       "ded/domready": "github:ded/domready@^1.0.8",
       "fat/bean": "github:fat/bean@^1.0.14",
+      "guardian/iframe-messenger": "github:guardian/iframe-messenger@master",
       "json": "github:systemjs/plugin-json@^0.1.0",
       "lodash": "npm:lodash@^3.10.1",
       "olado/doT": "github:olado/doT@^1.0.1",

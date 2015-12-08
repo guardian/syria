@@ -1,14 +1,10 @@
+import iframeMessenger from 'guardian/iframe-messenger'
 import doT from 'olado/doT'
-import share from './lib/share'
 import ts2date from './lib/ts2date'
 import slider from './lib/slider'
-import {fetchJSON} from './lib/fetch'
-import {processCopySheet} from './lib/copy'
 
-import mainHTML from '../templates/main.html!text'
+import dashboardHTML from '../templates/dashboard.html!text'
 import airstrikes from '../../data-out/ir-airstrikes.json!json'
-
-var shareFn = share('Interactive title', 'http://gu.com/p/URL', null, null, '#Interactive');
 
 const WINDOW = 3;
 const DAY_MILLIS = 1000 * 60 * 60 * 24;
@@ -21,17 +17,16 @@ function renderLocation(ctx, loc, radius) {
     ctx.fill();
 }
 
-function render(el, data, config) {
-    //airstrikes.counts = airstrikes.counts.slice(0, 14);
+window.init = function init(el, config) {
+    iframeMessenger.enableAutoResize();
+
     var ctx = {
         assetPath: config.assetPath,
         counts: airstrikes.counts,
-        countMax: Math.max.apply(null, airstrikes.counts),
-        past: data.sheets.past,
-        copy: processCopySheet(data.sheets.copy),
+        countMax: Math.max.apply(null, airstrikes.counts)
     };
 
-    el.innerHTML = doT.template(mainHTML)(ctx);
+    el.innerHTML = doT.template(dashboardHTML)(ctx);
 
     var locationsEl = el.querySelector('.js-dashboard-locations');
     var locationsCtx = locationsEl.getContext('2d');
@@ -62,14 +57,4 @@ function render(el, data, config) {
             }
         });
     });
-
-    [].slice.apply(el.querySelectorAll('.interactive-share')).forEach(shareEl => {
-        var network = shareEl.getAttribute('data-network');
-        shareEl.addEventListener('click',() => shareFn(network));
-    });
-}
-
-export function init(el, context, config, mediator) {
-    var dataUrl = 'http://interactive.guim.co.uk/docsdata-test/19lKOCtZFsQSnLeReaYY7wORrGBHFGcD8mpwLsjOpj1Y.json';
-    fetchJSON(dataUrl).then(data => render(el, data, config))
-}
+};

@@ -18,6 +18,8 @@ function getAWSCredentials(grunt, cfg) {
     return iniFile.default;
 }
 
+var embeds = ['dashboard', 'past'];
+
 module.exports = function(grunt) {
 
     require('jit-grunt')(grunt);
@@ -25,6 +27,35 @@ module.exports = function(grunt) {
     var deploy = require('./deploy.json');
     deploy.versionedPath = path.join(deploy.path, Date.now().toString());
     var awsCredentials = getAWSCredentials(grunt, deploy);
+
+    // dynamically generate various embeds
+    var shell = {
+        options: {
+            execOptions: { cwd: '.' }
+        }
+    };
+    var template = {};
+
+    embeds.forEach(function (embed) {
+        shell[embed + 'dev'] = {
+            'command': './node_modules/.bin/jspm bundle-sfx src/js/' + embed + ' build/' + embed + '.js'
+        };
+        shell[embed + 'prod'] = {
+            'command': './node_modules/.bin/jspm bundle-sfx -m src/js/' + embed + ' build/' + embed + '.js'
+        };
+
+        var files = {};
+        files[embed + '.html'] = ['src/embed.html'];
+
+        template[embed + 'dev'] = {
+            'options': { 'data': { 'assetPath': '', 'embed': embed } },
+            'files': files
+        }
+        template[embed + 'prod'] = {
+            'options': { 'data': { 'assetPath': deploy.domain + deploy.versionedPath + '/', 'embed': embed } },
+            'files': files
+        }
+    });
 
     grunt.initConfig({
 
@@ -37,16 +68,16 @@ module.exports = function(grunt) {
             },
             inlinejs: {
                 files: ['src/js/**/*', 'src/templates/**/*', '!src/js/boot.js'],
-                tasks: ['shell:inlinedev'],
+                tasks: ['jsdev'],
             },
             bootjs: {
-                files: ['src/js/boot.js'],
-                tasks: ['template:bootjsdev'],
+                files: ['src/embed.html'],
+                tasks: ['embeddev'],
             },
         },
 
         clean: {
-            build: ['build']
+            build: ['build'].concat(embeds.map(function (embed) { return embed + '.html'; }))
         },
 
         sass: {
@@ -60,28 +91,8 @@ module.exports = function(grunt) {
             }
         },
 
-        shell: {
-            options: {
-                execOptions: { cwd: '.' }
-            },
-            inlinedev: {
-                command: './node_modules/.bin/jspm bundle-sfx src/js/main build/main.js --format amd'
-            },
-            inlineprod: {
-                command: './node_modules/.bin/jspm bundle-sfx -m src/js/main build/main.js --format amd'
-            }
-        },
-
-        'template': {
-            'bootjsdev': {
-                'options': { 'data': { 'assetPath': '' } },
-                'files': { 'build/boot.js': ['src/js/boot.js'] }
-            },
-            'bootjsprod': {
-                'options': { 'data': { 'assetPath': deploy.domain + deploy.versionedPath + '/'} },
-                'files': { 'build/boot.js': ['src/js/boot.js'] }
-            }
-        },
+        'shell': shell,
+        'template': template,
 
         aws_s3: {
             options: {
@@ -98,8 +109,8 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'build',
-                        src: [ 'boot.js' ],
+                        cwd: '.',
+                        src: embeds.map(function (embed) { return embed + '.html'; }),
                         dest: deploy.path,
                         params: { CacheControl: 'max-age=5' }
                     },
@@ -107,9 +118,9 @@ module.exports = function(grunt) {
                         expand: true,
                         cwd: '.',
                         src: [
-                            'build/main.js', 'build/main.js.map', 'build/main.css', 'build/main.css.map',
+                            'build/main.css', 'build/main.css.map',
                             'data-out/historical/*.png', 'data-out/dashboard/*.png'
-                        ],
+                        ].concat(embeds.map(function (embed) { return 'build/' + embed + '.js'; })),
                         dest: deploy.versionedPath,
                         params: { CacheControl: 'max-age=60' }
                     }
@@ -126,7 +137,7 @@ module.exports = function(grunt) {
                     middleware: function (connect, options, middlewares) {
                         // inject a custom middleware http://stackoverflow.com/a/24508523
                         middlewares.unshift(function (req, res, next) {
-                            if (req.url === '/') req.url = '/test-inline.html';
+                            if (req.url === '/') req.url = '/dashboard.html';
                             res.setHeader('Access-Control-Allow-Origin', '*');
                             res.setHeader('Access-Control-Allow-Methods', '*');
                             if (req.originalUrl.indexOf('/jspm_packages/') === 0 ||
@@ -143,12 +154,19 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('boot_url', function() {
-        grunt.log.write('\nBOOT URL: '['green'].bold)
-        grunt.log.writeln(deploy.domain + deploy.path + '/boot.js');
+        embeds.forEach(function (embed) {
+            grunt.log.write(('\n ' + embed + ': ')['green'].bold)
+            grunt.log.writeln(deploy.domain + deploy.path + '/' + embed + '.html');
+        });
     })
 
-    grunt.registerTask('deploy', ['clean', 'sass', 'shell:inlineprod', 'template:bootjsprod', 'aws_s3:inline', 'boot_url']);
-    grunt.registerTask('dev', ['clean', 'sass', 'shell:inlinedev', 'template:bootjsdev', 'connect', 'watch']);
+    grunt.registerTask('jsdev', embeds.map(function (embed) { return 'shell:' + embed + 'dev'; }));
+    grunt.registerTask('jsprod', embeds.map(function (embed) { return 'shell:' + embed + 'prod'; }));
+    grunt.registerTask('embeddev', embeds.map(function (embed) { return 'template:' + embed + 'dev';}));
+    grunt.registerTask('embedprod', embeds.map(function (embed) { return 'template:' + embed + 'prod';}));
+
+    grunt.registerTask('deploy', ['clean', 'sass', 'jsprod', 'embedprod', 'aws_s3:inline', 'boot_url']);
+    grunt.registerTask('dev', ['clean', 'sass', 'jsdev', 'embeddev', 'connect', 'watch']);
     grunt.registerTask('devfast', ['clean', 'sass', 'template:bootjsdev', 'connect', 'watch:css', 'watch:bootjs']);
 
     grunt.registerTask('default', ['dev']);
