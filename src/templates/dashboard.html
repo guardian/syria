@@ -1,16 +1,42 @@
 <div class="sy-container">
-    <div class="sy-main">
-        <h2 class="sy-header">This week</h2>
-        <div class="sy-dashboard">
-            <img class="sy-dashboard__bg" src="{{=it.assetPath}}data-out/dashboard/bg.png" />
-            <canvas class="sy-dashboard__locations js-dashboard-locations" width="650" height="500"></canvas>
-            <canvas class="sy-dashboard__strikes js-dashboard-strikes" width="650" height="500"></canvas>
+    <div class="sy-dashboard-copy">
+        <p class="sy-updating">UPDATED December 1 2015</p>
+        <h2 class="sy-header">
+            In the last week,<br />
+            there have been<br />
+            <span class="sy-strike">xxx</span> airstrikes in Syria,<br />
+            <span class="sy-strike">xxx</span> in Iraq
+        </h2>
+        <div class="sy-timeline js-timeline">
+            <span class="sy-timeline__window js-timeline-window" style="width:{{=100 / it.counts.length * 7}}%"></span>
+            {{~it.counts :count:i}}
+                <span class="sy-timeline__day" style="width: {{=100 / it.counts.length}}%; height: {{=count/it.countMax * 100}}%"></span>
+            {{~}}
         </div>
     </div>
-    <div class="sy-timeline js-timeline">
-        <span class="sy-timeline__window js-timeline-window" style="width:{{=100 / it.counts.length * 7}}%"></span>
-        {{~it.counts :count:i}}
-            <span class="sy-timeline__day" style="width: {{=100 / it.counts.length}}%; height: {{=count/it.countMax * 100}}%"></span>
-        {{~}}
+    <div class="sy-dashboard-map">
+        <img class="sy-dashboard-map__bg" src="{{=it.assetPath}}data-out/dashboard/bg.png" />
+        <canvas class="sy-dashboard-map__locations js-dashboard-locations" width="650" height="500"></canvas>
+        <canvas class="sy-dashboard-map__strikes js-dashboard-strikes" width="650" height="500"></canvas>
+    </div>
+    <div class="sy-analysis-container">
+        <div class="sy-analysis">
+            <h4 class="sy-analysis__header">What's the current situation?</h4>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id porttitor nibh.
+                Integer feugiat vehicula dignissim. Sed sodales mattis lacus. Etiam a sollicitudin quam.
+                Nullam ac ante ac nulla efficitur maximus et et leo. Donec aliquet, nulla ac semper
+                ullamcorper.
+            </p>
+        </div>
+        <div class="sy-analysis">
+            <h4 class="sy-analysis__header">What do we know about the UK's involvement?</h4>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id porttitor nibh.
+                Integer feugiat vehicula dignissim. Sed sodales mattis lacus. Etiam a sollicitudin quam.
+                Nullam ac ante ac nulla efficitur maximus et et leo. Donec aliquet, nulla ac semper
+                ullamcorper.
+            </p>
+        </div>
     </div>
 </div>

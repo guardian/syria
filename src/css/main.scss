@@ -15,6 +15,10 @@ a {
     }
 }
 
+p {
+    margin: 0 0 8px;
+}
+
 .interactive-container {
     @include fs-bodyCopy(2);
     color: #333;
@@ -51,7 +55,7 @@ a {
     font-size: 30px;
     line-height: 34px;
     font-weight: 500;
-    margin: 36px 0 12px;
+    margin: 0 0 12px;
 }
 
 .sy-subheader {
@@ -62,34 +66,107 @@ a {
     margin: 3px 0 12px;
 }
 
+@keyframes update-pulse {
+    25% { background-color: #767676; }
+    50% { background-color: white; }
+    75% { background-color: #767676; }
+}
+
+.sy-updating {
+    @include fs-textSans(2);
+    color: #767676;
+    margin: 0;
+
+    &::before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 9px;
+        height: 9px;
+        animation: update-pulse 2s infinite;
+        background-color: #767676;
+        border-radius: 100px;
+        margin-right: 5px;
+    }
+}
+
 .sy-copy {
     margin: 12px 0;
     max-width: 640px;
 }
 
-.sy-dashboard {
-    margin: 0 0 12px;
-    max-width: 650px;
+.sy-dashboard-copy {
+    @include mq(desktop) {
+        float: left;
+        width: 350px;
+        margin: 48px 20px 0 0;
+    }
 }
 
-.sy-dashboard__bg,
-.sy-dashboard__locations,
-.sy-dashboard__strikes {
+.sy-strike {
+    color: #b82266;
+}
+
+.sy-analysis-container {
+    @include mq(tablet) {
+        margin-right: -20px;
+    }
+    @include mq(desktop) {
+        position: absolute;
+        margin-right: 0;
+        top: (278px + 48px + 24px); // computed from 
+    }
+}
+
+.sy-analysis {
+    font-size: 14px;
+    line-height: 16px;
+    white-space: normal;
+
+    @include mq(tablet) {
+        float: left;
+        width: calc(50% - 20px);
+        margin-right: 20px;
+    }
+    @include mq(desktop) {
+        width: 250px;
+    }
+}
+
+.sy-analysis__header {
+    @include fs-header(1);
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+
+.sy-dashboard-map {
+    overflow: hidden;
+    margin: 0 auto 12px;
+    max-width: 650px;
+    @include mq(desktop) {
+        margin-left: 0;
+    }
+}
+
+.sy-dashboard-map__bg,
+.sy-dashboard-map__locations,
+.sy-dashboard-map__strikes {
     display: block;
     width: 100%;
 }
 
-.sy-dashboard__locations,
-.sy-dashboard__strikes {
+.sy-dashboard-map__locations,
+.sy-dashboard-map__strikes {
     margin-top: -76.9%;
 }
 
 .sy-timeline {
     position: relative;
-    height: 60px;
+    height: 100px;
     font-size: 0;
     background-color: #f1f1f1;
     cursor: pointer;
+    margin-bottom: 12px;
 }
 
 .sy-timeline__day {

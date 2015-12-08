@@ -4,10 +4,10 @@ import Canvas from 'canvas';
 import d3 from 'd3';
 import topojson from 'topojson';
 import _ from 'lodash';
-import moment from 'moment';
 
 const Image = Canvas.Image;
 
+// MUST BE IN SYNC WITH parse-ir.js
 const MAP_WIDTH = 650, MAP_HEIGHT = 500;
 
 var filepath = file => path.join(__dirname, '../..', file);

@@ -10,6 +10,8 @@ var filepath = file => path.join(__dirname, '../..', file);
 // MUST BE IN SYNC WITH render-dashboard.js
 const MAP_WIDTH = 650, MAP_HEIGHT = 500;
 
+const START_DATE = moment().subtract(6, 'months');
+
 function parseTSV(s) {
     var rows = s.replace(/\n+$/, '').split('\n');
     var headers = rows[0].split('\t');
@@ -47,7 +49,7 @@ function processLocations(country, fn) {
 function processAirstrikes(locations, fn, outfn) {
     var input = fs.readFileSync(filepath(fn)).toString();
 
-    var rows = _.sortBy(parseTSV(input), 'date');
+    var rows = _.sortBy(parseTSV(input), 'date').filter(row => START_DATE.isBefore(row.date));
 
     var start = rows[0].date, end = rows[rows.length - 1].date
 
