@@ -1,6 +1,7 @@
 import doT from 'olado/doT'
 import share from './lib/share'
 import ts2date from './lib/ts2date'
+import slider from './lib/slider'
 import {fetchJSON} from './lib/fetch'
 import {processCopySheet} from './lib/copy'
 
@@ -9,12 +10,10 @@ import airstrikes from '../../data-out/ir-airstrikes.json!json'
 
 var shareFn = share('Interactive title', 'http://gu.com/p/URL', null, null, '#Interactive');
 
-const WINDOW = 7;
+const WINDOW = 3;
 const DAY_MILLIS = 1000 * 60 * 60 * 24;
 
 const START = +new Date(airstrikes.meta.start);
-const END = +new Date(airstrikes.meta.end);
-const TOTAL_DAYS = (END - START) / DAY_MILLIS - WINDOW;
 
 function renderLocation(ctx, loc, radius) {
     ctx.beginPath();
@@ -23,35 +22,34 @@ function renderLocation(ctx, loc, radius) {
 }
 
 function render(el, data, config) {
+    //airstrikes.counts = airstrikes.counts.slice(0, 14);
     var ctx = {
         assetPath: config.assetPath,
+        counts: airstrikes.counts,
+        countMax: Math.max.apply(null, airstrikes.counts),
         past: data.sheets.past,
-        copy: processCopySheet(data.sheets.copy)
+        copy: processCopySheet(data.sheets.copy),
     };
 
     el.innerHTML = doT.template(mainHTML)(ctx);
 
-    var sliderEl = el.querySelector('.js-dashboard-window');
-    var textEl = el.querySelector('.js-dashboard-text');
     var locationsEl = el.querySelector('.js-dashboard-locations');
     var locationsCtx = locationsEl.getContext('2d');
     var strikesEl = el.querySelector('.js-dashboard-strikes');
     var strikesCtx = strikesEl.getContext('2d');
+    var timelineEl = el.querySelector('.js-timeline');
+    var timelineWindowEl = el.querySelector('.js-timeline-window');
 
-    locationsCtx.fillStyle = '#bdbdbd';
+    locationsCtx.fillStyle = '#999';
     airstrikes.locations.forEach(loc => {
         renderLocation(locationsCtx, loc, 2);
     });
 
-    sliderEl.value = sliderEl.max = TOTAL_DAYS;
+    slider(timelineEl, timelineWindowEl, 0, airstrikes.counts.length, WINDOW, (min, max) => {
+        var start = ts2date(START + min * DAY_MILLIS);
+        var end = ts2date(START + max * DAY_MILLIS);
 
-    sliderEl.addEventListener('input', () => {
-        var offset = parseInt(sliderEl.value);
-        var timestamp = START + offset * DAY_MILLIS;
-        var start = ts2date(timestamp);
-        var end = ts2date(timestamp + WINDOW * DAY_MILLIS);
-
-        strikesEl.width = strikesEl.width;
+        strikesEl.width = strikesEl.width; // clear canvas
         strikesCtx.globalAlpha = 0.7;
         strikesCtx.fillStyle = '#b82266';
 
@@ -63,8 +61,6 @@ function render(el, data, config) {
                 renderLocation(strikesCtx, loc, 3 + total);
             }
         });
-
-        textEl.textContent = `${start} - ${end}`;
     });
 
     [].slice.apply(el.querySelectorAll('.interactive-share')).forEach(shareEl => {

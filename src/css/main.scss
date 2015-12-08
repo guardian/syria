@@ -56,7 +56,7 @@
 }
 
 .sy-dashboard {
-    margin: 0 auto;
+    margin: 0 0 12px;
     max-width: 650px;
 }
 
@@ -70,6 +70,34 @@
 .sy-dashboard__locations,
 .sy-dashboard__strikes {
     margin-top: -76.9%;
+}
+
+.sy-timeline {
+    position: relative;
+    height: 60px;
+    font-size: 0;
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.sy-timeline__day {
+    position: relative;
+    display: inline-block;
+    vertical-align: bottom;
+    box-sizing: border-box;
+    background-color: #b82266;
+    pointer-events: none;
+}
+
+.sy-timeline__window {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background-color: white;
+    box-sizing: border-box;
+    border-left: 1px solid #767676;
+    border-right: 1px solid #767676;
 }
 
 .sy-past {

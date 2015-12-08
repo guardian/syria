@@ -2,6 +2,8 @@ var fs = require('fs');
 var path = require('path');
 var d3 = require('d3');
 var _ = require('lodash');
+var moment = require('moment');
+require('moment-range');
 
 var filepath = file => path.join(__dirname, '../..', file);
 
@@ -47,17 +49,21 @@ function processAirstrikes(locations, fn, outfn) {
 
     var rows = _.sortBy(parseTSV(input), 'date');
 
-    var meta = {'start': rows[0].date, 'end': rows[rows.length - 1].date};
+    var start = rows[0].date, end = rows[rows.length - 1].date
+
+    var strikesByDate = _(rows).groupBy('date').mapValues(dateRows => _.sum(dateRows, 'strikes')).value();
+    var counts = [];
+    moment.range(start, end).by('day', date => counts.push(strikesByDate[date.format('YYYY-MM-DD')] || 0));
 
     var locations = _(rows)
         .groupBy('place')
-        .map((rows, placeName) => {
+        .map((placeRows, placeName) => {
             var geo = locations[placeName];
             if (!geo) {
                 console.warn(`Unknown location ${placeName}, ignoring...`);
                 return undefined;
             }
-            var strikes = rows.map(row => {
+            var strikes = placeRows.map(row => {
                 return {'count': parseInt(row.strikes), 'date': row.date};
             });
             return {geo, strikes};
@@ -65,7 +71,10 @@ function processAirstrikes(locations, fn, outfn) {
         .filter(r => r)
         .value();
 
-    var out = {meta, locations};
+    var out = {
+        'meta': {start, end, 'days': moment.range(start, end).diff('days') + 1},
+        locations, counts
+    };
     fs.writeFileSync(filepath(outfn), JSON.stringify(out));
 }
 
