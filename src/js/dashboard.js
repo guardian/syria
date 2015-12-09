@@ -28,17 +28,10 @@ window.init = function init(el, config) {
 
     el.innerHTML = doT.template(dashboardHTML)(ctx);
 
-    var locationsEl = el.querySelector('.js-dashboard-locations');
-    var locationsCtx = locationsEl.getContext('2d');
     var strikesEl = el.querySelector('.js-dashboard-strikes');
     var strikesCtx = strikesEl.getContext('2d');
     var timelineEl = el.querySelector('.js-timeline');
     var timelineWindowEl = el.querySelector('.js-timeline-window');
-
-    locationsCtx.fillStyle = '#999';
-    airstrikes.locations.forEach(loc => {
-        renderLocation(locationsCtx, loc, 2);
-    });
 
     slider(timelineEl, timelineWindowEl, 0, airstrikes.counts.length, WINDOW, (min, max) => {
         var start = ts2date(START + min * DAY_MILLIS);
