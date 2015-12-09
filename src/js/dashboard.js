@@ -12,8 +12,6 @@ const WINDOW = 3;
 
 const START = +new Date(airstrikes.meta.start);
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-
 function renderLocation(ctx, loc, radius) {
     ctx.beginPath();
     ctx.arc(loc.geo.coord[0], loc.geo.coord[1], radius, 0, 2 * Math.PI);
@@ -51,7 +49,7 @@ window.init = function init(el, config) {
         var totals = {'iraq': 0, 'syria': 0};
 
         airstrikes.locations.forEach(loc => {
-            var strikes = loc.strikes.filter(s => s.date >= start && s.date < end);
+            var strikes = loc.strikes.filter(s => s.date >= start.cmp && s.date < end.cmp);
             var total = strikes.reduce((sum, strike) => sum + strike.count, 0);
 
             if (total > 0) {
@@ -61,10 +59,10 @@ window.init = function init(el, config) {
             totals[loc.geo.country] += total;
         });
 
-        var live = end === airstrikes.meta.end;
-        periodEl.textContent = live ? 'In the last week,' : `${start} ${end}`;
-        syriaTotalEl.textContent = totals['syria'];
-        iraqTotalEl.textContent = totals['iraq'];
+        var live = end.cmp === airstrikes.meta.end;
+        periodEl.textContent = live ? 'In the last week' : `${start.display} - ${end.display}`;
+        syriaTotalEl.textContent = totals.syria;
+        iraqTotalEl.textContent = totals.iraq;
         el.classList.toggle('is-in-past', !live);
     });
 };

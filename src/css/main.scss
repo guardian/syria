@@ -117,9 +117,17 @@ p {
 }
 
 .sy-period {
-    transition: color 0.1s ease-out;
-    .is-in-past & {
-        color: #bdbdbd;
+    display: block;
+
+    &::after {
+        content: " there have been";
+        .is-in-past & {
+            content: " there were";
+        }
+
+        @include mq(desktop) {
+            display: block;
+        }
     }
 }
 
@@ -175,14 +183,22 @@ p {
     }
 }
 
+.sy-dashboard-map__bg {
+    padding-bottom: 76.9%;
+    background-size: 100% 100%;
+
+    background-image: url(../data-out/dashboard/bg.png);
+    @include mq(tablet) {
+        background-image: url(../src/img/syria-iraq.jpg);
+    }
+}
+
 .sy-dashboard-map__bg,
-.sy-dashboard-map__locations,
 .sy-dashboard-map__strikes {
     display: block;
     width: 100%;
 }
 
-.sy-dashboard-map__locations,
 .sy-dashboard-map__strikes {
     margin-top: -76.9%;
 }
@@ -195,11 +211,7 @@ $border: 2px;
     cursor: pointer;
     margin-bottom: 24px;
     overflow: hidden;
-
-    height: 40px;
-    @include mq(desktop) {
-        height: 60px;
-    }
+    height: 60px;
 }
 
 .sy-timeline__day {
