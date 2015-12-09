@@ -53,7 +53,10 @@ function processAirstrikes(locations, fn, outfn) {
 
     var start = rows[0].date, end = rows[rows.length - 1].date
 
-    var strikesByDate = _(rows).groupBy('date').mapValues(dateRows => _.sum(dateRows, 'strikes')).value();
+    var strikesByDate = _(rows)
+        //.groupBy(row => moment(row.date).format('GGGG-WW'))
+        .groupBy('date')
+        .mapValues(dateRows => _.sum(dateRows, 'strikes')).value();
     var counts = [];
     moment.range(start, end).by('day', date => counts.push(strikesByDate[date.format('YYYY-MM-DD')] || 0));
 

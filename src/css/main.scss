@@ -116,6 +116,13 @@ p {
     }
 }
 
+.sy-period {
+    transition: color 0.1s ease-out;
+    .is-in-past & {
+        color: #bdbdbd;
+    }
+}
+
 .sy-strike {
     color: #b82266;
     font-size: 36px;
@@ -131,6 +138,11 @@ p {
         clear: left;
         margin-right: 0;
         margin-top: -180px;
+    }
+
+    transition: opacity 0.1s ease-out;
+    .is-in-past & {
+        opacity: 0.3;
     }
 }
 
@@ -175,12 +187,14 @@ p {
     margin-top: -76.9%;
 }
 
+$border: 2px;
+
 .sy-timeline {
     position: relative;
     font-size: 0;
-    background-color: #f1f1f1;
     cursor: pointer;
     margin-bottom: 24px;
+    overflow: hidden;
 
     height: 40px;
     @include mq(desktop) {
@@ -189,7 +203,6 @@ p {
 }
 
 .sy-timeline__day {
-    position: relative;
     display: inline-block;
     vertical-align: bottom;
     box-sizing: border-box;
@@ -202,10 +215,28 @@ p {
     top: 0;
     right: 0;
     height: 100%;
-    background-color: white;
     box-sizing: border-box;
-    border-left: 1px solid #767676;
-    border-right: 1px solid #767676;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        height: 100%;
+        background-color: transparentize(white, 0.2);
+        width: 800px;
+    }
+
+    &::before {
+        right: 100%;
+        border-right: $border solid #333;
+        //box-shadow: inset -20px 0px 20px -20px #333;
+    }
+    &::after {
+        left: 100%;
+        border-left: $border solid #333;
+        //box-shadow: inset 20px 0px 20px -20px #333;
+    }
 }
 
 .sy-past {
