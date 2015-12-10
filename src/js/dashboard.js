@@ -12,6 +12,7 @@ import cities from '../../data-out/dashboard-cities.json!json'
 const WINDOW = 3;
 
 const START = +new Date(airstrikes.meta.start);
+const END = +new Date(airstrikes.meta.end);
 
 function renderLocation(ctx, loc, radius) {
     ctx.beginPath();
@@ -40,10 +41,7 @@ window.init = function init(el, config) {
     var syriaTotalEl = el.querySelector('.js-syria-total');
     var iraqTotalEl = el.querySelector('.js-iraq-total');
 
-    slider(timelineEl, timelineWindowEl, 0, airstrikes.meta.days, WINDOW, (min, max) => {
-        var start = ts2date(START, min);
-        var end = ts2date(START, max);
-
+    function renderMap(start, end) {
         strikesEl.width = strikesEl.width; // clear canvas
         strikesCtx.globalAlpha = 0.7;
         strikesCtx.fillStyle = '#b82266';
@@ -66,5 +64,14 @@ window.init = function init(el, config) {
         syriaTotalEl.textContent = totals.syria;
         iraqTotalEl.textContent = totals.iraq;
         el.classList.toggle('is-in-past', !live);
+    }
+
+    slider(timelineEl, timelineWindowEl, 0, airstrikes.meta.days, WINDOW, (min, max) => {
+        var start = ts2date(START, min);
+        var end = ts2date(START, max);
+
+        renderMap(start, end);
     });
+
+    renderMap(ts2date(END, -WINDOW * 2), ts2date(END, 0));
 };
