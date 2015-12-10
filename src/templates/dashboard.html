@@ -21,7 +21,7 @@
     <div class="sy-dashboard-map">
         <div class="sy-dashboard-map__bg">
             {{~it.cities :city}}
-                <span class="sy-dashboard-map__bg__lbl" style="left: {{=city.coord[0]}}%; top: {{=city.coord[1]}}%">
+                <span class="sy-dashboard-map__bg__lbl sy-dashboard-map__bg__lbl--{{=city.style}}" style="left: {{=city.coord[0]}}%; top: {{=city.coord[1]}}%">
                     {{=city.name}}
                 </span>
             {{~}}

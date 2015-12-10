@@ -95,7 +95,11 @@ function processCities(fn, outfn) {
 
     var cities = parseTSV(input).map(row => {
         var coord = project(row['lat'], row['lng']);
-        return {'name': row['name'], 'coord': [coord[0] / MAP_WIDTH * 100, coord[1] / MAP_HEIGHT * 100]};
+        return {
+            'name': row['name'],
+            'coord': [coord[0] / MAP_WIDTH * 100, coord[1] / MAP_HEIGHT * 100],
+            'style': row['style']
+        };
     });
 
     fs.writeFileSync(filepath(outfn), JSON.stringify(cities));

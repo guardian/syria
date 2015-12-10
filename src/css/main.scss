@@ -210,11 +210,7 @@ p {
     line-height: 0;
     white-space: nowrap;
     opacity: 0.4;
-
     margin: -2px 0 0 -2px;
-    @include mq(tablet) {
-        margin: -3px 0 0 -3px;
-    }
 
     &::before {
         content: "";
@@ -224,10 +220,19 @@ p {
         height: 4px;
         background-color: #333;
         border-radius: 100px;
+    }
 
+    &.sy-dashboard-map__bg__lbl--capital {
+        font-weight: bold;
+        &::before {
+            border-radius: 0;
+        }
+    }
+
+    &.sy-dashboard-map__bg__lbl--minor {
+        display: none;
         @include mq(tablet) {
-            width: 7px;
-            height: 7px;
+            display: block;
         }
     }
 }
