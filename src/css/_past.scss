@@ -58,7 +58,7 @@
 }
 
 .sy-past__img-key {
-    @include fs-textSans(3);
+    @include fs-textSans(2);
     color: #767676;
     margin: 6px 0 0 18px;
 }
@@ -83,9 +83,9 @@
     border-radius: 100px;
 }
 .sy-past__img-key__gains {
-    background-color: #005685;
+    background-color: #29619a;
 }
 
 .sy-past__img-key__losses {
-    background-color: #dc4b72;
+    background-color: #d22e0a;
 }

@@ -87,8 +87,6 @@ function render(areas, airstrikes, geo, date, diffDate) {
         })
     }
 
-    var width = 9, height = 9;
-
     function renderAirstrikes(colors) {
         airstrikes
             .filter(a => a.moment <= date && a.moment > diffDate)
@@ -96,9 +94,9 @@ function render(areas, airstrikes, geo, date, diffDate) {
                 var geoCoords = airstrike.geo.split(' ').map(n => parseFloat(n)).reverse();
                 var screenCoords = projection(geoCoords);
                 var img = airstrikeImages[airstrike.airforce];
-                var x = Math.round(screenCoords[0] - (width / 2));
-                var y = Math.round(screenCoords[1] - (height / 2));
-                context.drawImage(img, x, y, width, height);
+                var x = Math.round(screenCoords[0] - (img.width / 2));
+                var y = Math.round(screenCoords[1] - (img.height / 2));
+                context.drawImage(img, x, y);
             })
     }
 
@@ -115,7 +113,7 @@ function render(areas, airstrikes, geo, date, diffDate) {
 
     // territory
     clearCanvas();
-    renderTerritory({isis: '#94b8cd', gain: '#005685', loss: '#dc4b72'});
+    renderTerritory({isis: '#79bae2', gain: '#29619a', loss: '#d22e0a'});
     saveFile('territory');
 
 }

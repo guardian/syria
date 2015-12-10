@@ -3,12 +3,14 @@
         <p class="sy-updating">UPDATED Tuesday 1 December 2015</p>
         <h2 class="sy-header sy-dashboard-copy__header">
             <span class="sy-period js-period">In the last week</span>
-            <span class="sy-strike js-syria-total">1234</span> airstrikes in Syria,<br />
-            <span class="sy-strike js-iraq-total">5678</span> in Iraq
+            <span class="sy-strike sy-strike--syria js-syria-total"></span> airstrikes in Syria,<br />
+            <span class="sy-strike sy-strike--iraq js-iraq-total"></span> in Iraq
         </h2>
         <div class="sy-timeline js-timeline">
             {{~it.timeline.counts :count:i}}
-                <span class="sy-timeline__day" style="width: {{=100 / it.countLen}}%; height: {{=count/it.countMax * 100}}%"></span>
+            <span class="sy-timeline__day" style="width: {{=100 / it.countLen}}%">
+                    <span class="sy-timeline__day__country is-iraq" style="height: {{=count.iraq/it.countMax * 100}}%"></span><span class="sy-timeline__day__country is-syria" style="height: {{=count.syria/it.countMax * 100}}%"></span>
+                </span>
             {{~}}
             <span class="sy-timeline__window js-timeline-window" style="width:{{=100 / it.countLen * it.windowSize}}%"></span>
         </div>

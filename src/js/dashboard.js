@@ -16,11 +16,18 @@ const WINDOW = 3;
 const START = +new Date(airstrikes.meta.start);
 const END = +new Date(airstrikes.meta.end);
 
+const COLORS = {
+    'syria': '#b82266',
+    'iraq': '#d37da3'
+}
+
 function renderLocation(ctx, loc, radius) {
     ctx.beginPath();
     ctx.arc(loc.geo.coord[0], loc.geo.coord[1], radius, 0, 2 * Math.PI);
     ctx.fill();
 }
+
+console.log(airstrikes.timeline.counts.map(c => (c.iraq || 0) + (c.syria || 0)));
 
 window.init = function init(el, config) {
     iframeMessenger.enableAutoResize();
@@ -30,7 +37,7 @@ window.init = function init(el, config) {
         cities,
         timeline: airstrikes.timeline,
         countLen: airstrikes.timeline.counts.length,
-        countMax: Math.max.apply(null, airstrikes.timeline.counts),
+        countMax: Math.max.apply(null, airstrikes.timeline.counts.map(c => (c.iraq || 0) + (c.syria || 0))),
         windowSize: WINDOW * 2 + 1
     };
 
@@ -48,7 +55,6 @@ window.init = function init(el, config) {
     function renderMap(start, end) {
         strikesEl.width = strikesEl.width; // clear canvas
         strikesCtx.globalAlpha = 0.7;
-        strikesCtx.fillStyle = '#b82266';
 
         var totals = {'iraq': 0, 'syria': 0};
 
@@ -57,6 +63,7 @@ window.init = function init(el, config) {
             var total = strikes.reduce((sum, strike) => sum + strike.count, 0);
 
             if (total > 0) {
+                strikesCtx.fillStyle = COLORS[loc.geo.country];
                 renderLocation(strikesCtx, loc, Math.sqrt(total) * 5);
             }
 

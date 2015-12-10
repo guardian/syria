@@ -56,14 +56,23 @@ function processAirstrikes(locations, fn, outfn) {
 
     var start = rows[0].date, end = rows[rows.length - 1].date
 
-    var strikesByDate = _(rows).groupBy('date').mapValues(dateRows => _.sum(dateRows, 'strikes')).value();
+    var strikesByDate = _(rows)
+        .groupBy('date')
+        .mapValues(dateRows => {
+            return _(dateRows)
+                .groupBy(row => {
+                    return locations[row.place] && locations[row.place].country;
+                })
+                .mapValues(countryRows => _.sum(countryRows, 'strikes')).value();
+        }).value();
+
     var counts = [];
     var labels = [];
     moment.range(start, end).by('day', date => {
         if (date.date() === 1) {
             labels.push({'month': date.format('MMM'), 'pos': counts.length});
         }
-        counts.push(strikesByDate[date.format('YYYY-MM-DD')] || 0)
+        counts.push(strikesByDate[date.format('YYYY-MM-DD')] || {'syria': 0, 'iraq': 0})
     });
 
     var locations = _(rows)

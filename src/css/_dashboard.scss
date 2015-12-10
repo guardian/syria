@@ -56,8 +56,14 @@
 }
 
 .sy-strike {
-    color: #b82266;
     font-size: 36px;
+
+    &.sy-strike--iraq {
+        color: #d37da3;
+    }
+    &.sy-strike--syria {
+        color: #b82266;
+    }
 }
 
 .sy-analysis-container {
@@ -183,10 +189,22 @@ $timeline-h: 60px;
 
 .sy-timeline__day {
     display: inline-block;
+    height: 100%;
     vertical-align: bottom;
     box-sizing: border-box;
-    background-color: #b82266;
     pointer-events: none;
+}
+
+.sy-timeline__day__country {
+    display: inline-block;
+    width: 100%;
+
+    &.is-iraq {
+        background-color: #d37da3;
+    }
+    &.is-syria {
+        background-color: #b82266;
+    }
 }
 
 @keyframes pulse-arrows {
