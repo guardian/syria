@@ -205,20 +205,23 @@ p {
     white-space: nowrap;
     opacity: 0.4;
 
+    margin: -2px 0 0 -2px;
+    @include mq(tablet) {
+            margin: -4px 0 0 -4px;
+    }
+
     &::before {
         content: "";
         display: inline-block;
         vertical-align: middle;
-        margin: -2px 0 0 -2px;
         width: 4px;
         height: 4px;
         background-color: #333;
         border-radius: 100px;
 
         @include mq(tablet) {
-            margin: -4px 0 0 -4px;
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
         }
     }
 }
