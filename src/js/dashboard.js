@@ -6,7 +6,7 @@ import ts2date from './lib/ts2date'
 import slider from './lib/slider'
 
 import dashboardHTML from '../templates/dashboard.html!text'
-import airstrikes from '../../data-out/ir-airstrikes.json!json'
+import airstrikes from '../../data-out/dashboard-airstrikes.json!json'
 import cities from '../../data-out/dashboard-cities.json!json'
 
 const WINDOW = 3;

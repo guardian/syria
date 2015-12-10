@@ -99,6 +99,6 @@ var syriaLocations = processLocations('syria', 'data-in/syria-locations.tsv');
 var locations = {};
 iraqLocations.concat(syriaLocations).forEach(loc => locations[loc['name']] = loc);
 
-processAirstrikes(locations, 'data-in/ir-airstrikes.tsv', 'data-out/ir-airstrikes.json');
+processAirstrikes(locations, 'data-in/dashboard-airstrikes.tsv', 'data-out/dashboard-airstrikes.json');
 
 processCities('data-in/dashboard-cities.tsv', 'data-out/dashboard-cities.json');

@@ -10,7 +10,7 @@
     "fast": "node_modules/.bin/grunt devfast",
     "parseterritory": "./node_modules/.bin/babel-node --harmony src/data/parse-territory.js",
     "parseairstrikes": "./node_modules/.bin/babel-node --harmony src/data/parse-airstrikes.js",
-    "parseir": "./node_modules/.bin/babel-node --harmony src/data/parse-ir.js",
+    "parsedashboard": "./node_modules/.bin/babel-node --harmony src/data/parse-dashboard.js",
     "renderhistorical": "./node_modules/.bin/babel-node --harmony src/data/render-historical.js",
     "renderdashboard": "./node_modules/.bin/babel-node --harmony src/data/render-dashboard.js",
     "geo": "./src/data/geo.sh",
