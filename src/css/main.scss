@@ -182,12 +182,18 @@ p {
     max-width: 650px;
     @include mq(desktop) {
         margin: 0 auto 0 0;
-        height: 500px;
+        min-height: 500px;
     }
 }
 
-.sy-dashboard-map__bg {
+.sy-dashboard-map__bg,
+.sy-dashboard-map__strikes {
     position: relative;
+    display: block;
+    width: 100%;
+}
+
+.sy-dashboard-map__bg {
     padding-bottom: 76.9%;
     background-size: 100% 100%;
 
@@ -226,14 +232,15 @@ p {
     }
 }
 
-.sy-dashboard-map__bg,
-.sy-dashboard-map__strikes {
-    display: block;
-    width: 100%;
-}
-
 .sy-dashboard-map__strikes {
     margin-top: -76.9%;
+}
+
+.sy-dashboard-map__source {
+    @include fs-textSans(1);
+    color: #bdbdbd;
+    text-align: right;
+    margin: 5px 0 0;
 }
 
 $timeline-h: 60px;

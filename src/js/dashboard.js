@@ -55,7 +55,7 @@ window.init = function init(el, config) {
             var total = strikes.reduce((sum, strike) => sum + strike.count, 0);
 
             if (total > 0) {
-                renderLocation(strikesCtx, loc, 3 + total);
+                renderLocation(strikesCtx, loc, Math.sqrt(total) * 5);
             }
 
             totals[loc.geo.country] += total;
