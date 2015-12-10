@@ -11,8 +11,14 @@ const MAP_WIDTH = 300, MAP_HEIGHT = 260;
 
 var filepath = file => path.join(__dirname, '../..', file);
 
-let airstrikeAsterisk = new Image;
-airstrikeAsterisk.src = fs.readFileSync(filepath('src/img/airstrike-asterisk-7px.png'));
+var airstrikeImages = _.mapValues({
+    'Russia': 'src/img/airstrike-russia.png',
+    'Coalition': 'src/img/airstrike-coalition.png'
+}, fp => {
+    var img = new Image;
+    img.src = fs.readFileSync(filepath(fp));
+    return img;
+});
 
 function writePNG(canvas, filename) {
     console.log(`Writing ${filename}`)
@@ -81,15 +87,18 @@ function render(areas, airstrikes, geo, date, diffDate) {
         })
     }
 
+    var width = 9, height = 9;
+
     function renderAirstrikes(colors) {
         airstrikes
             .filter(a => a.moment <= date && a.moment > diffDate)
             .forEach(airstrike => {
                 var geoCoords = airstrike.geo.split(' ').map(n => parseFloat(n)).reverse();
                 var screenCoords = projection(geoCoords);
-                var x = Math.round(screenCoords[0] - (airstrikeAsterisk.width/2));
-                var y = Math.round(screenCoords[1] - (airstrikeAsterisk.height/2));
-                context.drawImage(airstrikeAsterisk, x, y);
+                var img = airstrikeImages[airstrike.airforce];
+                var x = Math.round(screenCoords[0] - (width / 2));
+                var y = Math.round(screenCoords[1] - (height / 2));
+                context.drawImage(img, x, y, width, height);
             })
     }
 
@@ -128,7 +137,7 @@ function main() {
 
     var frameDates = [
         //'2014-01-01', '2014-06-01',
-        '2014-09-01', '2015-02-01',
+        '2014-09-01', '2015-01-01',
         '2015-06-01', '2015-08-01',
         '2015-08-01', '2015-12-01'
     ];

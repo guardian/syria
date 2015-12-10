@@ -11,10 +11,12 @@
                 </div>
                 <div class="sy-past__imgs">
                     <div class="sy-past__img-container sy-past__img-container--airstrike">
-                        <img src="{{=it.assetPath}}data-out/historical/{{=p.id}}-airstrikes.png">
+                        <img class="sy-past__map" src="{{=it.assetPath}}data-out/historical/{{=p.id}}-airstrikes.png">
                         <div class="sy-past__img-key">
-                            <i class="sy-past__img-key__asterisk"></i>
-                            Airstrikes
+                            <div><img src="{{=it.assetPath}}src/img/airstrike-coalition.png" /> Coalition airstrikes</div>
+                            {{?i > 2}}
+                                <div><img src="{{=it.assetPath}}src/img/airstrike-russia.png" /> Russian airstrikes</div>
+                            {{?}}
                         </div>
                     </div>
                     <div class="sy-past__img-container sy-past__img-container--territory">

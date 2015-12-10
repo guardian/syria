@@ -7,7 +7,9 @@
 .sy-past {
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px solid #eaeaea;
+    @include mq(desktop) {
+        border-top: 1px solid #f1f1f1;
+    }
 
     &::after {
         content: "";
@@ -21,16 +23,14 @@
 
     @include mq(desktop) {
         float: left;
-        max-width: 420px;
+        max-width: 300px;
         margin-right: 20px;
     }
 }
 
 .sy-past__header {
-    @include f-header;
+    @include fs-header(2);
     font-weight: 600;
-    font-size: 20px;
-    line-height: 24px;
     margin: 0 0 6px;
 }
 
@@ -43,12 +43,14 @@
         overflow: hidden;
     }
 
-    img {
-        display: block;
-        max-width: 300px;
-        width: 100%;
-    }
 }
+
+.sy-past__map {
+    display: block;
+    max-width: 300px;
+    width: 100%;
+}
+
 .sy-past__img-container {
     width: 50%;
     display: inline-block;
@@ -73,11 +75,11 @@
 
 .sy-past__img-key__gains,
 .sy-past__img-key__losses {
-    width: 12px;
-    height: 12px;
+    width: 7px;
+    height: 7px;
     display: inline-block;
     vertical-align: middle;
-    margin-right: 3px;
+    margin: -2px 3px 0 0;
     border-radius: 100px;
 }
 .sy-past__img-key__gains {
