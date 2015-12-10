@@ -17,6 +17,8 @@
 }
 
 .sy-past__text {
+    max-width: 660px;
+
     @include mq(desktop) {
         float: left;
         max-width: 420px;
@@ -35,6 +37,7 @@
 .sy-past__imgs {
     white-space: nowrap;
     font-size: 0;
+    max-width: 660px;
 
     @include mq(desktop) {
         overflow: hidden;
@@ -42,7 +45,6 @@
 
     img {
         display: block;
-        margin: 0 auto;
         max-width: 300px;
         width: 100%;
     }
