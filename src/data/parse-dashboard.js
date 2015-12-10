@@ -58,7 +58,13 @@ function processAirstrikes(locations, fn, outfn) {
 
     var strikesByDate = _(rows).groupBy('date').mapValues(dateRows => _.sum(dateRows, 'strikes')).value();
     var counts = [];
-    moment.range(start, end).by('day', date => counts.push(strikesByDate[date.format('YYYY-MM-DD')] || 0));
+    var labels = [];
+    moment.range(start, end).by('day', date => {
+        if (date.date() === 1) {
+            labels.push({'month': date.format('MMM'), 'pos': counts.length});
+        }
+        counts.push(strikesByDate[date.format('YYYY-MM-DD')] || 0)
+    });
 
     var locations = _(rows)
         .groupBy('place')
@@ -78,7 +84,8 @@ function processAirstrikes(locations, fn, outfn) {
 
     var out = {
         'meta': {start, end, 'days': moment.range(start, end).diff('days') + 1},
-        locations, counts
+        'timeline': {counts, labels},
+        locations
     };
     fs.writeFileSync(filepath(outfn), JSON.stringify(out));
 }

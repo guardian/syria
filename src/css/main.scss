@@ -213,7 +213,7 @@ p {
 
     margin: -2px 0 0 -2px;
     @include mq(tablet) {
-            margin: -4px 0 0 -4px;
+        margin: -3px 0 0 -3px;
     }
 
     &::before {
@@ -248,7 +248,6 @@ $timeline-h: 60px;
 .sy-timeline {
     position: relative;
     font-size: 0;
-    margin-bottom: 24px;
     overflow: hidden;
     height: $timeline-h;
     cursor: pointer;
@@ -307,6 +306,23 @@ $timeline-h: 60px;
         margin-left: $border;
         //box-shadow: inset 20px 0px 20px -20px #333;
     }
+}
+
+.sy-timeline-labels {
+    @include fs-textSans(1);
+    position: relative;
+    margin: -$timeline-h 0 24px;
+    color: #999;
+    line-height: 1;
+    height: (get-font-size(textSans, 1) + 3px + $timeline-h);
+    pointer-events: none;
+}
+
+.sy-timeline-labels__lbl {
+    position: absolute;
+    top: 0;
+    padding: (3px + $timeline-h) 0 0 2px;
+    border-left: 1px dotted #999;
 }
 
 .sy-past {

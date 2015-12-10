@@ -26,8 +26,10 @@ window.init = function init(el, config) {
     var ctx = {
         assetPath: config.assetPath,
         cities,
-        counts: airstrikes.counts,
-        countMax: Math.max.apply(null, airstrikes.counts)
+        timeline: airstrikes.timeline,
+        countLen: airstrikes.timeline.counts.length,
+        countMax: Math.max.apply(null, airstrikes.timeline.counts),
+        windowSize: WINDOW * 2 + 1
     };
 
     el.innerHTML = doT.template(dashboardHTML)(ctx);
