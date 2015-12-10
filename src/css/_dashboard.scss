@@ -1,0 +1,250 @@
+@keyframes update-pulse {
+    25% { background-color: #bdbdbd; }
+    50% { background-color: white; }
+    75% { background-color: #bdbdbd; }
+}
+
+.sy-updating {
+    @include fs-textSans(2);
+    color: #bdbdbd;
+    margin: 0;
+
+    &::before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 9px;
+        height: 9px;
+        animation: update-pulse 2s infinite;
+        background-color: #bdbdbd;
+        border-radius: 100px;
+        margin-right: 5px;
+    }
+}
+
+.sy-dashboard-copy {
+    @include mq(desktop) {
+        float: left;
+        width: 350px;
+        margin: 24px 20px 0 0;
+    }
+}
+
+.sy-dashboard-copy__header {
+    line-height: 36px;
+    br {
+        display: none;
+        @include mq(desktop) {
+            display: block;
+        }
+    }
+}
+
+.sy-period {
+    display: block;
+
+    &::after {
+        content: " there have been";
+        .is-in-past & {
+            content: " there were";
+        }
+
+        @include mq(desktop) {
+            display: block;
+        }
+    }
+}
+
+.sy-strike {
+    color: #b82266;
+    font-size: 36px;
+}
+
+.sy-analysis-container {
+    position: relative;
+
+    @include mq(tablet) {
+        margin-right: -20px;
+    }
+    @include mq(desktop) {
+        clear: left;
+        margin-right: 0;
+        margin-top: -180px;
+    }
+
+    transition: opacity 0.1s ease-out;
+    .is-in-past & {
+        opacity: 0.3;
+    }
+}
+
+.sy-analysis {
+    white-space: normal;
+
+    @include mq(tablet) {
+        float: left;
+        width: calc(50% - 20px);
+        margin-right: 20px;
+    }
+    @include mq(desktop) {
+        width: 250px;
+    }
+}
+
+.sy-analysis__header {
+    @include fs-header(2);
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+
+.sy-dashboard-map {
+    overflow: hidden;
+    margin: 0 auto 24px;
+    max-width: 650px;
+    @include mq(desktop) {
+        margin: 0 auto 0 0;
+        min-height: 500px;
+    }
+}
+
+.sy-dashboard-map__bg,
+.sy-dashboard-map__strikes {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.sy-dashboard-map__bg {
+    padding-bottom: 76.9%;
+    background-size: 100% 100%;
+
+    background-image: url(../data-out/dashboard/bg.png);
+    @include mq(tablet) {
+        background-image: url(../src/img/syria-iraq.jpg);
+    }
+}
+
+.sy-dashboard-map__bg__lbl {
+    @include fs-textSans(1);
+    color: #333;
+    position: absolute;
+    line-height: 0;
+    white-space: nowrap;
+    opacity: 0.4;
+    margin: -2px 0 0 -2px;
+
+    &::before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 4px;
+        height: 4px;
+        background-color: #333;
+        border-radius: 100px;
+    }
+
+    &.sy-dashboard-map__bg__lbl--capital {
+        font-weight: bold;
+        &::before {
+            border-radius: 0;
+        }
+    }
+
+    &.sy-dashboard-map__bg__lbl--minor {
+        display: none;
+        @include mq(tablet) {
+            display: block;
+        }
+    }
+}
+
+.sy-dashboard-map__strikes {
+    margin-top: -76.9%;
+}
+
+.sy-dashboard-map__source {
+    @include fs-textSans(1);
+    color: #bdbdbd;
+    text-align: right;
+    margin: 5px 0 0;
+}
+
+$timeline-h: 60px;
+
+.sy-timeline {
+    position: relative;
+    font-size: 0;
+    overflow: hidden;
+    height: $timeline-h;
+    cursor: pointer;
+}
+
+.sy-timeline__day {
+    display: inline-block;
+    vertical-align: bottom;
+    box-sizing: border-box;
+    background-color: #b82266;
+    pointer-events: none;
+}
+
+@keyframes pulse-arrows {
+    0% { padding: 0 0; }
+    50% { padding: 0 5px; }
+    100% { padding: 0 0; }
+}
+
+.sy-timeline__window {
+    $border: 2px;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    box-sizing: border-box;
+    cursor: col-resize;
+
+    border-left: $border solid transparentize(#333, 0.4);
+    border-right: $border solid transparentize(#333, 0.4);
+
+    &::before,
+    &::after {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        background-color: transparentize(white, 0.2);
+        width: 800px;
+        font-size: 30px;
+        line-height: $timeline-h;
+        animation: pulse-arrows 1s infinite;
+        pointer-events: none;
+    }
+
+    &::before {
+        content: "\2190";
+        text-align: right;
+        right: 100%;
+        margin-right: $border;
+    }
+    &::after {
+        content: "\2192";
+        left: 100%;
+        margin-left: $border;
+    }
+}
+
+.sy-timeline-labels {
+    @include fs-textSans(1);
+    position: relative;
+    margin: -$timeline-h 0 24px;
+    color: #999;
+    line-height: 1;
+    height: (get-font-size(textSans, 1) + 3px + $timeline-h);
+    pointer-events: none;
+}
+
+.sy-timeline-labels__lbl {
+    position: absolute;
+    top: 0;
+    padding: (3px + $timeline-h) 0 0 2px;
+    border-left: 1px dotted #999;
+}

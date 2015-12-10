@@ -1,30 +1,31 @@
-<div class="sy-container sy-container--divider">
-    <div class="sy-main">
-        <h2 class="sy-header">{{=it.copy.pastHeader}}</h2>
-        <p class="sy-copy">{{=it.copy.pastCopy}}</p>
-    </div>
+<div class="sy-container sy-main sy-container--divider">
+    <h2 class="sy-header">{{=it.copy.pastHeader}}</h2>
+    <p class="sy-copy">{{=it.copy.pastCopy}}</p>
 
-    {{~it.past :p:i}}
-    <div class="sy-past">
-        <h3 class="sy-subheader">{{=p.header}}</h3>
-        <div class="sy-past__imgs">
-            <div class="sy-past__img-container sy-past__img-container--airstrike">
-                <img src="{{=it.assetPath}}data-out/historical/{{=p.id}}-airstrikes.png">
-                <div class="sy-past__img-key">
-                    <i class="sy-past__img-key__asterisk"></i>
-                    Airstrikes
+    <ul class="sy-pasts">
+        {{~it.past :p:i}}
+            <li class="sy-past">
+                <div class="sy-past__text">
+                    <h3 class="sy-past__header">{{=p.header}}</h3>
+                    <p class="sy-copy sy-past__copy">{{=p.copy}}</p>
                 </div>
-            </div>
-            <div class="sy-past__img-container sy-past__img-container--territory">
-                <img src="{{=it.assetPath}}data-out/historical/{{=p.id}}-territory.png">
-                <div class="sy-past__img-key">
-                    <div><i class="sy-past__img-key__losses"></i> Lost control</div>
-                    <div><i class="sy-past__img-key__gains"></i> Gained control</div>
+                <div class="sy-past__imgs">
+                    <div class="sy-past__img-container sy-past__img-container--airstrike">
+                        <img src="{{=it.assetPath}}data-out/historical/{{=p.id}}-airstrikes.png">
+                        <div class="sy-past__img-key">
+                            <i class="sy-past__img-key__asterisk"></i>
+                            Airstrikes
+                        </div>
+                    </div>
+                    <div class="sy-past__img-container sy-past__img-container--territory">
+                        <img src="{{=it.assetPath}}data-out/historical/{{=p.id}}-territory.png">
+                        <div class="sy-past__img-key">
+                            <div><i class="sy-past__img-key__losses"></i> Lost control</div>
+                            <div><i class="sy-past__img-key__gains"></i> Gained control</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-        </div>
-        <p class="sy-copy">{{=p.copy}}</p>
-    </div>
-    {{~}}
+            </li>
+        {{~}}
+    </ul>
 </div>
