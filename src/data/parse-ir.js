@@ -12,17 +12,7 @@ const MAP_WIDTH = 650, MAP_HEIGHT = 500;
 
 const START_DATE = moment().subtract(6, 'months');
 
-function parseTSV(s) {
-    var rows = s.replace(/\n+$/, '').split('\n');
-    var headers = rows[0].split('\t');
-    return rows.slice(1).map(row => {
-        var ret = {};
-        row.split('\t').forEach((cell, i) => ret[headers[i]] = cell.trim());
-        return ret;
-    });
-}
-
-function processLocations(country, fn) {
+var project = (function () {
     var geo = require(filepath('data-out/dashboard-geo.json'));
 
     var projection = d3.geo.mercator().scale(1).translate([0, 0]);
@@ -34,12 +24,26 @@ function processLocations(country, fn) {
 
     projection.scale(s).translate(t);
 
+    return (lat, lng) => projection([lng, lat].map(l => parseFloat(l)));
+})();
+
+function parseTSV(s) {
+    var rows = s.replace(/\n+$/, '').split('\n');
+    var headers = rows[0].split('\t');
+    return rows.slice(1).map(row => {
+        var ret = {};
+        row.split('\t').forEach((cell, i) => ret[headers[i]] = cell.trim());
+        return ret;
+    });
+}
+
+function processLocations(country, fn) {
     var input = fs.readFileSync(filepath(fn)).toString();
 
     var out = parseTSV(input);
     out.forEach(row => {
         row['country'] = country;
-        row['coord'] = projection([row['lng'], row['lat']].map(l => parseFloat(l)));
+        row['coord'] = project(row['lat'], row['lng']);
         delete row['lat'];
         delete row['lng'];
     });
@@ -48,15 +52,11 @@ function processLocations(country, fn) {
 
 function processAirstrikes(locations, fn, outfn) {
     var input = fs.readFileSync(filepath(fn)).toString();
-
     var rows = _.sortBy(parseTSV(input), 'date').filter(row => START_DATE.isBefore(row.date));
 
     var start = rows[0].date, end = rows[rows.length - 1].date
 
-    var strikesByDate = _(rows)
-        //.groupBy(row => moment(row.date).format('GGGG-WW'))
-        .groupBy('date')
-        .mapValues(dateRows => _.sum(dateRows, 'strikes')).value();
+    var strikesByDate = _(rows).groupBy('date').mapValues(dateRows => _.sum(dateRows, 'strikes')).value();
     var counts = [];
     moment.range(start, end).by('day', date => counts.push(strikesByDate[date.format('YYYY-MM-DD')] || 0));
 
@@ -83,9 +83,22 @@ function processAirstrikes(locations, fn, outfn) {
     fs.writeFileSync(filepath(outfn), JSON.stringify(out));
 }
 
+function processCities(fn, outfn) {
+    var input = fs.readFileSync(filepath(fn)).toString();
+
+    var cities = parseTSV(input).map(row => {
+        var coord = project(row['lat'], row['lng']);
+        return {'name': row['name'], 'coord': [coord[0] / MAP_WIDTH * 100, coord[1] / MAP_HEIGHT * 100]};
+    });
+
+    fs.writeFileSync(filepath(outfn), JSON.stringify(cities));
+}
+
 var iraqLocations = processLocations('iraq', 'data-in/iraq-locations.tsv');
 var syriaLocations = processLocations('syria', 'data-in/syria-locations.tsv');
 var locations = {};
 iraqLocations.concat(syriaLocations).forEach(loc => locations[loc['name']] = loc);
 
 processAirstrikes(locations, 'data-in/ir-airstrikes.tsv', 'data-out/ir-airstrikes.json');
+
+processCities('data-in/dashboard-cities.tsv', 'data-out/dashboard-cities.json');

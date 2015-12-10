@@ -7,6 +7,7 @@ import slider from './lib/slider'
 
 import dashboardHTML from '../templates/dashboard.html!text'
 import airstrikes from '../../data-out/ir-airstrikes.json!json'
+import cities from '../../data-out/dashboard-cities.json!json'
 
 const WINDOW = 3;
 
@@ -23,6 +24,7 @@ window.init = function init(el, config) {
 
     var ctx = {
         assetPath: config.assetPath,
+        cities,
         counts: airstrikes.counts,
         countMax: Math.max.apply(null, airstrikes.counts)
     };

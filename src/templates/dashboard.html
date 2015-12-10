@@ -14,7 +14,13 @@
         </div>
     </div>
     <div class="sy-dashboard-map">
-        <div class="sy-dashboard-map__bg"></div>
+        <div class="sy-dashboard-map__bg">
+            {{~it.cities :city}}
+                <span class="sy-dashboard-map__bg__lbl" style="left: {{=city.coord[0]}}%; top: {{=city.coord[1]}}%">
+                    {{=city.name}}
+                </span>
+            {{~}}
+        </div>
         <canvas class="sy-dashboard-map__strikes js-dashboard-strikes" width="650" height="500"></canvas>
     </div>
     <div class="sy-analysis-container js-analysis">
