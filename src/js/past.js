@@ -3,9 +3,14 @@ import doT from 'olado/doT'
 import sheetURL from './lib/sheetURL'
 import {fetchJSON} from './lib/fetch'
 
+import locations from '../../data-out/historical-locations.json!json'
 import pastHTML from '../templates/past.html!text'
 
 function render(el, data, config) {
+    data.past.sections.forEach(section => {
+        section.labels = section.labels.map(l => locations[l]);
+    });
+
     var ctx = {
         assetPath: config.assetPath,
         past: data.past

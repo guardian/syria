@@ -7,18 +7,21 @@ import moment from 'moment';
 
 const Image = Canvas.Image;
 
+// MUST BE IN SYNC WITH parse-locations.js
 const MAP_WIDTH = 300, MAP_HEIGHT = 260;
 
 var filepath = file => path.join(__dirname, '../..', file);
 
-var airstrikeImages = _.mapValues({
-    'Russia': 'src/img/airstrike-russia.png',
-    'Coalition': 'src/img/airstrike-coalition.png'
-}, fp => {
+function icon(fp) {
     var img = new Image;
     img.src = fs.readFileSync(filepath(fp));
     return img;
-});
+}
+
+var airstrikeImages = {
+    'Russia': icon('src/img/airstrike-russia.png'),
+    'Coalition': icon('src/img/airstrike-coalition.png')
+};
 
 function writePNG(canvas, filename) {
     console.log(`Writing ${filename}`)

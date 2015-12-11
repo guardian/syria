@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const Image = Canvas.Image;
 
-// MUST BE IN SYNC WITH parse-ir.js
+// MUST BE IN SYNC WITH parse-dashboard.js
 const MAP_WIDTH = 650, MAP_HEIGHT = 500;
 
 var filepath = file => path.join(__dirname, '../..', file);

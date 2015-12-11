@@ -46,9 +46,32 @@
 }
 
 .sy-past__map {
-    display: block;
+    position: relative;
     max-width: 300px;
-    width: 100%;
+
+    img {
+        display: block;
+        width: 100%;
+    }
+}
+
+.sy-past__map__lbl {
+    @include fs-textSans(1);
+    color: #333;
+    position: absolute;
+    line-height: 0;
+    white-space: nowrap;
+    opacity: 0.7;
+
+    &::before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 4px;
+        height: 4px;
+        background-color: #333;
+        border-radius: 100px;
+    }
 }
 
 .sy-past__img-container {

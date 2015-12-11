@@ -3,15 +3,23 @@
     <p class="sy-copy">{{=it.past.copy}}</p>
 
     <ul class="sy-pasts">
-        {{~it.past.sections :p:i}}
+        {{~it.past.sections :section:i}}
             <li class="sy-past">
                 <div class="sy-past__text">
-                    <h3 class="sy-past__header">{{=p.headline}}</h3>
-                    <p class="sy-copy sy-past__copy">{{=p.copy}}</p>
+                    <h3 class="sy-past__header">{{=section.headline}}</h3>
+                    <p class="sy-copy sy-past__copy">{{=section.copy}}</p>
                 </div>
                 <div class="sy-past__imgs">
                     <div class="sy-past__img-container sy-past__img-container--airstrike">
-                        <img class="sy-past__map" src="{{=it.assetPath}}data-out/historical/{{=p.id}}-airstrikes.png">
+                        <div class="sy-past__map">
+                            <img src="{{=it.assetPath}}data-out/historical/{{=section.id}}-airstrikes.png">
+                            {{~section.labels :l}}
+                                <span class="sy-past__map__lbl"
+                                      style="top: {{=l.coord[1]}}%; {{=l.anchor}}: {{=l.coord[0]}}%">
+                                    {{=l.name}}
+                                </span>
+                            {{~}}
+                        </div>
                         <div class="sy-past__img-key">
                             <div><img src="{{=it.assetPath}}src/img/airstrike-coalition.png" /> Coalition airstrikes</div>
                             {{?i > 2}}
@@ -20,7 +28,15 @@
                         </div>
                     </div>
                     <div class="sy-past__img-container sy-past__img-container--territory">
-                        <img class="sy-past__map" src="{{=it.assetPath}}data-out/historical/{{=p.id}}-territory.png">
+                        <div class="sy-past__map">
+                            <img src="{{=it.assetPath}}data-out/historical/{{=section.id}}-territory.png">
+                            {{~section.labels :l}}
+                                <span class="sy-past__map__lbl"
+                                      style="top: {{=l.coord[1]}}%; {{=l.anchor}}: {{=l.coord[0]}}%">
+                                    {{=l.name}}
+                                </span>
+                            {{~}}
+                        </div>
                         <div class="sy-past__img-key">
                             <div><i class="sy-past__img-key__losses"></i> Lost control</div>
                             <div><i class="sy-past__img-key__gains"></i> Gained control</div>
