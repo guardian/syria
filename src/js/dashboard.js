@@ -17,6 +17,8 @@ const TIMELINE_HEIGHT = 60; // keep in sync with _dashboard.scss
 const START = +new Date(airstrikes.meta.start);
 const END = +new Date(airstrikes.meta.end);
 
+const LIVE = ts2date(END, -TIMELINE_WINDOW * 2);
+
 const COLORS = {'syria': '#b82266', 'iraq': '#d37da3'};
 
 function renderLocation(ctx, loc, radius) {
@@ -67,11 +69,12 @@ window.init = function init(el, config) {
             totals[loc.geo.country] += total;
         });
 
-        var live = end.cmp === airstrikes.meta.end;
-        periodEl.textContent = live ? 'In the last week' : `${start.display} - ${end.display}`;
+        periodEl.innerHTML = end.cmp === airstrikes.meta.end ?
+            'In the last week<br />there have been' :
+            `${start.display} - ${end.display}</br> there were`;
         syriaTotalEl.textContent = totals.syria;
         iraqTotalEl.textContent = totals.iraq;
-        el.classList.toggle('is-in-past', !live);
+        el.classList.toggle('is-in-past', end.cmp < LIVE.cmp);
     }
 
     slider(timelineEl, timelineWindowEl, 0, airstrikes.meta.days, TIMELINE_WINDOW, (min, max) => {

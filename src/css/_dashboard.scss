@@ -32,18 +32,6 @@ $ratio: 76.9%;
     }
 }
 
-.sy-period {
-    display: block;
-
-    &::after {
-        display: block;
-        content: " there have been";
-        .is-in-past & {
-            content: " there were";
-        }
-    }
-}
-
 .sy-strike {
     font-size: 36px;
 
