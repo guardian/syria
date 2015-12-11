@@ -54,6 +54,16 @@ export default function (el, thumbEl, min, max, windowSize, onchange) {
         }
     }
 
+    if (window.GuardianJSInterface) {
+        el.addEventListener('touchstart', () => {
+            window.GuardianJSInterface.registerRelatedCardsTouch(true);
+        });
+
+        el.addEventListener('touchend', () => {
+            window.GuardianJSInterface.registerRelatedCardsTouch(false);
+        });
+    }
+
     var hammer = new Hammer(el);
     hammer.on('panstart tap press', premove)
     hammer.on('pan tap press', move);

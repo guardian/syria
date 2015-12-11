@@ -30,25 +30,14 @@
     }
 }
 
-.sy-dashboard-copy__header {
-    line-height: 36px;
-}
-
 .sy-period {
     display: block;
 
     &::after {
+        display: block;
         content: " there have been";
         .is-in-past & {
             content: " there were";
-        }
-
-        display: none;
-        @include mq(mobileLandscape) {
-            display: inline;
-        }
-        @include mq(desktop) {
-            display: block;
         }
     }
 }
@@ -99,7 +88,6 @@
 
 .sy-analysis__header {
     @include fs-header(2);
-    font-weight: 600;
     margin: 0 0 6px;
 }
 

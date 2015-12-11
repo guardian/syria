@@ -54,12 +54,10 @@ p {
 
 .sy-header {
     @include fs-headline(5);
-
-    font-weight: 500;
     margin: 0 0 12px;
 
-    @include mq(tablet) {
-        @include fs-headline(6, $size-only: true);
+    @include mq(mobileLandscape) {
+        @include fs-headline(7, $size-only: true);
     }
 
 }
