@@ -99,10 +99,10 @@ function processAirstrikes(locations, fn, outfn) {
     fs.writeFileSync(filepath(outfn), JSON.stringify(out));
 }
 
-function processCities(fn, outfn) {
+function processDashboardLocations(fn, outfn) {
     var input = fs.readFileSync(filepath(fn)).toString();
 
-    var cities = parseTSV(input).map(row => {
+    var locations = parseTSV(input).map(row => {
         var coord = project(row['lat'], row['lng']);
         var left = coord[0] / MAP_WIDTH * 100;
         return {
@@ -113,7 +113,7 @@ function processCities(fn, outfn) {
         };
     });
 
-    fs.writeFileSync(filepath(outfn), JSON.stringify(cities));
+    fs.writeFileSync(filepath(outfn), JSON.stringify(locations));
 }
 
 var iraqLocations = processLocations('iraq', 'data-in/iraq-locations.tsv');
@@ -122,5 +122,4 @@ var locations = {};
 iraqLocations.concat(syriaLocations).forEach(loc => locations[loc['name']] = loc);
 
 processAirstrikes(locations, 'data-in/dashboard-airstrikes.tsv', 'data-out/dashboard-airstrikes.json');
-
-processCities('data-in/dashboard-cities.tsv', 'data-out/dashboard-cities.json');
+processDashboardLocations('data-in/dashboard-locations.tsv', 'data-out/dashboard-locations.json');

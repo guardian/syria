@@ -25,10 +25,10 @@
         <div class="sy-dashboard-map__bg"></div>
         <canvas class="sy-dashboard-map__strikes js-dashboard-strikes" width="650" height="500"></canvas>
         <ul class="sy-dashboard-map__labels">
-            {{~it.cities :city}}
-                <li class="sy-dashboard-map__labels__lbl is-style-{{=city.style}} is-anchor-{{=city.anchor}}"
-                      style="top: {{=city.coord[1]}}%; {{=city.anchor}}: {{=city.coord[0]}}%">
-                    {{=city.name}}
+            {{~it.locations :l}}
+                <li class="sy-dashboard-map__labels__lbl is-style-{{=l.style}} is-anchor-{{=l.anchor}}"
+                      style="top: {{=l.coord[1]}}%; {{=l.anchor}}: {{=l.coord[0]}}%">
+                    {{=l.name}}
                 </li>
             {{~}}
         </ul>

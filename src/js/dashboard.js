@@ -9,7 +9,7 @@ import sheetURL from './lib/sheetURL'
 
 import dashboardHTML from '../templates/dashboard.html!text'
 import airstrikes from '../../data-out/dashboard-airstrikes.json!json'
-import cities from '../../data-out/dashboard-cities.json!json'
+import locations from '../../data-out/dashboard-locations.json!json'
 
 const TIMELINE_WINDOW = 3;
 const TIMELINE_HEIGHT = 60; // keep in sync with _dashboard.scss
@@ -30,7 +30,7 @@ window.init = function init(el, config) {
 
     var ctx = {
         assetPath: config.assetPath,
-        cities,
+        locations,
         timeline: airstrikes.timeline,
         countLen: airstrikes.timeline.counts.length,
         countMax: Math.max.apply(null, airstrikes.timeline.counts.map(c => (c.iraq || 0) + (c.syria || 0))),
