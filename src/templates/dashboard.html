@@ -6,6 +6,9 @@
             <span class="sy-strike sy-strike--syria js-syria-total"></span> airstrikes in Syria,<br />
             <span class="sy-strike sy-strike--iraq js-iraq-total"></span> in Iraq
         </h2>
+        <div class="sy-width">
+            <div class="sy-width__spacing"></div>
+        </div>
         <div class="sy-timeline js-timeline">
             {{~it.timeline.counts :count:i}}
                 <span class="sy-timeline__day" style="width: {{=100 / it.countLen}}%">
@@ -21,18 +24,20 @@
             {{~}}
         </div>
     </div>
-    <div class="sy-dashboard-map">
-        <div class="sy-dashboard-map__bg"></div>
-        <canvas class="sy-dashboard-map__strikes js-dashboard-strikes" width="650" height="500"></canvas>
-        <ul class="sy-dashboard-map__labels">
-            {{~it.locations :l}}
-                <li class="sy-dashboard-map__labels__lbl is-style-{{=l.style}} is-anchor-{{=l.anchor}}"
-                      style="top: {{=l.coord[1]}}%; {{=l.anchor}}: {{=l.coord[0]}}%">
-                    {{=l.name}}
-                </li>
-            {{~}}
-        </ul>
-        <p class="sy-dashboard-map__source">Data from US Department of Defense</p>
+    <div class="sy-width">
+        <div class="sy-dashboard-map">
+            <div class="sy-dashboard-map__bg"></div>
+            <canvas class="sy-dashboard-map__strikes js-dashboard-strikes" width="650" height="500"></canvas>
+            <ul class="sy-dashboard-map__labels">
+                {{~it.locations :l}}
+                    <li class="sy-dashboard-map__labels__lbl is-style-{{=l.style}} is-anchor-{{=l.anchor}}"
+                          style="top: {{=l.coord[1]}}%; {{=l.anchor}}: {{=l.coord[0]}}%">
+                        {{=l.name}}
+                    </li>
+                {{~}}
+            </ul>
+            <p class="sy-dashboard-map__source">Data from US Department of Defense</p>
+        </div>
     </div>
     <div class="sy-analysis-container js-analysis">
         <div class="sy-analysis">

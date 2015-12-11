@@ -54,9 +54,7 @@ $ratio: 76.9%;
         clear: left;
         margin-right: 0;
         margin-top: -180px;
-    }
 
-    @include mq(tablet) {
         transition: opacity 0.1s ease-out;
         .is-in-past & {
             opacity: 0.3;
@@ -83,12 +81,25 @@ $ratio: 76.9%;
     margin: 0 0 6px;
 }
 
+.sy-width {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.sy-width__spacing {
+    margin-top: calc(#{$ratio} + 36px);
+    @include mq(desktop) {
+        margin-top: 0;
+    }
+}
+
 .sy-dashboard-map {
     overflow: hidden;
-    margin: 0 auto 24px;
-    max-width: 650px;
+    margin-bottom: 99px;
+    margin-top: calc(-#{$ratio} - 132px);
+
     @include mq(desktop) {
-        margin: 0 auto 0 0;
+        margin: 0;
         min-height: 500px;
     }
 }
