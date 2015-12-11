@@ -11,23 +11,19 @@ import dashboardHTML from '../templates/dashboard.html!text'
 import airstrikes from '../../data-out/dashboard-airstrikes.json!json'
 import cities from '../../data-out/dashboard-cities.json!json'
 
-const WINDOW = 3;
+const TIMELINE_WINDOW = 3;
+const TIMELINE_HEIGHT = 60; // keep in sync with _dashboard.scss
 
 const START = +new Date(airstrikes.meta.start);
 const END = +new Date(airstrikes.meta.end);
 
-const COLORS = {
-    'syria': '#b82266',
-    'iraq': '#d37da3'
-}
+const COLORS = {'syria': '#b82266', 'iraq': '#d37da3'};
 
 function renderLocation(ctx, loc, radius) {
     ctx.beginPath();
     ctx.arc(loc.geo.coord[0], loc.geo.coord[1], radius, 0, 2 * Math.PI);
     ctx.fill();
 }
-
-console.log(airstrikes.timeline.counts.map(c => (c.iraq || 0) + (c.syria || 0)));
 
 window.init = function init(el, config) {
     iframeMessenger.enableAutoResize();
@@ -38,7 +34,8 @@ window.init = function init(el, config) {
         timeline: airstrikes.timeline,
         countLen: airstrikes.timeline.counts.length,
         countMax: Math.max.apply(null, airstrikes.timeline.counts.map(c => (c.iraq || 0) + (c.syria || 0))),
-        windowSize: WINDOW * 2 + 1
+        windowSize: TIMELINE_WINDOW * 2 + 1,
+        timelineHeight: TIMELINE_HEIGHT
     };
 
     el.innerHTML = doT.template(dashboardHTML)(ctx);
@@ -77,14 +74,14 @@ window.init = function init(el, config) {
         el.classList.toggle('is-in-past', !live);
     }
 
-    slider(timelineEl, timelineWindowEl, 0, airstrikes.meta.days, WINDOW, (min, max) => {
+    slider(timelineEl, timelineWindowEl, 0, airstrikes.meta.days, TIMELINE_WINDOW, (min, max) => {
         var start = ts2date(START, min);
         var end = ts2date(START, max);
 
         renderMap(start, end);
     });
 
-    renderMap(ts2date(END, -WINDOW * 2), ts2date(END, 0));
+    renderMap(ts2date(END, -TIMELINE_WINDOW * 2), ts2date(END, 0));
 
     var dataURL = sheetURL('1pOi6PRFbTW4rA5WwlCJcB0QniUW6AX-PAwZlojYeAHE', true); // TODO: remove test
     fetchJSON(dataURL).then(resp => {

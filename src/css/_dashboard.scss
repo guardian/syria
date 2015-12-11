@@ -32,12 +32,6 @@
 
 .sy-dashboard-copy__header {
     line-height: 36px;
-    br {
-        display: none;
-        @include mq(desktop) {
-            display: block;
-        }
-    }
 }
 
 .sy-period {
@@ -189,16 +183,11 @@ $timeline-h: 60px;
 
 .sy-timeline__day {
     display: inline-block;
-    height: 100%;
     vertical-align: bottom;
-    box-sizing: border-box;
     pointer-events: none;
 }
 
 .sy-timeline__day__country {
-    display: inline-block;
-    width: 100%;
-
     &.is-iraq {
         background-color: #d37da3;
     }
@@ -260,6 +249,7 @@ $timeline-h: 60px;
     line-height: 1;
     height: (get-font-size(textSans, 1) + 3px + $timeline-h);
     pointer-events: none;
+    overflow: hidden;
 }
 
 .sy-timeline-labels__lbl {

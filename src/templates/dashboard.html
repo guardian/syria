@@ -8,11 +8,12 @@
         </h2>
         <div class="sy-timeline js-timeline">
             {{~it.timeline.counts :count:i}}
-            <span class="sy-timeline__day" style="width: {{=100 / it.countLen}}%">
-                    <span class="sy-timeline__day__country is-iraq" style="height: {{=count.iraq/it.countMax * 100}}%"></span><span class="sy-timeline__day__country is-syria" style="height: {{=count.syria/it.countMax * 100}}%"></span>
+                <span class="sy-timeline__day" style="width: {{=100 / it.countLen}}%">
+                    <div class="sy-timeline__day__country is-iraq" style="height: {{=count.iraq/it.countMax * it.timelineHeight}}px"></div>
+                    <div class="sy-timeline__day__country is-syria" style="height: {{=count.syria/it.countMax * it.timelineHeight}}px"></div>
                 </span>
             {{~}}
-            <span class="sy-timeline__window js-timeline-window" style="width:{{=100 / it.countLen * it.windowSize}}%"></span>
+            <span class="sy-timeline__window js-timeline-window" style="width: {{=100 / it.countLen * it.windowSize}}%"></span>
         </div>
         <div class="sy-timeline-labels">
             {{~it.timeline.labels :label}}
