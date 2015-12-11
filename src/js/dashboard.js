@@ -1,4 +1,5 @@
 import './polyfill/classList'
+import './polyfill/pointerEvents'
 
 import iframeMessenger from 'guardian/iframe-messenger'
 import doT from 'olado/doT'
