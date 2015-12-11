@@ -104,10 +104,12 @@ function processCities(fn, outfn) {
 
     var cities = parseTSV(input).map(row => {
         var coord = project(row['lat'], row['lng']);
+        var left = coord[0] / MAP_WIDTH * 100;
         return {
             'name': row['name'],
-            'coord': [coord[0] / MAP_WIDTH * 100, coord[1] / MAP_HEIGHT * 100],
-            'style': row['style']
+            'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / MAP_HEIGHT * 100],
+            'style': row['style'],
+            'anchor': row['anchor'] || 'left'
         };
     });
 

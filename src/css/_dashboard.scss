@@ -1,3 +1,5 @@
+$ratio: 76.9%;
+
 @keyframes update-pulse {
     25% { background-color: #bdbdbd; }
     50% { background-color: white; }
@@ -66,9 +68,11 @@
         margin-top: -180px;
     }
 
-    transition: opacity 0.1s ease-out;
-    .is-in-past & {
-        opacity: 0.3;
+    @include mq(tablet) {
+        transition: opacity 0.1s ease-out;
+        .is-in-past & {
+            opacity: 0.3;
+        }
     }
 }
 
@@ -103,13 +107,12 @@
 
 .sy-dashboard-map__bg,
 .sy-dashboard-map__strikes {
-    position: relative;
     display: block;
     width: 100%;
 }
 
 .sy-dashboard-map__bg {
-    padding-bottom: 76.9%;
+    padding-bottom: $ratio;
     background-size: 100% 100%;
 
     background-image: url(../data-out/dashboard/bg.png);
@@ -118,7 +121,14 @@
     }
 }
 
-.sy-dashboard-map__bg__lbl {
+.sy-dashboard-map__labels {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 $ratio;
+}
+
+.sy-dashboard-map__labels__lbl {
     @include fs-textSans(1);
     color: #333;
     position: absolute;
@@ -127,7 +137,8 @@
     opacity: 0.4;
     margin: -2px 0 0 -2px;
 
-    &::before {
+    &::before,
+    &::after {
         content: "";
         display: inline-block;
         vertical-align: middle;
@@ -137,23 +148,46 @@
         border-radius: 100px;
     }
 
-    &.sy-dashboard-map__bg__lbl--capital {
+    &.is-style-capital {
         font-weight: bold;
         &::before {
             border-radius: 0;
         }
     }
 
-    &.sy-dashboard-map__bg__lbl--minor {
+    &.is-style-minor {
         display: none;
         @include mq(tablet) {
             display: block;
         }
     }
+
+    &.is-style-river {
+        @include f-header;
+        font-size: 11px;
+        color: #00456e;
+        &::before,
+        &::after {
+            background-color: #00456e;
+        }
+    }
+
+    &::after {
+        display: none;
+    }
+    &.is-anchor-right {
+        &::before {
+            display: none;
+        }
+        &::after {
+            display: inline-block;
+        }
+    }
 }
 
+.sy-dashboard-map__labels,
 .sy-dashboard-map__strikes {
-    margin-top: -76.9%;
+    margin-top: -$ratio;
 }
 
 .sy-dashboard-map__source {

@@ -22,14 +22,16 @@
         </div>
     </div>
     <div class="sy-dashboard-map">
-        <div class="sy-dashboard-map__bg">
-            {{~it.cities :city}}
-                <span class="sy-dashboard-map__bg__lbl sy-dashboard-map__bg__lbl--{{=city.style}}" style="left: {{=city.coord[0]}}%; top: {{=city.coord[1]}}%">
-                    {{=city.name}}
-                </span>
-            {{~}}
-        </div>
+        <div class="sy-dashboard-map__bg"></div>
         <canvas class="sy-dashboard-map__strikes js-dashboard-strikes" width="650" height="500"></canvas>
+        <ul class="sy-dashboard-map__labels">
+            {{~it.cities :city}}
+                <li class="sy-dashboard-map__labels__lbl is-style-{{=city.style}} is-anchor-{{=city.anchor}}"
+                      style="top: {{=city.coord[1]}}%; {{=city.anchor}}: {{=city.coord[0]}}%">
+                    {{=city.name}}
+                </li>
+            {{~}}
+        </ul>
         <p class="sy-dashboard-map__source">Data from US Department of Defense</p>
     </div>
     <div class="sy-analysis-container js-analysis">

@@ -56,7 +56,7 @@ window.init = function init(el, config) {
         var totals = {'iraq': 0, 'syria': 0};
 
         airstrikes.locations.forEach(loc => {
-            var strikes = loc.strikes.filter(s => s.date >= start.cmp && s.date < end.cmp);
+            var strikes = loc.strikes.filter(s => s.date >= start.cmp && s.date <= end.cmp);
             var total = strikes.reduce((sum, strike) => sum + strike.count, 0);
 
             if (total > 0) {
