@@ -43,6 +43,10 @@
             content: " there were";
         }
 
+        display: none;
+        @include mq(mobileLandscape) {
+            display: inline;
+        }
         @include mq(desktop) {
             display: block;
         }
@@ -249,7 +253,11 @@ $timeline-h: 60px;
     line-height: 1;
     height: (get-font-size(textSans, 1) + 3px + $timeline-h);
     pointer-events: none;
+
     overflow: hidden;
+    @include mq(desktop) {
+        overflow: visible;
+    }
 }
 
 .sy-timeline-labels__lbl {
