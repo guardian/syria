@@ -26,16 +26,17 @@
     </div>
     <div class="sy-width">
         <div class="sy-dashboard-map">
-            <div class="sy-dashboard-map__bg"></div>
-            <canvas class="sy-dashboard-map__strikes js-dashboard-strikes" width="650" height="500"></canvas>
-            <ul class="sy-dashboard-map__labels">
-                {{~it.locations :l}}
-                    <li class="sy-dashboard-map__labels__lbl is-style-{{=l.style}} is-anchor-{{=l.anchor}}"
-                          style="top: {{=l.coord[1]}}%; {{=l.anchor}}: {{=l.coord[0]}}%">
-                        {{=l.name}}
-                    </li>
-                {{~}}
-            </ul>
+            <div class="sy-dashboard-map__bg">
+                <canvas class="js-dashboard-strikes" width="650" height="500"></canvas>
+                <ul class="sy-dashboard-map__labels">
+                    {{~it.locations :l}}
+                        <li class="sy-dashboard-map__labels__lbl is-style-{{=l.style}} is-anchor-{{=l.anchor}}"
+                              style="top: {{=l.coord[1]}}%; {{=l.anchor}}: {{=l.coord[0]}}%">
+                            {{=l.name}}
+                        </li>
+                    {{~}}
+                </ul>
+            </div>
             <p class="sy-dashboard-map__source">Data from US DoD</p>
         </div>
     </div>

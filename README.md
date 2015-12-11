@@ -13,6 +13,7 @@ Data processing
 ```
 $ npm run parseterritory
 $ npm run parseairstrikes
+$ npm run parselocations
 $ npm run parsedashboard
 $ npm run geo
 ```

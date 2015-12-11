@@ -104,13 +104,8 @@ $ratio: 76.9%;
     }
 }
 
-.sy-dashboard-map__bg,
-.sy-dashboard-map__strikes {
-    display: block;
-    width: 100%;
-}
-
 .sy-dashboard-map__bg {
+    position: relative;
     padding-bottom: $ratio;
     background-size: 100% 100%;
 
@@ -118,13 +113,25 @@ $ratio: 76.9%;
     @include mq(tablet) {
         background-image: url(../src/img/syria-iraq.jpg);
     }
+
+    canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
 }
 
 .sy-dashboard-map__labels {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     list-style: none;
     margin: 0;
-    padding: 0 0 $ratio;
+    padding: 0;
 }
 
 .sy-dashboard-map__labels__lbl {
@@ -182,11 +189,6 @@ $ratio: 76.9%;
             display: inline-block;
         }
     }
-}
-
-.sy-dashboard-map__labels,
-.sy-dashboard-map__strikes {
-    margin-top: -$ratio;
 }
 
 .sy-dashboard-map__source {
