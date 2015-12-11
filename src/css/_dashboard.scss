@@ -84,6 +84,9 @@ $ratio: 76.9%;
 .sy-width {
     max-width: 650px;
     margin: 0 auto;
+    @include mq(desktop) {
+        max-width: none;
+    }
 }
 
 .sy-width__spacing {
