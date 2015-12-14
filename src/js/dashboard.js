@@ -72,7 +72,7 @@ window.init = function init(el, config) {
 
         periodEl.innerHTML = end.cmp === airstrikes.meta.end ?
             'in the last week' :
-            `${start.display} to ${end.display}`;
+            `from ${start.display}–${end.display}`;
         syriaTotalEl.textContent = totals.syria;
         iraqTotalEl.textContent = totals.iraq;
         el.classList.toggle('is-in-past', end.cmp < LIVE.cmp);
