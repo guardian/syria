@@ -1,5 +1,10 @@
 $ratio: 76.9%;
 
+$country-colors: (
+    syria: #83003c,
+    iraq: #d37da3
+);
+
 @keyframes update-pulse {
     25% { background-color: #bdbdbd; }
     50% { background-color: white; }
@@ -35,11 +40,10 @@ $ratio: 76.9%;
 .sy-strike {
     font-size: 36px;
 
-    &.sy-strike--iraq {
-        color: #d37da3;
-    }
-    &.sy-strike--syria {
-        color: #b82266;
+    @each $country, $color in $country-colors {
+        &.sy-strike--#{$country} {
+            color: $color
+        }
     }
 }
 
@@ -218,11 +222,10 @@ $timeline-h: 60px;
 }
 
 .sy-timeline__day__country {
-    &.is-iraq {
-        background-color: #d37da3;
-    }
-    &.is-syria {
-        background-color: #b82266;
+    @each $country, $color in $country-colors {
+        &.is-#{$country} {
+            background-color: $color;
+        }
     }
 }
 
