@@ -18,7 +18,7 @@ function getAWSCredentials(grunt, cfg) {
     return iniFile.default;
 }
 
-var embeds = ['dashboard', 'past'];
+var embeds = ['dashboard', 'past', 'top5'];
 
 module.exports = function(grunt) {
 
@@ -67,10 +67,10 @@ module.exports = function(grunt) {
                 tasks: ['sass'],
             },
             inlinejs: {
-                files: ['src/js/**/*', 'src/templates/**/*', '!src/js/boot.js'],
+                files: ['src/js/**/*', 'src/templates/**/*'],
                 tasks: ['jsdev'],
             },
-            bootjs: {
+            embed: {
                 files: ['src/embed.html'],
                 tasks: ['embeddev'],
             },
@@ -167,7 +167,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('deploy', ['clean', 'sass', 'jsprod', 'embedprod', 'aws_s3:inline', 'boot_url']);
     grunt.registerTask('dev', ['clean', 'sass', 'jsdev', 'embeddev', 'connect', 'watch']);
-    grunt.registerTask('devfast', ['clean', 'sass', 'template:bootjsdev', 'connect', 'watch:css', 'watch:bootjs']);
+    grunt.registerTask('devfast', ['clean', 'sass', 'connect', 'watch:css', 'watch:embed']);
 
     grunt.registerTask('default', ['dev']);
 
