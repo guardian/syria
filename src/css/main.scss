@@ -1,6 +1,11 @@
 @import "fonts";
 @import "mq";
 
+$country-colors: (
+    syria: #83003c,
+    iraq: #d37da3
+);
+
 body {
     padding: 0;
     margin: 0;
@@ -27,6 +32,7 @@ p {
 }
 
 .sy-container {
+    position: relative;
     margin-bottom: 48px;
 
     &.sy-container--divider {
@@ -66,6 +72,8 @@ p {
     max-width: 660px;
 }
 
+@import "timeline";
+@import "map";
 @import "past";
 @import "dashboard";
 @import "top5";

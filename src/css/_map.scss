@@ -1,0 +1,32 @@
+.sy-map {
+    position: relative;
+    max-width: 300px;
+
+    img {
+        display: block;
+        width: 100%;
+    }
+}
+
+.sy-map__lbl {
+    @include fs-textSans(1);
+    color: #333;
+    position: absolute;
+    line-height: 0;
+    white-space: nowrap;
+    opacity: 0.7;
+
+    &::before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 4px;
+        height: 4px;
+        background-color: #333;
+        border-radius: 100px;
+    }
+
+    &.sy-map__lbl--faded {
+        opacity: 0.2;
+    }
+}

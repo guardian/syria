@@ -1,0 +1,99 @@
+$timeline-h: 60px;
+
+.sy-timeline {
+    position: relative;
+    font-size: 0;
+    overflow: hidden;
+    height: $timeline-h;
+    &.sy-timeline--interactive {
+        cursor: pointer;
+    }
+
+    &::before {
+        content: "";
+        display: inline-block;
+        vertical-align: bottom;
+        height: 100%;
+    }
+}
+
+.sy-timeline__day {
+    display: inline-block;
+    vertical-align: bottom;
+    pointer-events: none;
+}
+
+.sy-timeline__day__country {
+    @each $country, $color in $country-colors {
+        &.is-#{$country} {
+            background-color: $color;
+        }
+    }
+}
+
+@keyframes pulse-arrows {
+    0% { padding: 0 0; }
+    50% { padding: 0 5px; }
+    100% { padding: 0 0; }
+}
+
+.sy-timeline__window {
+    $border: 2px;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    box-sizing: border-box;
+    cursor: col-resize;
+
+    border-left: $border solid transparentize(#333, 0.4);
+    border-right: $border solid transparentize(#333, 0.4);
+
+    &::before,
+    &::after {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        background-color: transparentize(white, 0.2);
+        width: 800px;
+        font-size: 30px;
+        line-height: $timeline-h;
+        animation: pulse-arrows 1s infinite;
+        pointer-events: none;
+    }
+
+    &::before {
+        content: "\2190";
+        text-align: right;
+        right: 100%;
+        margin-right: $border;
+    }
+    &::after {
+        content: "\2192";
+        left: 100%;
+        margin-left: $border;
+    }
+}
+
+.sy-timeline-labels {
+    @include fs-textSans(1);
+    position: relative;
+    margin: -$timeline-h 0 24px;
+    color: #999;
+    line-height: 1;
+    height: (get-font-size(textSans, 1) + 3px + $timeline-h);
+    pointer-events: none;
+
+    overflow: hidden;
+    @include mq(desktop) {
+        overflow: visible;
+    }
+}
+
+.sy-timeline-labels__lbl {
+    position: absolute;
+    top: 0;
+    padding: (3px + $timeline-h) 0 0 2px;
+    border-left: 1px dotted #999;
+}

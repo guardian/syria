@@ -109,6 +109,9 @@ function render(areas, airstrikes, geo, date, diffDate) {
     renderTerritory({isis: '#79bae2', gain: '#29619a', loss: '#d22e0a'});
     saveFile('territory');
 
+    // Background for top5, doesn't really need to be in this loop
+    clearCanvas();
+    writePNG(canvas, 'data-out/top5/syria.png');
 }
 
 

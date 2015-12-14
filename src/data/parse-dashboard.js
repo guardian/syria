@@ -75,10 +75,10 @@ function processDashboardLocations(fn, outfn) {
 
     var locations = parseTSV(input).map(row => {
         var coord = project(row['lat'], row['lng']);
-        var left = coord[0] / cfg.dashboard.width * 100;
+        var left = coord[0] / cfg.dashboard.WIDTH * 100;
         return {
             'name': row['name'],
-            'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / cfg.dashboard.height * 100],
+            'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / cfg.dashboard.HEIGHT * 100],
             'style': row['style'],
             'anchor': row['anchor'] || 'left'
         };

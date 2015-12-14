@@ -1,0 +1,17 @@
+.sy-top5-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sy-top5-map {
+    $width: 80px;
+    width: $width;
+    @include mq(leftCol) {
+        position: absolute;
+        left: (140px - $width);
+    }
+    @include mq(wide) {
+        left: (220px - $width);
+    }
+}

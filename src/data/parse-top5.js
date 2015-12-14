@@ -2,13 +2,28 @@ import fs from 'fs';
 import _ from 'lodash';
 import moment from 'moment';
 import 'moment-range';
-import {filepath, parseTSV, cfg} from './config';
+import {filepath, parseTSV, projectFn, cfg} from './config';
 
 const START_DATE = moment().subtract(cfg.dashboard.WINDOW);
 
+var project = projectFn('data-out/historical-geo.json', cfg.past.WIDTH, cfg.past.HEIGHT);
+
+console.log(cfg.dashboard.WINDOW.asDays());
+
 function processLocations(country, fn) {
     var input = fs.readFileSync(filepath(fn)).toString();
-    return parseTSV(input).map(row => row.name);
+    var locations = {};
+    parseTSV(input).forEach(row => {
+        var coord = project(row['lat'], row['lng']);
+        var left = coord[0] / cfg.past.WIDTH * 100;
+        locations[row['name']] = {
+            'name': row['name'],
+            'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / cfg.past.HEIGHT * 100],
+            'style': row['style'],
+            'anchor': row['anchor'] || 'left'
+        };
+    });
+    return locations;
 }
 
 function processAirstrikes(locations, fn, outfn) {
@@ -16,7 +31,7 @@ function processAirstrikes(locations, fn, outfn) {
 
     var out = _(parseTSV(input))
         .filter(row => START_DATE.isBefore(row.date))
-        .filter(row => locations.indexOf(row.place) > -1) // Syria only
+        .filter(row => locations[row.place]) // Syria only
         .groupBy('place')
         .map((placeRows, place) => {
             var ordered = _.sortBy(placeRows, 'date')
@@ -28,7 +43,8 @@ function processAirstrikes(locations, fn, outfn) {
             var counts = [];
             range.by('day', date => counts.push(countsByDate[date.format('YYYY-MM-DD')] || 0));
             return {
-                place, first, last, span, total,
+                'meta': locations[place],
+                first, last, span, total,
                 'freq': total / span,
                 counts
             };
@@ -37,8 +53,6 @@ function processAirstrikes(locations, fn, outfn) {
         .reverse()
         .slice(0, 5)
         .value();
-
-    console.log(out);
 
     fs.writeFileSync(filepath(outfn), JSON.stringify(out));
 }
