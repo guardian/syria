@@ -4,11 +4,9 @@ import Canvas from 'canvas';
 import d3 from 'd3';
 import topojson from 'topojson';
 import _ from 'lodash';
+import cfg from './config'
 
 const Image = Canvas.Image;
-
-// MUST BE IN SYNC WITH parse-dashboard.js
-const MAP_WIDTH = 650, MAP_HEIGHT = 500;
 
 var filepath = file => path.join(__dirname, '../..', file);
 
@@ -21,16 +19,16 @@ function main() {
     var geo = require(filepath('data-out/dashboard-geo.json'));
 
     var canvas = new Canvas();
-    canvas.width = MAP_WIDTH;
-    canvas.height = MAP_HEIGHT;
+    canvas.width = cfg.dashboard.WIDTH;
+    canvas.height = cfg.dashboard.HEIGHT;
     var context = canvas.getContext('2d');
 
     var projection = d3.geo.mercator().scale(1).translate([0, 0]);
     var path = d3.geo.path().projection(projection).context(context);
 
     var b = path.bounds(geo),
-        s = 1 / Math.max((b[1][0] - b[0][0]) / MAP_WIDTH, (b[1][1] - b[0][1]) / MAP_HEIGHT),
-        t = [(MAP_WIDTH - s * (b[1][0] + b[0][0])) / 2, (MAP_HEIGHT - s * (b[1][1] + b[0][1])) / 2];
+        s = 1 / Math.max((b[1][0] - b[0][0]) / cfg.dashboard.WIDTH, (b[1][1] - b[0][1]) / cfg.dashboard.HEIGHT),
+        t = [(cfg.dashboard.WIDTH - s * (b[1][0] + b[0][0])) / 2, (cfg.dashboard.HEIGHT - s * (b[1][1] + b[0][1])) / 2];
 
     projection.scale(s).translate(t);
 

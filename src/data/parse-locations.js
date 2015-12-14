@@ -2,9 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import d3 from 'd3';
 import _ from 'lodash';
-
-// MUST BE IN SYNC WITH render-historical.js
-const MAP_WIDTH = 300, MAP_HEIGHT = 260;
+import cfg from './config'
 
 var filepath = file => path.join(__dirname, '../..', file);
 
@@ -15,8 +13,8 @@ var project = (function () {
     var path = d3.geo.path().projection(projection);
 
     var b = path.bounds(geo),
-        s = 1 / Math.max((b[1][0] - b[0][0]) / MAP_WIDTH, (b[1][1] - b[0][1]) / MAP_HEIGHT),
-        t = [(MAP_WIDTH - s * (b[1][0] + b[0][0])) / 2, (MAP_HEIGHT - s * (b[1][1] + b[0][1])) / 2];
+        s = 1 / Math.max((b[1][0] - b[0][0]) / cfg.past.WIDTH, (b[1][1] - b[0][1]) / cfg.past.HEIGHT),
+        t = [(cfg.past.WIDTH - s * (b[1][0] + b[0][0])) / 2, (cfg.past.HEIGHT- s * (b[1][1] + b[0][1])) / 2];
 
     projection.scale(s).translate(t);
 
@@ -40,10 +38,10 @@ function processLocations(fn, outfn) {
     var locations = {};
     parseTSV(input).forEach(row => {
         var coord = project(row['lat'], row['lng']);
-        var left = coord[0] / MAP_WIDTH * 100;
+        var left = coord[0] / cfg.past.WIDTH * 100;
         locations[row['name']] = {
             'name': row['name'],
-            'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / MAP_HEIGHT * 100],
+            'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / cfg.past.HEIGHT * 100],
             'style': row['style'],
             'anchor': row['anchor'] || 'left'
         };

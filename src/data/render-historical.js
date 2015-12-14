@@ -4,11 +4,9 @@ import Canvas from 'canvas';
 import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
+import cfg from './config';
 
 const Image = Canvas.Image;
-
-// MUST BE IN SYNC WITH parse-locations.js
-const MAP_WIDTH = 300, MAP_HEIGHT = 260;
 
 var filepath = file => path.join(__dirname, '../..', file);
 
@@ -38,16 +36,16 @@ function getLocationsAtDate(areas, date) {
 
 function render(areas, airstrikes, geo, date, diffDate) {
     var canvas = new Canvas();
-    canvas.width = MAP_WIDTH;
-    canvas.height = MAP_HEIGHT;
+    canvas.width = cfg.past.WIDTH;
+    canvas.height = cfg.past.HEIGHT;
     var context = canvas.getContext('2d');
 
     var projection = d3.geo.mercator().scale(1).translate([0, 0]);
     var path = d3.geo.path().projection(projection).context(context);
 
     var b = path.bounds(geo),
-        s = 1 / Math.max((b[1][0] - b[0][0]) / MAP_WIDTH, (b[1][1] - b[0][1]) / MAP_HEIGHT),
-        t = [(MAP_WIDTH - s * (b[1][0] + b[0][0])) / 2, (MAP_HEIGHT - s * (b[1][1] + b[0][1])) / 2];
+        s = 1 / Math.max((b[1][0] - b[0][0]) / cfg.past.WIDTH, (b[1][1] - b[0][1]) / cfg.past.HEIGHT),
+        t = [(cfg.past.WIDTH - s * (b[1][0] + b[0][0])) / 2, (cfg.past.HEIGHT - s * (b[1][1] + b[0][1])) / 2];
 
     projection.scale(s).translate(t);
 
@@ -57,7 +55,7 @@ function render(areas, airstrikes, geo, date, diffDate) {
     function clearCanvas() {
         // white clear
         context.fillStyle="white";
-        context.fillRect(0, 0, MAP_WIDTH, MAP_HEIGHT);
+        context.fillRect(0, 0, cfg.past.WIDTH, cfg.past.HEIGHT);
         // GEO
         context.fillStyle = context.strokeStyle = '#f1f1f1';
         path(geo);

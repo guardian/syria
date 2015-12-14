@@ -1,16 +1,14 @@
-var fs = require('fs');
-var path = require('path');
-var d3 = require('d3');
-var _ = require('lodash');
-var moment = require('moment');
-require('moment-range');
+import fs from 'fs';
+import path from 'path';
+import d3 from 'd3';
+import _ from 'lodash'
+import moment from 'moment';
+import 'moment-range';
+import cfg from './config';
 
 var filepath = file => path.join(__dirname, '../..', file);
 
-// MUST BE IN SYNC WITH render-dashboard.js
-const MAP_WIDTH = 650, MAP_HEIGHT = 500;
-
-const START_DATE = moment().subtract(6, 'months');
+const START_DATE = moment().subtract(cfg.common.WINDOW, 'months');
 
 var project = (function () {
     var geo = require(filepath('data-out/dashboard-geo.json'));
@@ -19,8 +17,8 @@ var project = (function () {
     var path = d3.geo.path().projection(projection);
 
     var b = path.bounds(geo),
-        s = 1 / Math.max((b[1][0] - b[0][0]) / MAP_WIDTH, (b[1][1] - b[0][1]) / MAP_HEIGHT),
-        t = [(MAP_WIDTH - s * (b[1][0] + b[0][0])) / 2, (MAP_HEIGHT - s * (b[1][1] + b[0][1])) / 2];
+        s = 1 / Math.max((b[1][0] - b[0][0]) / cfg.dashboard.width, (b[1][1] - b[0][1]) / cfg.dashboard.height),
+        t = [(cfg.dashboard.width - s * (b[1][0] + b[0][0])) / 2, (cfg.dashboard.height - s * (b[1][1] + b[0][1])) / 2];
 
     projection.scale(s).translate(t);
 
@@ -104,10 +102,10 @@ function processDashboardLocations(fn, outfn) {
 
     var locations = parseTSV(input).map(row => {
         var coord = project(row['lat'], row['lng']);
-        var left = coord[0] / MAP_WIDTH * 100;
+        var left = coord[0] / cfg.dashboard.width * 100;
         return {
             'name': row['name'],
-            'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / MAP_HEIGHT * 100],
+            'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / cfg.dashboard.height * 100],
             'style': row['style'],
             'anchor': row['anchor'] || 'left'
         };
