@@ -1,10 +1,8 @@
-var csv = require('csv');
-var fs = require('fs');
-var path = require('path');
-var es = require('event-stream')
-var CombinedStream = require('combined-stream')
-
-var filepath = file => path.join(__dirname, '../..', file);
+import csv from 'csv';
+import fs from 'fs';
+import es from 'event-stream'
+import CombinedStream from 'combined-stream'
+import {filepath} from './config'
 
 var russianAirstrikes = fs.createReadStream(filepath('data-in/russian-airstrikes.csv'));
 var coalitionAirstrikes = fs.createReadStream(filepath('data-in/coalition-airstrikes.csv'));

@@ -1,39 +1,12 @@
 import fs from 'fs';
-import path from 'path';
-import d3 from 'd3';
 import _ from 'lodash'
 import moment from 'moment';
 import 'moment-range';
-import cfg from './config';
+import {filepath, projectFn, parseTSV, cfg} from './config';
 
-var filepath = file => path.join(__dirname, '../..', file);
+const START_DATE = moment().subtract(cfg.dashboard.WINDOW);
 
-const START_DATE = moment().subtract(cfg.common.WINDOW, 'months');
-
-var project = (function () {
-    var geo = require(filepath('data-out/dashboard-geo.json'));
-
-    var projection = d3.geo.mercator().scale(1).translate([0, 0]);
-    var path = d3.geo.path().projection(projection);
-
-    var b = path.bounds(geo),
-        s = 1 / Math.max((b[1][0] - b[0][0]) / cfg.dashboard.width, (b[1][1] - b[0][1]) / cfg.dashboard.height),
-        t = [(cfg.dashboard.width - s * (b[1][0] + b[0][0])) / 2, (cfg.dashboard.height - s * (b[1][1] + b[0][1])) / 2];
-
-    projection.scale(s).translate(t);
-
-    return (lat, lng) => projection([lng, lat].map(l => parseFloat(l)));
-})();
-
-function parseTSV(s) {
-    var rows = s.replace(/\n+$/, '').split('\n');
-    var headers = rows[0].split('\t');
-    return rows.slice(1).map(row => {
-        var ret = {};
-        row.split('\t').forEach((cell, i) => ret[headers[i]] = cell.trim());
-        return ret;
-    });
-}
+var project = projectFn('data-out/dashboard-geo.json', cfg.dashboard.WIDTH, cfg.dashboard.HEIGHT);
 
 function processLocations(country, fn) {
     var input = fs.readFileSync(filepath(fn)).toString();

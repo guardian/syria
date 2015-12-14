@@ -1,14 +1,11 @@
 import fs from 'fs';
-import path from 'path';
 import Canvas from 'canvas';
 import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
-import cfg from './config';
+import {filepath, writePNG, cfg} from './config';
 
 const Image = Canvas.Image;
-
-var filepath = file => path.join(__dirname, '../..', file);
 
 function icon(fp) {
     var img = new Image;
@@ -20,11 +17,6 @@ var airstrikeImages = {
     'Russia': icon('src/img/airstrike-russia.png'),
     'Coalition': icon('src/img/airstrike-coalition.png')
 };
-
-function writePNG(canvas, filename) {
-    console.log(`Writing ${filename}`)
-    fs.writeFileSync(filename, canvas.toBuffer());
-}
 
 function getLocationsAtDate(areas, date) {
     return _(areas).values()
@@ -135,7 +127,6 @@ function main() {
     var geo = require(filepath('data-out/historical-geo.json'));
 
     var frameDates = [
-        //'2014-01-01', '2014-06-01',
         '2014-09-01', '2015-01-01',
         '2015-06-01', '2015-08-01',
         '2015-08-01', '2015-12-01'

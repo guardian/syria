@@ -1,19 +1,10 @@
-import fs from 'fs';
-import path from 'path';
 import Canvas from 'canvas';
 import d3 from 'd3';
 import topojson from 'topojson';
 import _ from 'lodash';
-import cfg from './config'
+import {filepath, writePNG, cfg} from './config'
 
 const Image = Canvas.Image;
-
-var filepath = file => path.join(__dirname, '../..', file);
-
-function writePNG(canvas, filename) {
-    console.log(`Writing ${filename}`)
-    fs.writeFileSync(filename, canvas.toBuffer());
-}
 
 function main() {
     var geo = require(filepath('data-out/dashboard-geo.json'));
