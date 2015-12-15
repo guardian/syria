@@ -21,7 +21,7 @@ var join = function (str) {
 var processRecord = through(
   function write(record) {
     var geo = record['Lat Long / MGRS Grid'].split(' ').map(n => parseFloat(n)).join(' ');
-    var current = { geo: geo, date: 'December 1, 2015', controller: record['Controlled By'].trim() };
+    var current = { geo: geo, date: 'November 1, 2015', controller: record['Controlled By'].trim() };
     var prevField = record['Controlled By (Previous)'].trim();
     var prevRecords =  prevField.length === 0 ? [] :
       _(prevField)

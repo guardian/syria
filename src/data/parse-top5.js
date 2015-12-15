@@ -4,11 +4,42 @@ import moment from 'moment';
 import 'moment-range';
 import {filepath, parseTSV, projectFn, cfg} from './config';
 
-const START_DATE = moment().subtract(cfg.dashboard.WINDOW);
+const START_DATE = moment.utc().subtract(cfg.dashboard.WINDOW);
+const R = 6371000; // metres
+const MAX_D = 20000 // metres
 
 var project = projectFn('data-out/historical-geo.json', cfg.past.WIDTH, cfg.past.HEIGHT);
 
-console.log(cfg.dashboard.WINDOW.asDays());
+function radians(deg) {
+    return deg * Math.PI / 180;
+}
+
+function distance(latlng1, latlng2) {
+    var φ1 = radians(latlng1.lat);
+    var φ2 = radians(latlng2.lat);
+    var Δφ = radians(latlng2.lat - latlng1.lat);
+    var Δλ = radians(latlng2.lng - latlng1.lng);
+
+    var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    return R * c;
+}
+
+function processAreas(fn) {
+    var areas = require(filepath(fn));
+
+    return _(areas)
+        .forEach(area => {
+            var [lat, lng] = area.geo.split(' ').map(n => parseFloat(n));
+            area.moment = moment.utc(area.date, 'MMMM D, YYYY')
+            area.lat = lat;
+            area.lng = lng;
+        })
+        .value();
+}
 
 function processLocations(country, fn) {
     var input = fs.readFileSync(filepath(fn)).toString();
@@ -19,45 +50,77 @@ function processLocations(country, fn) {
         locations[row['name']] = {
             'name': row['name'],
             'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / cfg.past.HEIGHT * 100],
-            'style': row['style'],
-            'anchor': row['anchor'] || 'left'
+            'lat': parseFloat(row['lat']),
+            'lng': parseFloat(row['lng'])
         };
     });
     return locations;
 }
 
-function processAirstrikes(locations, fn, outfn) {
+function processAirstrikes(areas, locations, fn, outfn) {
     var input = fs.readFileSync(filepath(fn)).toString();
 
-    var out = _(parseTSV(input))
+    var top5 = _(parseTSV(input))
         .filter(row => START_DATE.isBefore(row.date))
-        .filter(row => locations[row.place]) // Syria only
+        .filter(row => !!locations[row.place]) // Syria only
         .groupBy('place')
         .map((placeRows, place) => {
             var ordered = _.sortBy(placeRows, 'date')
-            var first = ordered[0].date, last = ordered[ordered.length - 1].date
-            var range = moment.range(first, last);
-            var total = _.sum(placeRows, 'strikes');
-            var span = range.diff('day') + 1;
-            var countsByDate = _(placeRows).groupBy('date').mapValues(dateRows => _.sum(dateRows, 'strikes')).value();
-            var counts = [];
-            range.by('day', date => counts.push(countsByDate[date.format('YYYY-MM-DD')] || 0));
-            return {
-                'meta': locations[place],
-                first, last, span, total,
-                'freq': total / span,
-                counts
-            };
+            var start = ordered[0].date, end = ordered[ordered.length - 1].date;
+            var span = moment.range(start, end).diff('days') + 1;
+            return {place, placeRows, start, end, span, 'freq': _.sum(placeRows, 'strikes') / span};
         })
         .sortByAll(['span', 'freq'])
         .reverse()
         .slice(0, 5)
         .value();
 
+    var out = top5.map(row => {
+        var loc = locations[row.place];
+
+        var nearbyAreas = _(areas)
+            .filter(area => distance(loc, area) < MAX_D)
+            .sortBy('moment')
+            .groupBy('geo')
+            .value();
+
+        var countsByDate = _(row.placeRows)
+            .groupBy('date')
+            .mapValues(dateRows => _.sum(dateRows, 'strikes'))
+            .value();
+
+        var counts = [];
+        var control = [];
+        var lastControl = {};
+        moment.range(row.start, row.end).by('day', date => {
+            var count = countsByDate[date.format('YYYY-MM-DD')] || 0;
+
+            var currentControl = _(nearbyAreas)
+                .mapValues(geoEvents => {
+                    var recentEvent = _.findLast(geoEvents, evt => date >= evt.moment);
+                    return recentEvent;
+                })
+                .groupBy('controller')
+                .mapValues(controllerAreas => controllerAreas.length)
+                .value();
+            if (!_.isEqual(lastControl, currentControl)) {
+                control.push({'pos': counts.length, 'control': currentControl});
+                lastControl = currentControl;
+            }
+
+            counts.push(count);
+        });
+
+        return {
+            'meta': _.pick(loc, ['name', 'coord']),
+            counts, control
+        }
+    });
+
     fs.writeFileSync(filepath(outfn), JSON.stringify(out));
 }
 
-var syriaLocations = processLocations('syria', 'data-in/syria-locations.tsv');
+var areas = processAreas('data-out/areas.json');
+var locations = processLocations('syria', 'data-in/syria-locations.tsv');
 
-processAirstrikes(syriaLocations, 'data-in/dashboard-airstrikes.tsv', 'data-out/top5-locations.json');
-
+processAirstrikes(areas, locations, 'data-in/dashboard-airstrikes.tsv', 'data-out/top5-locations.json');
