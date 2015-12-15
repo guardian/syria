@@ -43,11 +43,7 @@
     white-space: nowrap;
     font-size: 0;
     max-width: 660px;
-
-    @include mq(desktop) {
-        overflow: hidden;
-    }
-
+    overflow: hidden;
 }
 
 .sy-past__img-container {

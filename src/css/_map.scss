@@ -12,6 +12,7 @@
     @include fs-textSans(1);
     color: #333;
     position: absolute;
+    z-index: 1;
     line-height: 0;
     white-space: nowrap;
     opacity: 0.7;

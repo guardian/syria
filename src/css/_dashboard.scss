@@ -184,6 +184,7 @@ $ratio: 76.9%;
         display: none;
     }
     &.is-anchor-right {
+        margin: -2px -2px 0 0;
         &::before {
             display: none;
         }
@@ -191,11 +192,4 @@ $ratio: 76.9%;
             display: inline-block;
         }
     }
-}
-
-.sy-dashboard-map__source {
-    @include fs-textSans(1);
-    color: #bdbdbd;
-    text-align: right;
-    margin: 5px 0 0;
 }

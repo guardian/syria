@@ -72,6 +72,13 @@ p {
     max-width: 660px;
 }
 
+.sy-source {
+    @include fs-textSans(1);
+    color: #bdbdbd;
+    text-align: right;
+    margin: 5px 0 0;
+}
+
 @import "timeline";
 @import "map";
 @import "past";
