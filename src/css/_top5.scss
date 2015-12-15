@@ -31,10 +31,18 @@
     margin: 0 0 6px;
 }
 
+$timeline-h: 60px;
+
+.sy-top5-place__timeline {
+    height: $timeline-h;
+}
+
 .sy-control {
     position: relative;
-    height: 20px;
+    height: $timeline-h;
     overflow: hidden;
+    margin-top: -$timeline-h;
+    opacity: 0.5;
 }
 
 .sy-control__period {

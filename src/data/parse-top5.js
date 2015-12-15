@@ -44,26 +44,26 @@ function processAreas(fn) {
 
 function processLocations(country, fn) {
     var input = fs.readFileSync(filepath(fn)).toString();
-    var locations = {};
+    var locationLookup = {};
     parseTSV(input).forEach(row => {
         var coord = project(row['lat'], row['lng']);
         var left = coord[0] / cfg.past.WIDTH * 100;
-        locations[row['name']] = {
+        locationLookup[row['name']] = {
             'name': row['name'],
             'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / cfg.past.HEIGHT * 100],
             'lat': parseFloat(row['lat']),
             'lng': parseFloat(row['lng'])
         };
     });
-    return locations;
+    return locationLookup;
 }
 
-function processAirstrikes(areas, locations, fn, outfn) {
+function processAirstrikes(areas, locationLookup, fn, outfn) {
     var input = fs.readFileSync(filepath(fn)).toString();
 
     var top5 = _(parseTSV(input))
         .filter(row => START_DATE.isBefore(row.date))
-        .filter(row => !!locations[row.place]) // Syria only
+        .filter(row => !!locationLookup[row.place]) // Syria only
         .groupBy('place')
         .map((placeRows, place) => {
             var ordered = _.sortBy(placeRows, 'date')
@@ -76,8 +76,19 @@ function processAirstrikes(areas, locations, fn, outfn) {
         .slice(0, 5)
         .value();
 
-    var out = top5.map(row => {
-        var loc = locations[row.place];
+    var minStart = _.sortBy(top5, 'start')[0].start;
+    var maxEnd = _.sortBy(top5, 'end').reverse()[0].end;
+    var labels = [], daysI = 0;
+    var period = moment.range(minStart, maxEnd);
+    period.by('days', date => {
+        if (date.date() === 1) {
+            labels.push({'month': date.format('MMM'), 'pos': daysI});
+        }
+        daysI++;
+    });
+
+    var locations = top5.map(row => {
+        var loc = locationLookup[row.place];
 
         var nearbyAreas = _(areas)
             .filter(area => distance(loc, area) < MAX_D)
@@ -93,7 +104,7 @@ function processAirstrikes(areas, locations, fn, outfn) {
         var counts = [];
         var controls = [];
         var lastControllers = {};
-        moment.range(row.start, row.end).by('day', date => {
+        period.by('day', date => {
             var count = countsByDate[date.format('YYYY-MM-DD')] || 0;
 
             var controllers = _(nearbyAreas)
@@ -117,10 +128,10 @@ function processAirstrikes(areas, locations, fn, outfn) {
         return {meta, counts, controls};
     });
 
-    fs.writeFileSync(filepath(outfn), JSON.stringify(out));
+    fs.writeFileSync(filepath(outfn), JSON.stringify({labels, locations}));
 }
 
 var areas = processAreas('data-out/areas.json');
-var locations = processLocations('syria', 'data-in/syria-locations.tsv');
+var locationLookup = processLocations('syria', 'data-in/syria-locations.tsv');
 
-processAirstrikes(areas, locations, 'data-in/dashboard-airstrikes.tsv', 'data-out/top5-locations.json');
+processAirstrikes(areas, locationLookup, 'data-in/dashboard-airstrikes.tsv', 'data-out/top5.json');

@@ -16,7 +16,7 @@
                 <div class="sy-top5-main">
                     <h3 class="sy-top5-place__name">{{=l.meta.name}}</h3>
 
-                    <div class="sy-timeline">
+                    <div class="sy-timeline sy-top5-place__timeline">
                         {{~l.counts :count}}
                             <span class="sy-timeline__day sy-timeline__day__country is-syria"
                                   style="width: {{=100 / it.countLen}}%; height: {{=count/it.countMax * it.timelineHeight}}px">
@@ -32,6 +32,11 @@
                                      </div>
                                 {{~}}
                             </span>
+                        {{~}}
+                    </div>
+                    <div class="sy-timeline-labels">
+                        {{~it.labels :label}}
+                            <span class="sy-timeline-labels__lbl" style="left: {{=label.pos * 100 / it.countLen}}%">{{=label.month}}</span>
                         {{~}}
                     </div>
                 </div>
