@@ -6,7 +6,7 @@ import {filepath, parseTSV, projectFn, cfg} from './config';
 
 const START_DATE = moment.utc().subtract(cfg.dashboard.WINDOW);
 const R = 6371000; // metres
-const MAX_D = 20000 // metres
+const MAX_D = 40000 // metres
 
 var project = projectFn('data-out/historical-geo.json', cfg.past.WIDTH, cfg.past.HEIGHT);
 
@@ -37,6 +37,7 @@ function processAreas(fn) {
             area.moment = moment.utc(area.date, 'MMMM D, YYYY')
             area.lat = lat;
             area.lng = lng;
+            area.controller = area.controller.toLowerCase().replace(/ /g, '-');
         })
         .value();
 }
@@ -90,31 +91,30 @@ function processAirstrikes(areas, locations, fn, outfn) {
             .value();
 
         var counts = [];
-        var control = [];
-        var lastControl = {};
+        var controls = [];
+        var lastControllers = {};
         moment.range(row.start, row.end).by('day', date => {
             var count = countsByDate[date.format('YYYY-MM-DD')] || 0;
 
-            var currentControl = _(nearbyAreas)
-                .mapValues(geoEvents => {
-                    var recentEvent = _.findLast(geoEvents, evt => date >= evt.moment);
-                    return recentEvent;
-                })
+            var controllers = _(nearbyAreas)
+                .mapValues(geoEvents => _.findLast(geoEvents, evt => date >= evt.moment))
                 .groupBy('controller')
                 .mapValues(controllerAreas => controllerAreas.length)
+                .map((count, controller) => { return {'name': controller, count}; })
                 .value();
-            if (!_.isEqual(lastControl, currentControl)) {
-                control.push({'pos': counts.length, 'control': currentControl});
-                lastControl = currentControl;
+
+            if (!_.isEqual(lastControllers, controllers)) {
+                controls.push({'pos': counts.length, 'controllers': controllers});
+                lastControllers = controllers;
             }
 
             counts.push(count);
         });
 
-        return {
-            'meta': _.pick(loc, ['name', 'coord']),
-            counts, control
-        }
+        var meta = _.pick(loc, ['name', 'coord']);
+        meta.areaCount = _.keys(nearbyAreas).length;
+
+        return {meta, counts, controls};
     });
 
     fs.writeFileSync(filepath(outfn), JSON.stringify(out));

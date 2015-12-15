@@ -1,17 +1,53 @@
-.sy-top5-list {
+.sy-top5-places {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
+.sy-top5-place {
+    margin-bottom: 12px;
+}
+
 .sy-top5-map {
+    float: left;
     $width: 80px;
     width: $width;
+
     @include mq(leftCol) {
         position: absolute;
         left: (140px - $width);
     }
     @include mq(wide) {
         left: (220px - $width);
+    }
+}
+
+.sy-top5-main {
+    overflow: hidden;
+}
+
+.sy-top5-place__name {
+    @include fs-header(2);
+    margin: 0 0 6px;
+}
+
+.sy-control {
+    position: relative;
+    height: 20px;
+    overflow: hidden;
+}
+
+.sy-control__period {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.sy-control__period__controller {
+    @each $controller, $color in $controller-colors {
+        &.is-#{$controller} {
+            background-color: $color;
+        }
     }
 }

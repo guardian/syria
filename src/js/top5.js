@@ -9,7 +9,7 @@ window.init = function init(el, config) {
     var ctx = {
         assetPath: config.assetPath,
         locations,
-        countLen: Math.max.apply(null, locations.map(l => l.span)),
+        countLen: Math.max.apply(null, locations.map(l => l.counts.length)),
         countMax: Math.max.apply(null, locations.map(l => l.counts).reduce((a, b) => a.concat(b))),
         timelineHeight: TIMELINE_HEIGHT
     };
