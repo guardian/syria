@@ -80,6 +80,22 @@ $ratio: 76.9%;
     margin: 0 0 6px;
 }
 
+.sy-analysis__bullets {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & > li::before {
+        content: "";
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 4px;
+        background-color: #bdbdbd;
+        border-radius: 100px;
+    }
+}
+
 .sy-width {
     max-width: 650px;
     margin: 0 auto;

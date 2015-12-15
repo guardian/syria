@@ -9,6 +9,7 @@ import { fetchJSON } from './lib/fetch'
 import sheetURL from './lib/sheetURL'
 
 import dashboardHTML from '../templates/dashboard.html!text'
+import analysisHTML from '../templates/analysis.html!text'
 import airstrikes from '../../data-out/dashboard-airstrikes.json!json'
 import locations from '../../data-out/dashboard-locations.json!json'
 
@@ -51,6 +52,7 @@ window.init = function init(el, config) {
     var periodEl = el.querySelector('.js-period');
     var syriaTotalEl = el.querySelector('.js-syria-total');
     var iraqTotalEl = el.querySelector('.js-iraq-total');
+    var analysisEl = el.querySelector('.js-analysis');
 
     function renderMap(start, end) {
         strikesEl.width = strikesEl.width; // clear canvas
@@ -89,9 +91,6 @@ window.init = function init(el, config) {
 
     var dataURL = sheetURL('1pOi6PRFbTW4rA5WwlCJcB0QniUW6AX-PAwZlojYeAHE', true); // TODO: remove test
     fetchJSON(dataURL).then(resp => {
-        ['dashboard1', 'dashboard2'].forEach(n => {
-            el.querySelector('.js-' + n + '-headline').innerHTML = resp[n].headline;
-            el.querySelector('.js-' + n + '-copy').innerHTML = resp[n].copy;
-        });
+        analysisEl.innerHTML = doT.template(analysisHTML)(resp);
     });
 };
