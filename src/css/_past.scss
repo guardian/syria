@@ -28,9 +28,14 @@
     }
 }
 
-.sy-past__header {
+.sy-past__headline {
     @include fs-header(2);
-    font-weight: 600;
+    margin: 0;
+}
+
+.sy-past__subheadline {
+    @include fs-header(2);
+    color: #767676;
     margin: 0 0 6px;
 }
 
