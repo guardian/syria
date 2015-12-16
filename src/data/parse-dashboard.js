@@ -2,11 +2,11 @@ import fs from 'fs';
 import _ from 'lodash'
 import moment from 'moment';
 import 'moment-range';
-import {filepath, projectFn, parseTSV, cfg} from './config';
+import {filepath, projectFile, parseTSV, cfg} from './config';
 
 const START_DATE = moment().subtract(cfg.dashboard.WINDOW);
 
-var project = projectFn('data-out/dashboard-geo.json', cfg.dashboard.WIDTH, cfg.dashboard.HEIGHT);
+var project = projectFile('data-out/dashboard-geo.json', cfg.dashboard.WIDTH, cfg.dashboard.HEIGHT);
 
 function processLocations(country, fn) {
     var input = fs.readFileSync(filepath(fn)).toString();

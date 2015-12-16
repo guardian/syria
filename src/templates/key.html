@@ -1,17 +1,17 @@
-<div class="sy-container sy-main sy-container--divider">
-    <h2 class="sy-header">{{=it.furniture.headline}}</h2>
-    <p class="sy-copy sy-copy--intro">{{=it.furniture.copy}}</p>
+<ul class="sy-key-places">
+    {{~it.locations :l}}
+        <li class="sy-key-place">
+            <h3 class="sy-key-place__name">{{=l.meta.name}}</h3>
 
-    <ul class="sy-key-places">
-        {{~it.locations :l}}
-            <li class="sy-key-place">
-                <h3 class="sy-key-place__name">{{=l.meta.name}}</h3>
-
-                <div class="sy-timeline sy-key-place__timeline">
+            <div class="sy-key-place__timeline">
+                <div class="sy-timeline">
                     {{~l.counts :count}}
                         <span class="sy-timeline__day sy-timeline__day__country is-syria"
                               style="width: {{=100 / it.countLen}}%; height: {{=count/it.countMax * it.timelineHeight}}px">
                         </span>
+                    {{~}}
+                    {{~it.labels :label}}
+                        <span class="sy-timeline__lbl" style="left: {{=label.pos * 100 / it.countLen}}%">{{=label.month}}</span>
                     {{~}}
                 </div>
                 <div class="sy-control">
@@ -25,12 +25,7 @@
                         </span>
                     {{~}}
                 </div>
-                <div class="sy-timeline-labels">
-                    {{~it.labels :label}}
-                        <span class="sy-timeline-labels__lbl" style="left: {{=label.pos * 100 / it.countLen}}%">{{=label.month}}</span>
-                    {{~}}
-                </div>
-            </li>
-        {{~}}
-    </ul>
-</div>
+            </div>
+        </li>
+    {{~}}
+</ul>

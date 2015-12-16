@@ -1,24 +1,35 @@
 import fs from 'fs';
+import Canvas from 'canvas';
+import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
 import 'moment-range';
-import {filepath, parseTSV, projectFn, cfg} from './config';
+import {filepath, parseTSV, projectGeo, writePNG, cfg} from './config';
 
 const START_DATE = moment.utc().subtract(cfg.dashboard.WINDOW);
 const R = 6371000; // metres
 const MAX_D = 40000 // metres
 
-var project = projectFn('data-out/historical-geo.json', cfg.past.WIDTH, cfg.past.HEIGHT);
 
-function radians(deg) {
+const CONTROLLER_COLORS = {
+    'islamic-state': '#78b6dd',
+    'kurds': '#b3d682',
+    'government': '#eeb1b9'
+};
+
+function deg2rad(deg) {
     return deg * Math.PI / 180;
 }
 
+function rad2deg(rad) {
+    return rad / Math.PI * 180;
+}
+
 function distance(latlng1, latlng2) {
-    var φ1 = radians(latlng1.lat);
-    var φ2 = radians(latlng2.lat);
-    var Δφ = radians(latlng2.lat - latlng1.lat);
-    var Δλ = radians(latlng2.lng - latlng1.lng);
+    var φ1 = deg2rad(latlng1.lat);
+    var φ2 = deg2rad(latlng2.lat);
+    var Δφ = deg2rad(latlng2.lat - latlng1.lat);
+    var Δλ = deg2rad(latlng2.lng - latlng1.lng);
 
     var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
             Math.cos(φ1) * Math.cos(φ2) *
@@ -46,16 +57,110 @@ function processLocations(country, fn) {
     var input = fs.readFileSync(filepath(fn)).toString();
     var locationLookup = {};
     parseTSV(input).forEach(row => {
-        var coord = project(row['lat'], row['lng']);
-        var left = coord[0] / cfg.past.WIDTH * 100;
         locationLookup[row['name']] = {
             'name': row['name'],
-            'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / cfg.past.HEIGHT * 100],
             'lat': parseFloat(row['lat']),
             'lng': parseFloat(row['lng'])
         };
     });
     return locationLookup;
+}
+
+function getPlaceStats(rows, place) {
+    var ordered = _.sortBy(rows, 'date')
+    var start = ordered[0].date, end = ordered[ordered.length - 1].date;
+    var count = _.sum(rows, 'strikes');
+    var span = moment.range(start, end).diff('days') + 1;
+    return {'name': place, rows, start, end, span, count, 'freq': count / span};
+}
+
+function generateLabels(period) {
+    var labels = [], i = 0;
+    period.by('day', date => {
+        if (date.date() === 1) {
+            labels.push({'month': date.format('MMM'), 'pos': i});
+        }
+        i++;
+    });
+    return labels;
+}
+
+function getControllersAtDate(areas, date) {
+    return _(areas)
+        .mapValues(areaControllers => _.findLast(areaControllers, c => date >= c.moment))
+        .groupBy('controller')
+        .value();
+}
+
+function generateCountsAndControls(countsByDate, nearbyAreas, period) {
+    var counts = [];
+    var controls = [];
+    var lastControllers = {};
+    period.by('day', date => {
+        var count = countsByDate[date.format('YYYY-MM-DD')] || 0;
+
+        var controllers = _.map(getControllersAtDate(nearbyAreas, date), (controllerAreas, controller) => {
+            return {'name': controller, 'count': controllerAreas.length};
+        });
+
+        if (!_.isEqual(lastControllers, controllers)) {
+            controls.push({'pos': counts.length, 'controllers': controllers});
+            lastControllers = controllers;
+        }
+
+        counts.push(count);
+    });
+
+    return {counts, controls};
+}
+
+function getLocationGeo(loc, radius) {
+    var x1 = loc.lng - rad2deg(radius/R/Math.cos(deg2rad(loc.lat)));
+    var x2 = loc.lng + rad2deg(radius/R/Math.cos(deg2rad(loc.lat)));
+    var y1 = loc.lat + rad2deg(radius/R);
+    var y2 = loc.lat - rad2deg(radius/R);
+
+    return {
+        'type': 'MultiPoint',
+        'coordinates': [[x1, y1], [x2, y2], [loc.lng, loc.lat]]
+    };
+}
+
+function renderMap(loc, nearbyAreas, date, outfn) {
+    function renderArea(area) {
+        var screenCoords = projection([area.lng, area.lat]);
+        context.beginPath();
+        context.arc(screenCoords[0], screenCoords[1] , 1.5, 0, 2 * Math.PI);
+        context.fill();
+    }
+
+    date = moment.utc(date);
+
+    var countryGeo = require(filepath('data-out/historical-geo.json'));
+
+    var canvas = new Canvas();
+    canvas.width = cfg.key.WIDTH;
+    canvas.height = cfg.key.HEIGHT;
+    var context = canvas.getContext('2d');
+
+    var projection = projectGeo(getLocationGeo(loc, MAX_D), cfg.key.WIDTH, cfg.key.HEIGHT);
+    var path = d3.geo.path().projection(projection).context(context);
+
+    context.fillStyle = '#f1f1f1';
+    context.beginPath();
+    path(countryGeo);
+    context.fill();
+
+    _.forEach(getControllersAtDate(nearbyAreas, date), (controllerAreas, controller) => {
+        context.fillStyle = CONTROLLER_COLORS[controller];
+        controllerAreas.filter(a => a).forEach(renderArea);
+    });
+
+    context.fillStyle = '#333';
+    renderArea(loc);
+
+    writePNG(canvas, filepath(outfn));
+
 }
 
 function processAirstrikes(areas, locationLookup, fn, outfn) {
@@ -65,31 +170,18 @@ function processAirstrikes(areas, locationLookup, fn, outfn) {
         .filter(row => START_DATE.isBefore(row.date))
         .filter(row => !!locationLookup[row.place]) // Syria only
         .groupBy('place')
-        .map((placeRows, place) => {
-            var ordered = _.sortBy(placeRows, 'date')
-            var start = ordered[0].date, end = ordered[ordered.length - 1].date;
-            var count = _.sum(placeRows, 'strikes');
-            var span = moment.range(start, end).diff('days') + 1;
-            return {place, placeRows, start, end, span, count, 'freq': count / span};
-        })
+        .map(getPlaceStats)
         .sortByAll(['span', 'freq'])
         .reverse()
-        .slice(0, 5)
+        .slice(0, 4)
         .value();
 
     var minStart = _.sortBy(keyPlaces, 'start')[0].start;
     var maxEnd = _.sortBy(keyPlaces, 'end').reverse()[0].end;
-    var labels = [], daysI = 0;
     var period = moment.range(minStart, maxEnd);
-    period.by('days', date => {
-        if (date.date() === 1) {
-            labels.push({'month': date.format('MMM'), 'pos': daysI});
-        }
-        daysI++;
-    });
 
-    var locations = keyPlaces.map(row => {
-        var loc = locationLookup[row.place];
+    var locations = keyPlaces.map((place, placeI) => {
+        var loc = locationLookup[place.name];
 
         var nearbyAreas = _(areas)
             .filter(area => distance(loc, area) < MAX_D)
@@ -97,39 +189,24 @@ function processAirstrikes(areas, locationLookup, fn, outfn) {
             .groupBy('geo')
             .value();
 
-        var countsByDate = _(row.placeRows)
+        var countsByDate = _(place.rows)
             .groupBy('date')
             .mapValues(dateRows => _.sum(dateRows, 'strikes'))
             .value();
 
-        var counts = [];
-        var controls = [];
-        var lastControllers = {};
-        period.by('day', date => {
-            var count = countsByDate[date.format('YYYY-MM-DD')] || 0;
+        var {counts, controls} = generateCountsAndControls(countsByDate, nearbyAreas, period);
 
-            var controllers = _(nearbyAreas)
-                .mapValues(geoEvents => _.findLast(geoEvents, evt => date >= evt.moment))
-                .groupBy('controller')
-                .mapValues(controllerAreas => controllerAreas.length)
-                .map((count, controller) => { return {'name': controller, count}; })
-                .value();
+        renderMap(loc, nearbyAreas, minStart, `data-out/keyplaces/place-${placeI}-start.png`);
+        renderMap(loc, nearbyAreas, maxEnd, `data-out/keyplaces/place-${placeI}-end.png`);
 
-            if (!_.isEqual(lastControllers, controllers)) {
-                controls.push({'pos': counts.length, 'controllers': controllers});
-                lastControllers = controllers;
-            }
-
-            counts.push(count);
-        });
-
-        var meta = _.pick(loc, ['name', 'coord']);
+        var meta = _.pick(loc, ['name']);
         meta.areaCount = _.keys(nearbyAreas).length;
 
         return {meta, counts, controls};
     });
 
-    fs.writeFileSync(filepath(outfn), JSON.stringify({labels, locations}));
+    var out = {'labels': generateLabels(period), locations};
+    fs.writeFileSync(filepath(outfn), JSON.stringify(out));
 }
 
 var areas = processAreas('data-out/areas.json');

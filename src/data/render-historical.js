@@ -3,7 +3,7 @@ import Canvas from 'canvas';
 import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
-import {filepath, writePNG, cfg} from './config';
+import {filepath, writePNG, projectGeo, cfg} from './config';
 
 const Image = Canvas.Image;
 
@@ -32,14 +32,8 @@ function render(areas, airstrikes, geo, date, diffDate) {
     canvas.height = cfg.past.HEIGHT;
     var context = canvas.getContext('2d');
 
-    var projection = d3.geo.mercator().scale(1).translate([0, 0]);
+    var projection = projectGeo(geo, cfg.past.WIDTH, cfg.past.HEIGHT);
     var path = d3.geo.path().projection(projection).context(context);
-
-    var b = path.bounds(geo),
-        s = 1 / Math.max((b[1][0] - b[0][0]) / cfg.past.WIDTH, (b[1][1] - b[0][1]) / cfg.past.HEIGHT),
-        t = [(cfg.past.WIDTH - s * (b[1][0] + b[0][0])) / 2, (cfg.past.HEIGHT - s * (b[1][1] + b[0][1])) / 2];
-
-    projection.scale(s).translate(t);
 
     var previousPoints = diffDate && getLocationsAtDate(areas, diffDate);
     var points = getLocationsAtDate(areas, date)
@@ -80,7 +74,7 @@ function render(areas, airstrikes, geo, date, diffDate) {
         })
     }
 
-    function renderAirstrikes(colors) {
+    function renderAirstrikes() {
         airstrikes
             .filter(a => a.moment <= date && a.moment > diffDate)
             .forEach(airstrike => {
@@ -101,7 +95,7 @@ function render(areas, airstrikes, geo, date, diffDate) {
     // airstrikes
     clearCanvas();
     renderTerritory({isis: '#ccc'});
-    renderAirstrikes({russia: '#005689', coalition: 'orange'});
+    renderAirstrikes();
     saveFile('airstrikes');
 
     // territory

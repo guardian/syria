@@ -1,10 +1,9 @@
-$timeline-h: 60px;
-
 .sy-timeline {
     position: relative;
     font-size: 0;
     overflow: hidden;
     height: $timeline-h;
+    padding-bottom: $timeline-lbl;
     &.sy-timeline--interactive {
         cursor: pointer;
     }
@@ -43,7 +42,7 @@ $timeline-h: 60px;
     position: absolute;
     top: 0;
     right: 0;
-    height: 100%;
+    bottom: $timeline-lbl;
     box-sizing: border-box;
     cursor: col-resize;
 
@@ -76,24 +75,20 @@ $timeline-h: 60px;
     }
 }
 
-.sy-timeline-labels {
+.sy-timeline__lbl {
     @include fs-textSans(1);
-    position: relative;
-    margin: -$timeline-h 0 24px;
-    color: #999;
-    line-height: 1;
-    height: (get-font-size(textSans, 1) + 3px + $timeline-h);
-    pointer-events: none;
-
-    overflow: hidden;
-    @include mq(desktop) {
-        overflow: visible;
-    }
-}
-
-.sy-timeline-labels__lbl {
     position: absolute;
+    z-index: 1;
     top: 0;
-    padding: (3px + $timeline-h) 0 0 2px;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0 0 3px 2px;
     border-left: 1px dotted #999;
+    color: #999;
+
+    &::before {
+        content: "";
+        display: inline-block;
+        height: 100%;
+    }
 }

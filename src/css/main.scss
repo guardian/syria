@@ -1,6 +1,9 @@
 @import "fonts";
 @import "mq";
 
+$timeline-h: 60px;
+$timeline-lbl: 16px;
+
 $country-colors: (
     syria: #83003c,
     iraq: #d37da3
@@ -72,6 +75,13 @@ p {
         @include fs-headline(7, $size-only: true);
     }
 
+}
+
+.sy-subheader {
+    @include fs-header(5);
+    border-top: 1px solid #dcdcdc;
+    padding: 12px 0 0;
+    margin:  0 0 12px;
 }
 
 .sy-copy {

@@ -18,7 +18,7 @@ function getAWSCredentials(grunt, cfg) {
     return iniFile.default;
 }
 
-var embeds = ['dashboard', 'past', 'key'];
+var embeds = ['dashboard', 'past'];
 
 module.exports = function(grunt) {
 

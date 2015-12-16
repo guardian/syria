@@ -15,9 +15,7 @@ export function parseTSV(s) {
     });
 }
 
-export function projectFn(geoFile, width, height) {
-    var geo = require(filepath(geoFile));
-
+export function projectGeo(geo, width, height) {
     var projection = d3.geo.mercator().scale(1).translate([0, 0]);
     var path = d3.geo.path().projection(projection);
 
@@ -26,6 +24,12 @@ export function projectFn(geoFile, width, height) {
         t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
 
     projection.scale(s).translate(t);
+    return projection;
+}
+
+export function projectFile(geoFile, width, height) {
+    var geo = require(filepath(geoFile));
+    var projection = projectGeo(geo, width, height);
 
     return (lat, lng) => projection([lng, lat].map(l => parseFloat(l)));
 };
@@ -42,5 +46,8 @@ export var cfg = {
     },
     past: {
         WIDTH: 300, HEIGHT: 260
+    },
+    key: {
+        WIDTH: 60, HEIGHT: 60
     }
 };

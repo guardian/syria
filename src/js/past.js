@@ -4,7 +4,11 @@ import sheetURL from './lib/sheetURL'
 import {fetchJSON} from './lib/fetch'
 
 import locations from '../../data-out/historical-locations.json!json'
+import keyPlaces from '../../data-out/key-places.json!json'
 import pastHTML from '../templates/past.html!text'
+import keyHTML from '../templates/key.html!text'
+
+const TIMELINE_HEIGHT = 60;
 
 function render(el, data, config) {
     data.past.sections.forEach(section => {
@@ -13,10 +17,23 @@ function render(el, data, config) {
 
     var ctx = {
         assetPath: config.assetPath,
-        past: data.past
+        past: data.past,
     };
 
     el.innerHTML = doT.template(pastHTML)(ctx);
+
+    var keyCtx = {
+        assetPath: config.assetPath,
+        furniture: data.keyplaces,
+        labels: keyPlaces.labels,
+        locations: keyPlaces.locations,
+        countLen: Math.max.apply(null, keyPlaces.locations.map(l => l.counts.length)),
+        countMax: Math.max.apply(null, keyPlaces.locations.map(l => l.counts).reduce((a, b) => a.concat(b))),
+        timelineHeight: TIMELINE_HEIGHT
+    };
+
+    el.querySelector('.js-keyplaces').innerHTML = doT.template(keyHTML)(keyCtx);
+
 }
 
 window.init = function init(el, config) {

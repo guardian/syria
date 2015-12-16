@@ -1,12 +1,13 @@
+$control-h: 40px;
+
 .sy-key-places {
-    max-width: 660px;
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
 .sy-key-place {
-    margin-bottom: 12px;
+    margin-bottom: 28px;
 }
 
 .sy-key-map {
@@ -28,18 +29,19 @@
     margin: 0 0 6px;
 }
 
-$timeline-h: 60px;
-
 .sy-key-place__timeline {
-    height: $timeline-h;
+    max-width: 360px;
+
+    .sy-timeline {
+        padding-bottom: ($control-h + $timeline-lbl + 5px);
+    }
 }
 
 .sy-control {
     position: relative;
-    height: $timeline-h;
+    height: $control-h;
     overflow: hidden;
-    margin-top: -$timeline-h;
-    opacity: 0.5;
+    margin-top: -($control-h + $timeline-lbl);
 }
 
 .sy-control__period {

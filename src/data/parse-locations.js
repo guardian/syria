@@ -1,7 +1,7 @@
 import fs from 'fs';
-import {filepath, projectFn, parseTSV, cfg} from './config'
+import {filepath, projectFile, parseTSV, cfg} from './config'
 
-var project = projectFn('data-out/historical-geo.json', cfg.past.WIDTH, cfg.past.HEIGHT);
+var project = projectFile('data-out/historical-geo.json', cfg.past.WIDTH, cfg.past.HEIGHT);
 
 function processLocations(fn, outfn) {
     var input = fs.readFileSync(filepath(fn)).toString();

@@ -118,7 +118,7 @@ $ratio: 76.9%;
 .sy-dashboard-map {
     overflow: hidden;
     margin-bottom: 99px;
-    margin-top: calc(-#{$ratio} - 132px);
+    margin-top: calc(-#{$ratio} - 108px);
 
     @include mq(desktop) {
         margin: 0;
