@@ -76,6 +76,10 @@ p {
 
 .sy-copy {
     max-width: 660px;
+
+    &.sy-copy--intro {
+        margin-bottom: 24px;
+    }
 }
 
 .sy-source {
@@ -89,4 +93,4 @@ p {
 @import "map";
 @import "past";
 @import "dashboard";
-@import "top5";
+@import "key";

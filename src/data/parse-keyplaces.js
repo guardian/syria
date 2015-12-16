@@ -61,23 +61,24 @@ function processLocations(country, fn) {
 function processAirstrikes(areas, locationLookup, fn, outfn) {
     var input = fs.readFileSync(filepath(fn)).toString();
 
-    var top5 = _(parseTSV(input))
+    var keyPlaces = _(parseTSV(input))
         .filter(row => START_DATE.isBefore(row.date))
         .filter(row => !!locationLookup[row.place]) // Syria only
         .groupBy('place')
         .map((placeRows, place) => {
             var ordered = _.sortBy(placeRows, 'date')
             var start = ordered[0].date, end = ordered[ordered.length - 1].date;
+            var count = _.sum(placeRows, 'strikes');
             var span = moment.range(start, end).diff('days') + 1;
-            return {place, placeRows, start, end, span, 'freq': _.sum(placeRows, 'strikes') / span};
+            return {place, placeRows, start, end, span, count, 'freq': count / span};
         })
         .sortByAll(['span', 'freq'])
         .reverse()
         .slice(0, 5)
         .value();
 
-    var minStart = _.sortBy(top5, 'start')[0].start;
-    var maxEnd = _.sortBy(top5, 'end').reverse()[0].end;
+    var minStart = _.sortBy(keyPlaces, 'start')[0].start;
+    var maxEnd = _.sortBy(keyPlaces, 'end').reverse()[0].end;
     var labels = [], daysI = 0;
     var period = moment.range(minStart, maxEnd);
     period.by('days', date => {
@@ -87,7 +88,7 @@ function processAirstrikes(areas, locationLookup, fn, outfn) {
         daysI++;
     });
 
-    var locations = top5.map(row => {
+    var locations = keyPlaces.map(row => {
         var loc = locationLookup[row.place];
 
         var nearbyAreas = _(areas)
@@ -134,4 +135,4 @@ function processAirstrikes(areas, locationLookup, fn, outfn) {
 var areas = processAreas('data-out/areas.json');
 var locationLookup = processLocations('syria', 'data-in/syria-locations.tsv');
 
-processAirstrikes(areas, locationLookup, 'data-in/dashboard-airstrikes.tsv', 'data-out/top5.json');
+processAirstrikes(areas, locationLookup, 'data-in/dashboard-airstrikes.tsv', 'data-out/key-places.json');

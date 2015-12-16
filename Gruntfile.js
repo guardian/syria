@@ -18,7 +18,7 @@ function getAWSCredentials(grunt, cfg) {
     return iniFile.default;
 }
 
-var embeds = ['dashboard', 'past', 'top5'];
+var embeds = ['dashboard', 'past', 'key'];
 
 module.exports = function(grunt) {
 
@@ -119,7 +119,7 @@ module.exports = function(grunt) {
                         cwd: '.',
                         src: [
                             'build/main.css', 'build/main.css.map', 'src/img/*',
-                            'data-out/historical/*.png', 'data-out/dashboard/*.png', 'data-out/top5/*.png'
+                            'data-out/historical/*.png', 'data-out/dashboard/*.png'
                         ].concat(embeds.map(function (embed) { return 'build/' + embed + '.js'; })),
                         dest: deploy.versionedPath,
                         params: { CacheControl: 'max-age=600' }

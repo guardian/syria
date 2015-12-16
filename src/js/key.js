@@ -3,8 +3,8 @@ import doT from 'olado/doT'
 import sheetURL from './lib/sheetURL'
 import {fetchJSON} from './lib/fetch'
 
-import top5HTML from '../templates/top5.html!text'
-import top5 from '../../data-out/top5.json!json'
+import keyHTML from '../templates/key.html!text'
+import keyPlaces from '../../data-out/key-places.json!json'
 
 const TIMELINE_HEIGHT = 60;
 
@@ -13,15 +13,15 @@ function render(el, data, config) {
 
     var ctx = {
         assetPath: config.assetPath,
-        furniture: data.top5,
-        labels: top5.labels,
-        locations: top5.locations,
-        countLen: Math.max.apply(null, top5.locations.map(l => l.counts.length)),
-        countMax: Math.max.apply(null, top5.locations.map(l => l.counts).reduce((a, b) => a.concat(b))),
+        furniture: data.key,
+        labels: keyPlaces.labels,
+        locations: keyPlaces.locations,
+        countLen: Math.max.apply(null, keyPlaces.locations.map(l => l.counts.length)),
+        countMax: Math.max.apply(null, keyPlaces.locations.map(l => l.counts).reduce((a, b) => a.concat(b))),
         timelineHeight: TIMELINE_HEIGHT
     };
 
-    el.innerHTML = doT.template(top5HTML)(ctx);
+    el.innerHTML = doT.template(keyHTML)(ctx);
 }
 
 window.init = function init(el, config) {

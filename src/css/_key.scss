@@ -1,15 +1,15 @@
-.sy-top5-places {
+.sy-key-places {
     max-width: 660px;
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.sy-top5-place {
+.sy-key-place {
     margin-bottom: 12px;
 }
 
-.sy-top5-map {
+.sy-key-map {
     float: left;
     $width: 80px;
     width: $width;
@@ -23,18 +23,14 @@
     }
 }
 
-.sy-top5-main {
-    overflow: hidden;
-}
-
-.sy-top5-place__name {
+.sy-key-place__name {
     @include fs-header(2);
     margin: 0 0 6px;
 }
 
 $timeline-h: 60px;
 
-.sy-top5-place__timeline {
+.sy-key-place__timeline {
     height: $timeline-h;
 }
 
