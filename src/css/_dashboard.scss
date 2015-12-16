@@ -27,16 +27,20 @@ $ratio: 76.9%;
 .sy-dashboard-copy {
     @include mq(desktop) {
         float: left;
-        width: 350px;
+        width: 360px;
         margin: 24px 20px 0 0;
     }
 }
 
-.sy-strike {
+.sy-dashboard-period {
+    white-space: nowrap;
+}
+
+.sy-dashboard-strike {
     font-size: 36px;
 
     @each $country, $color in $country-colors {
-        &.sy-strike--#{$country} {
+        &.is-#{$country} {
             color: $color
         }
     }
