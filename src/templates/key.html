@@ -9,8 +9,7 @@
         <li class="sy-key-place">
             <div class="sy-past__text">
                 <h3 class="sy-key-place__name">{{=l.furniture.headline}}</h3>
-                <p class="sy-key-place__total">Total airstrikes: {{=l.meta.total}}</p>
-                <p class="sy-copy">{{=l.furniture.copy}}</p>
+                <p class="sy-copy">{{=l.furniture.copy.replace('{x}', l.meta.total) }}</p>
             </div>
 
             <div class="sy-key-place__timeline">

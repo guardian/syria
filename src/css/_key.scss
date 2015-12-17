@@ -58,11 +58,6 @@ $control-h: 40px;
     margin: 0;
 }
 
-.sy-key-place__total {
-    @include fs-textSans(4);
-    color: #767676;
-}
-
 .sy-key-place__timeline {
     max-width: 360px;
     overflow: hidden;
