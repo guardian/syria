@@ -7,9 +7,17 @@ $control-h: 40px;
 }
 
 .sy-key-place {
-    margin-bottom: 24px;
     clear: left;
+    margin-top: 12px;
+    padding-top: 12px;
+    @include mq(desktop) {
+        border-top: 1px solid #f1f1f1;
+    }
+    &:first-child {
+        border-top: 0;
+    }
 }
+
 
 .sy-key-map {
     float: left;
@@ -45,6 +53,8 @@ $control-h: 40px;
 }
 
 .sy-key-place__timeline {
+    position: relative;
+
     @include mq(tablet) {
         display: inline-block;
         vertical-align: bottom;
@@ -56,12 +66,45 @@ $control-h: 40px;
     }
 }
 
+.sy-key-place__timeline-lbl,
+.sy-key-place__control-lbl {
+    @include fs-textSans(2);
+    line-height: 16px;
+    font-weight: bold;
+    z-index: 2;
+    position: absolute;
+    left: 3px;
+}
+
+.sy-key-place__timeline-lbl {
+    background-color: transparentize(white, 0.2);
+    color: #333;
+    top: 0;
+    @include mq(desktop) {
+        top: 6px;
+    }
+}
+
+.sy-key-place__control-lbl {
+    color: white;
+    bottom: 0;
+    @include mq(tablet) {
+        bottom: $timeline-lbl;
+    }
+}
+
 .sy-key-place__controllers {
     @include fs-textSans(2);
     color: #767676;
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 10px 0 0;
+
+    &::before {
+        content: "Forces involved:";
+        margin-right: 10px;
+        font-weight: bold;
+    }
 
     @include mq(tablet) {
         line-height: 16px;
@@ -69,16 +112,20 @@ $control-h: 40px;
         display: inline-block;
         padding: 0 0 ($timeline-lbl + 4px) 5px;
         height: $control-h;
+
+        &::before {
+            display: none;
+        }
     }
 }
 
 .sy-key-place__controllers__item {
     display: inline-block;
-    margin: 10px 10px 0 0;
+    margin-right: 10px;
 
     @include mq(tablet) {
         display: block;
-        margin: 0;
+        margin-right: 0;
     }
 
     &::before {

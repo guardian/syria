@@ -28,8 +28,11 @@ function render(el, data, config) {
 
     el.innerHTML = doT.template(pastHTML)(ctx);
 
+    var placesById = {};
+    data.past.places.forEach(place => placesById[place.id] = place);
+
     keyPlaces.locations.forEach(loc => {
-        loc.furniture = data.past.places.find(place => place.id === loc.meta.id);
+        loc.furniture = placesById[loc.meta.id];
     });
 
     var keyCtx = {
