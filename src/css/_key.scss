@@ -11,15 +11,11 @@ $control-h: 40px;
     margin-top: 12px;
     padding-top: 12px;
     border-top: 1px solid #f1f1f1;
-    &:first-child {
-        padding-top: 0;
-        border-top: 0;
-    }
 }
 
 .sy-key-map {
     float: right;
-    margin-top: -40px;
+    margin-left: 10px;
 
     width: 120px;
     @include mq(tablet) {

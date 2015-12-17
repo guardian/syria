@@ -86,6 +86,11 @@ p {
     @include mq(tablet) {
         @include fs-header(5, $size-only: true);
     }
+
+    &.sy-subheader--top {
+        padding: 0;
+        border-top: 0;
+    }
 }
 
 .sy-copy {

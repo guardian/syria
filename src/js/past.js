@@ -37,6 +37,7 @@ function render(el, data, config) {
 
     var keyCtx = {
         assetPath: config.assetPath,
+        past: data.past,
         controllers: CONTROLLERS,
         labels: keyPlaces.labels,
         locations: keyPlaces.locations,
