@@ -45,9 +45,11 @@ $control-h: 40px;
 }
 
 .sy-key-place__timeline {
-    display: inline-block;
-    vertical-align: bottom;
-    width: 360px;
+    @include mq(tablet) {
+        display: inline-block;
+        vertical-align: bottom;
+        width: 360px;
+    }
 
     .sy-timeline {
         padding-bottom: ($control-h + $timeline-lbl + 5px);
@@ -56,17 +58,29 @@ $control-h: 40px;
 
 .sy-key-place__controllers {
     @include fs-textSans(2);
-    line-height: 16px;
-    vertical-align: bottom;
-    display: inline-block;
     color: #767676;
     list-style: none;
     margin: 0;
-    padding: 0 0 ($timeline-lbl + 4px) 5px;
-    height: $control-h;
+    padding: 0;
+
+    @include mq(tablet) {
+        line-height: 16px;
+        vertical-align: bottom;
+        display: inline-block;
+        padding: 0 0 ($timeline-lbl + 4px) 5px;
+        height: $control-h;
+    }
 }
 
 .sy-key-place__controllers__item {
+    display: inline-block;
+    margin: 10px 10px 0 0;
+
+    @include mq(tablet) {
+        display: block;
+        margin: 0;
+    }
+
     &::before {
         content: "";
         display: inline-block;
@@ -75,6 +89,7 @@ $control-h: 40px;
         height: 7px;
         border-radius: 100px;
     }
+
     @each $controller, $color in $controller-colors {
         &.is-#{$controller}::before {
             background-color: $color;
