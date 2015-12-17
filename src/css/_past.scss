@@ -23,7 +23,7 @@
 
     @include mq(desktop) {
         float: left;
-        max-width: 300px;
+        width: 300px;
         margin-right: 20px;
     }
 }

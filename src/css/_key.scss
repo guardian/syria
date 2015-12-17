@@ -31,6 +31,7 @@ $control-h: 40px;
 
 .sy-key-place__timeline {
     max-width: 360px;
+    overflow: hidden;
 
     .sy-timeline {
         padding-bottom: ($control-h + $timeline-lbl + 5px);
@@ -42,6 +43,7 @@ $control-h: 40px;
     height: $control-h;
     overflow: hidden;
     margin-top: -($control-h + $timeline-lbl);
+    margin-bottom: $timeline-lbl;
 }
 
 .sy-control__period {
