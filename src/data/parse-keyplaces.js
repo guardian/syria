@@ -4,11 +4,13 @@ import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
 import 'moment-range';
-import {filepath, parseTSV, projectGeo, writePNG, cfg} from './config';
+import {filepath, parseTSV, projectFile, writePNG, cfg} from './config';
 
 const START_DATE = moment.utc().subtract(cfg.dashboard.WINDOW);
 const R = 6371000; // metres
 const MAX_D = 40000 // metres
+
+var project = projectFile('data-out/historical-geo.json', cfg.past.WIDTH, cfg.past.HEIGHT);
 
 function deg2rad(deg) {
     return deg * Math.PI / 180;
@@ -50,9 +52,11 @@ function processLocations(country, fn) {
     var input = fs.readFileSync(filepath(fn)).toString();
     var locationLookup = {};
     parseTSV(input).forEach(row => {
+        var coord = project(row['lat'], row['lng']);
         locationLookup[row['name']] = {
             'lat': parseFloat(row['lat']),
-            'lng': parseFloat(row['lng'])
+            'lng': parseFloat(row['lng']),
+            'coord': [100 - coord[0] / cfg.past.WIDTH * 100, coord[1] / cfg.past.HEIGHT * 100]
         };
     });
     return locationLookup;
@@ -136,6 +140,7 @@ function processAirstrikes(areas, locationLookup, fn, outfn) {
 
         var meta = {
             'id': place.name.replace(/ /g, '-').toLowerCase(),
+            'coord': loc.coord,
             'areaCount': _.keys(nearbyAreas).length,
             'total': place.total
         };

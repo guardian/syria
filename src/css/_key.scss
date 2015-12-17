@@ -18,18 +18,18 @@ $control-h: 40px;
     }
 }
 
-
 .sy-key-map {
-    float: left;
-    $width: 80px;
-    width: $width;
+    float: right;
+    margin-top: -40px;
 
-    @include mq(leftCol) {
-        position: absolute;
-        left: (140px - $width);
+    width: 120px;
+    @include mq(tablet) {
+        width: 160px;
     }
-    @include mq(wide) {
-        left: (220px - $width);
+
+    @include mq(desktop) {
+        position: absolute;
+        right: 0;
     }
 }
 

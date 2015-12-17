@@ -1,3 +1,12 @@
+<div class="sy-map sy-key-map">
+    <img src="{{=it.assetPath}}src/img/syria.png" />
+    {{~it.locations :l}}
+        <span class="sy-map__lbl is-anchor-right" style="top: {{=l.meta.coord[1]}}%; right: {{=l.meta.coord[0]}}%">
+            {{=l.furniture.headline}}
+        </span>
+    {{~}}
+</div>
+
 <ul class="sy-key-places">
     {{~it.locations :l}}
         <li class="sy-key-place">
