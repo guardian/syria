@@ -8,7 +8,7 @@
 </div>
 
 <ul class="sy-key-places">
-    {{~it.locations :l}}
+    {{~it.locations.reverse() :l}}
         <li class="sy-key-place">
             <h3 class="sy-key-place__name">{{=l.furniture.headline}}</h3>
             <div class="sy-key-place__text">

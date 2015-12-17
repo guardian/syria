@@ -45,8 +45,6 @@ function render(el, data, config) {
         timelineHeight: TIMELINE_HEIGHT
     };
 
-    console.log(keyPlaces.locations);
-
     el.querySelector('.js-keyplaces').innerHTML = doT.template(keyHTML)(keyCtx);
 
 }

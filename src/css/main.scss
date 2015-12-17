@@ -79,10 +79,13 @@ p {
 }
 
 .sy-subheader {
-    @include fs-header(5);
+    @include fs-header(4);
     border-top: 1px solid #dcdcdc;
     padding: 12px 0 0;
     margin:  24px 0 12px;
+    @include mq(tablet) {
+        @include fs-header(5, $size-only: true);
+    }
 }
 
 .sy-copy {

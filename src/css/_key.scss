@@ -10,10 +10,9 @@ $control-h: 40px;
     clear: left;
     margin-top: 12px;
     padding-top: 12px;
-    @include mq(desktop) {
-        border-top: 1px solid #f1f1f1;
-    }
+    border-top: 1px solid #f1f1f1;
     &:first-child {
+        padding-top: 0;
         border-top: 0;
     }
 }

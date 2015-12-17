@@ -7,10 +7,9 @@
 .sy-past {
     margin-top: 12px;
     padding-top: 12px;
-    @include mq(desktop) {
-        border-top: 1px solid #f1f1f1;
-    }
+    border-top: 1px solid #f1f1f1;
     &:first-child {
+        padding-top: 0;
         border-top: 0;
     }
 
@@ -58,7 +57,10 @@
 .sy-past__img-key {
     @include fs-textSans(2);
     color: #767676;
-    margin: 6px 0 0 18px;
+    margin: 6px 0 0;
+    @include mq(tablet) {
+        margin-left: 18px;
+    }
 }
 
 .sy-past__img-key__asterisk {

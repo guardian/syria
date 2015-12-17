@@ -1,11 +1,12 @@
 <div class="sy-container sy-main sy-container--divider">
     <h2 class="sy-header">{{=it.past.headline}}</h2>
-    <p class="sy-copy sy-copy--intro">{{=it.past.copy}}</p>
 
-    <h3 class="sy-subheader">In key areas</h3>
+    <h3 class="sy-subheader">{{=it.past.placeheader}}</h3>
+    <p class="sy-copy sy-copy--intro">{{=it.past.placecopy}}</p>
     <div class="js-keyplaces" style="position: relative"></div>
 
-    <h3 class="sy-subheader">In the country as a whole</h3>
+    <h3 class="sy-subheader">{{=it.past.sectionheader}}</h3>
+    <p class="sy-copy sy-copy--intro">{{=it.past.sectioncopy}}</p>
     <ul class="sy-pasts">
         {{~it.past.sections :section:i}}
             <li class="sy-past">
