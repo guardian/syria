@@ -10,13 +10,6 @@ const START_DATE = moment.utc().subtract(cfg.dashboard.WINDOW);
 const R = 6371000; // metres
 const MAX_D = 40000 // metres
 
-
-const CONTROLLER_COLORS = {
-    'islamic-state': '#78b6dd',
-    'kurds': '#b3d682',
-    'government': '#eeb1b9'
-};
-
 function deg2rad(deg) {
     return deg * Math.PI / 180;
 }
@@ -58,7 +51,6 @@ function processLocations(country, fn) {
     var locationLookup = {};
     parseTSV(input).forEach(row => {
         locationLookup[row['name']] = {
-            'name': row['name'],
             'lat': parseFloat(row['lat']),
             'lng': parseFloat(row['lng'])
         };
@@ -69,9 +61,9 @@ function processLocations(country, fn) {
 function getPlaceStats(rows, place) {
     var ordered = _.sortBy(rows, 'date')
     var start = ordered[0].date, end = ordered[ordered.length - 1].date;
-    var count = _.sum(rows, 'strikes');
+    var total = _.sum(rows, 'strikes');
     var span = moment.range(start, end).diff('days') + 1;
-    return {'name': place, rows, start, end, span, count, 'freq': count / span};
+    return {'name': place, rows, start, end, span, total, 'freq': total / span};
 }
 
 function generateLabels(period) {
@@ -85,23 +77,18 @@ function generateLabels(period) {
     return labels;
 }
 
-function getControllersAtDate(areas, date) {
-    return _(areas)
-        .mapValues(areaControllers => _.findLast(areaControllers, c => date >= c.moment))
-        .groupBy('controller')
-        .value();
-}
-
 function generateCountsAndControls(countsByDate, nearbyAreas, period) {
     var counts = [];
     var controls = [];
     var lastControllers = {};
+
     period.by('day', date => {
         var count = countsByDate[date.format('YYYY-MM-DD')] || 0;
 
-        var controllers = _.map(getControllersAtDate(nearbyAreas, date), (controllerAreas, controller) => {
-            return {'name': controller, 'count': controllerAreas.length};
-        });
+        var controllers = _(nearbyAreas)
+            .mapValues(areaControllers => _.findLast(areaControllers, c => date >= c.moment))
+            .groupBy('controller')
+            .mapValues(controllerAreas => controllerAreas.length);
 
         if (!_.isEqual(lastControllers, controllers)) {
             controls.push({'pos': counts.length, 'controllers': controllers});
@@ -112,55 +99,6 @@ function generateCountsAndControls(countsByDate, nearbyAreas, period) {
     });
 
     return {counts, controls};
-}
-
-function getLocationGeo(loc, radius) {
-    var x1 = loc.lng - rad2deg(radius/R/Math.cos(deg2rad(loc.lat)));
-    var x2 = loc.lng + rad2deg(radius/R/Math.cos(deg2rad(loc.lat)));
-    var y1 = loc.lat + rad2deg(radius/R);
-    var y2 = loc.lat - rad2deg(radius/R);
-
-    return {
-        'type': 'MultiPoint',
-        'coordinates': [[x1, y1], [x2, y2], [loc.lng, loc.lat]]
-    };
-}
-
-function renderMap(loc, nearbyAreas, date, outfn) {
-    function renderArea(area) {
-        var screenCoords = projection([area.lng, area.lat]);
-        context.beginPath();
-        context.arc(screenCoords[0], screenCoords[1] , 1.5, 0, 2 * Math.PI);
-        context.fill();
-    }
-
-    date = moment.utc(date);
-
-    var countryGeo = require(filepath('data-out/historical-geo.json'));
-
-    var canvas = new Canvas();
-    canvas.width = cfg.key.WIDTH;
-    canvas.height = cfg.key.HEIGHT;
-    var context = canvas.getContext('2d');
-
-    var projection = projectGeo(getLocationGeo(loc, MAX_D), cfg.key.WIDTH, cfg.key.HEIGHT);
-    var path = d3.geo.path().projection(projection).context(context);
-
-    context.fillStyle = '#f1f1f1';
-    context.beginPath();
-    path(countryGeo);
-    context.fill();
-
-    _.forEach(getControllersAtDate(nearbyAreas, date), (controllerAreas, controller) => {
-        context.fillStyle = CONTROLLER_COLORS[controller];
-        controllerAreas.filter(a => a).forEach(renderArea);
-    });
-
-    context.fillStyle = '#333';
-    renderArea(loc);
-
-    writePNG(canvas, filepath(outfn));
-
 }
 
 function processAirstrikes(areas, locationLookup, fn, outfn) {
@@ -196,11 +134,11 @@ function processAirstrikes(areas, locationLookup, fn, outfn) {
 
         var {counts, controls} = generateCountsAndControls(countsByDate, nearbyAreas, period);
 
-        renderMap(loc, nearbyAreas, minStart, `data-out/keyplaces/place-${placeI}-start.png`);
-        renderMap(loc, nearbyAreas, maxEnd, `data-out/keyplaces/place-${placeI}-end.png`);
-
-        var meta = _.pick(loc, ['name']);
-        meta.areaCount = _.keys(nearbyAreas).length;
+        var meta = {
+            'id': place.name.replace(/ /g, '-').toLowerCase(),
+            'areaCount': _.keys(nearbyAreas).length,
+            'total': place.total
+        };
 
         return {meta, counts, controls};
     });

@@ -1,5 +1,33 @@
 $control-h: 40px;
 
+.sy-key-places-key {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: table;
+    table-layout: fixed;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.sy-key-places-key__item {
+    display: table-cell;
+
+    &::before {
+        content: "";
+        display: inline-block;
+        margin-right: 5px;
+        width: 12px;
+        height: 12px;
+        border-radius: 100px;
+    }
+    @each $controller, $color in $controller-colors {
+        &.is-#{$controller}::before {
+            background-color: $color;
+        }
+    }
+}
+
 .sy-key-places {
     list-style: none;
     margin: 0;
@@ -7,7 +35,8 @@ $control-h: 40px;
 }
 
 .sy-key-place {
-    margin-bottom: 28px;
+    margin-bottom: 24px;
+    clear: left;
 }
 
 .sy-key-map {
@@ -26,7 +55,12 @@ $control-h: 40px;
 
 .sy-key-place__name {
     @include fs-header(2);
-    margin: 0 0 6px;
+    margin: 0;
+}
+
+.sy-key-place__total {
+    @include fs-textSans(4);
+    color: #767676;
 }
 
 .sy-key-place__timeline {

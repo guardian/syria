@@ -10,6 +10,12 @@ import keyHTML from '../templates/key.html!text'
 
 const TIMELINE_HEIGHT = 60;
 
+const CONTROLLERS = [
+    {'id': 'islamic-state', 'name': 'Isis'},
+    {'id': 'government', 'name': 'Syrian regime'},
+    {'id': 'kurds', 'name': 'Kurdish forces'}
+];
+
 function render(el, data, config) {
     data.past.sections.forEach(section => {
         section.labels = section.labels.map(l => locations[l]);
@@ -22,15 +28,21 @@ function render(el, data, config) {
 
     el.innerHTML = doT.template(pastHTML)(ctx);
 
+    keyPlaces.locations.forEach(loc => {
+        loc.furniture = data.past.places.find(place => place.id === loc.meta.id);
+    });
+
     var keyCtx = {
         assetPath: config.assetPath,
-        furniture: data.keyplaces,
+        controllers: CONTROLLERS,
         labels: keyPlaces.labels,
         locations: keyPlaces.locations,
         countLen: Math.max.apply(null, keyPlaces.locations.map(l => l.counts.length)),
         countMax: Math.max.apply(null, keyPlaces.locations.map(l => l.counts).reduce((a, b) => a.concat(b))),
         timelineHeight: TIMELINE_HEIGHT
     };
+
+    console.log(keyPlaces.locations);
 
     el.querySelector('.js-keyplaces').innerHTML = doT.template(keyHTML)(keyCtx);
 
