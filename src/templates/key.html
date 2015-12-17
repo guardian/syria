@@ -1,41 +1,45 @@
-<ul class="sy-key-places-key">
-    {{~it.controllers :controller}}
-        <li class="sy-key-places-key__item is-{{=controller.id}}">{{=controller.name}}</li>
-    {{~}}
-</ul>
-
 <ul class="sy-key-places">
     {{~it.locations :l}}
         <li class="sy-key-place">
-            <div class="sy-past__text">
+            <div class="sy-key-place__text">
                 <h3 class="sy-key-place__name">{{=l.furniture.headline}}</h3>
                 <p class="sy-copy">{{=l.furniture.copy.replace('{x}', l.meta.total) }}</p>
             </div>
 
-            <div class="sy-key-place__timeline">
-                <div class="sy-timeline">
-                    {{~l.counts :count}}
-                        <span class="sy-timeline__day sy-timeline__day__country is-syria"
-                              style="width: {{=100 / it.countLen}}%; height: {{=count/it.countMax * it.timelineHeight}}px">
-                        </span>
-                    {{~}}
-                    {{~it.labels :label}}
-                        <span class="sy-timeline__lbl" style="left: {{=label.pos * 100 / it.countLen}}%">{{=label.month}}</span>
-                    {{~}}
+            <div class="sy-key-place__main">
+                <div class="sy-key-place__timeline">
+                    <div class="sy-timeline">
+                        {{~l.counts :count}}
+                            <span class="sy-timeline__day sy-timeline__day__country is-syria"
+                                  style="width: {{=100 / it.countLen}}%; height: {{=count/it.countMax * it.timelineHeight}}px">
+                            </span>
+                        {{~}}
+                        {{~it.labels :label}}
+                            <span class="sy-timeline__lbl" style="left: {{=label.pos * 100 / it.countLen}}%">{{=label.month}}</span>
+                        {{~}}
+                    </div>
+                    <div class="sy-control">
+                        {{~l.controls :control}}
+                            <span class="sy-control__period" style="left: {{=control.pos * 100 / it.countLen}}%">
+                                {{~it.controllers: controller}}
+                                    {{?control.controllers[controller.id]}}
+                                        <div class="sy-control__period__controller is-{{=controller.id}}"
+                                             style="height: {{=control.controllers[controller.id] / l.meta.areaCount * 100}}%">
+                                        </div>
+                                    {{?}}
+                                {{~}}
+                            </span>
+                        {{~}}
+                    </div>
                 </div>
-                <div class="sy-control">
-                    {{~l.controls :control}}
-                        <span class="sy-control__period" style="left: {{=control.pos * 100 / it.countLen}}%">
-                            {{~it.controllers: controller}}
-                                {{?control.controllers[controller.id]}}
-                                    <div class="sy-control__period__controller is-{{=controller.id}}"
-                                         style="height: {{=control.controllers[controller.id] / l.meta.areaCount * 100}}%">
-                                    </div>
-                                {{?}}
-                            {{~}}
-                        </span>
+
+                <ul class="sy-key-place__controllers">
+                    {{~it.controllers :controller}}
+                        {{?l.controls[0].controllers[controller.id]}}
+                            <li class="sy-key-place__controllers__item is-{{=controller.id}}">{{=controller.name}}</li>
+                        {{?}}
                     {{~}}
-                </div>
+                </ul>
             </div>
         </li>
     {{~}}
