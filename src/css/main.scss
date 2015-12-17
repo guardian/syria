@@ -96,8 +96,10 @@ p {
 .sy-source {
     @include fs-textSans(1);
     color: #bdbdbd;
-    text-align: right;
     margin: 5px 0 0;
+    @include mq(tablet) {
+        text-align: right;
+    }
 }
 
 @import "timeline";

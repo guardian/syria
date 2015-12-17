@@ -50,6 +50,10 @@ $control-h: 40px;
 .sy-key-place__name {
     @include fs-header(2);
     margin: 0;
+    clear: right;
+    @include mq(tablet) {
+        clear: none;
+    }
 }
 
 .sy-key-place__timeline {
@@ -94,14 +98,17 @@ $control-h: 40px;
 }
 
 .sy-key-place__controllers {
+    position: relative;
     @include fs-textSans(2);
     color: #767676;
     list-style: none;
     margin: 0;
-    padding: 10px 0 0;
+    padding: 10px 0 0 103px;
 
     &::before {
         content: "Forces involved:";
+        position: absolute;
+        left: 0;
         margin-right: 10px;
         font-weight: bold;
     }
