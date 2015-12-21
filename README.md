@@ -15,6 +15,7 @@ $ npm run parseterritory
 $ npm run parseairstrikes
 $ npm run parselocations
 $ npm run parsedashboard
+$ npm run parsekeyplaces
 $ npm run geo
 ```
 
@@ -24,7 +25,6 @@ Airstrike / territory rendering
 --------------------------------
 ```
 $ npm run renderhistorical
-$ npm run renderdashboard
 ```
 
 Running
