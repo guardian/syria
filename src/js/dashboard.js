@@ -72,9 +72,7 @@ window.init = function init(el, config) {
             totals[loc.geo.country] += total;
         });
 
-        periodEl.innerHTML = end.cmp === airstrikes.meta.end ?
-            'in the last week' :
-            `from ${start.display} to ${end.display}`;
+        periodEl.innerHTML = `from ${start.display} to ${end.display}`;
         syriaTotalEl.textContent = totals.syria;
         iraqTotalEl.textContent = totals.iraq;
         el.classList.toggle('is-in-past', end.cmp < LIVE.cmp);
