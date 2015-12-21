@@ -11,7 +11,7 @@
 <p class="sy-copy sy-copy--intro">{{=it.past.placecopy}}</p>
 
 <ul class="sy-key-places">
-    {{~it.locations.reverse() :l}}
+    {{~it.locations.reverse() :l:i}}
         <li class="sy-key-place">
             <h3 class="sy-key-place__name">{{=l.furniture.headline}}</h3>
             <div class="sy-key-place__text">
@@ -20,8 +20,10 @@
 
             <div class="sy-key-place__main">
                 <div class="sy-key-place__timeline">
-                    <span class="sy-key-place__timeline-lbl">Coalition airstrikes</span>
-                    <span class="sy-key-place__control-lbl">Controlled by</span>
+                    {{?!i}}
+                        <span class="sy-key-place__timeline-lbl">Coalition airstrikes</span>
+                        <span class="sy-key-place__control-lbl">Controlled by</span>
+                    {{?}}
                     <div class="sy-timeline">
                         {{~l.counts :count}}
                             <span class="sy-timeline__day sy-timeline__day__country is-syria"
