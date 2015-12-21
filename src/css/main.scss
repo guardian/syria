@@ -103,6 +103,7 @@ p {
 
 .sy-source {
     @include fs-textSans(1);
+    clear: both;
     color: #bdbdbd;
     margin: 5px 0 0;
     @include mq(tablet) {
