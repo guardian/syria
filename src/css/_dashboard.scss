@@ -1,5 +1,10 @@
 $ratio: 76.9%;
 
+@-webkit-keyframes update-pulse {
+    25% { background-color: #bdbdbd; }
+    50% { background-color: white; }
+    75% { background-color: #bdbdbd; }
+}
 @keyframes update-pulse {
     25% { background-color: #bdbdbd; }
     50% { background-color: white; }
@@ -17,6 +22,7 @@ $ratio: 76.9%;
         vertical-align: middle;
         width: 9px;
         height: 9px;
+        -webkit-animation: update-pulse 2s infinite;
         animation: update-pulse 2s infinite;
         background-color: #bdbdbd;
         border-radius: 100px;

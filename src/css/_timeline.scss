@@ -30,6 +30,12 @@
     }
 }
 
+@-webkit-keyframes pulse-arrows {
+    0% { padding: 0 0; }
+    50% { padding: 0 5px; }
+    100% { padding: 0 0; }
+}
+
 @keyframes pulse-arrows {
     0% { padding: 0 0; }
     50% { padding: 0 5px; }
@@ -58,6 +64,7 @@
         width: 800px;
         font-size: 30px;
         line-height: $timeline-h;
+        -webkit-animation: pulse-arrows 1s infinite;
         animation: pulse-arrows 1s infinite;
         pointer-events: none;
     }
