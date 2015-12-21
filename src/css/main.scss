@@ -42,11 +42,11 @@ p {
 
 .sy-container {
     position: relative;
-    margin-bottom: 48px;
+    margin-bottom: 24px;
 
     &.sy-container--divider {
         border-top: 1px solid #bdbdbd;
-        padding-top: 36px;
+        padding-top: 12px;
     }
 
     &::after {
@@ -57,7 +57,7 @@ p {
 }
 
 .sy-main {
-    margin-bottom: 48px;
+    margin-bottom: 24px;
 
     @include mq(leftCol) {
         padding-left: 160px;

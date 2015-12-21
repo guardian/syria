@@ -11,6 +11,10 @@ $control-h: 40px;
     margin-top: 12px;
     padding-top: 12px;
     border-top: 1px solid #f1f1f1;
+    &:first-child {
+        padding-top: 0;
+        border-top: 0;
+    }
 }
 
 .sy-key-map {
@@ -98,15 +102,7 @@ $control-h: 40px;
     color: #767676;
     list-style: none;
     margin: 0;
-    padding: 10px 0 0 103px;
-
-    &::before {
-        content: "Forces involved:";
-        position: absolute;
-        left: 0;
-        margin-right: 10px;
-        font-weight: bold;
-    }
+    padding: 10px 0 0 0;
 
     @include mq(tablet) {
         line-height: 16px;
@@ -124,6 +120,7 @@ $control-h: 40px;
 .sy-key-place__controllers__item {
     display: inline-block;
     margin-right: 10px;
+    white-space: nowrap;
 
     @include mq(tablet) {
         display: block;

@@ -8,6 +8,10 @@
     margin-top: 12px;
     padding-top: 12px;
     border-top: 1px solid #f1f1f1;
+    &:first-child {
+        padding-top: 0;
+        border-top: 0;
+    }
 
     &::after {
         content: "";
