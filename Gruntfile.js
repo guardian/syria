@@ -119,7 +119,7 @@ module.exports = function(grunt) {
                         cwd: '.',
                         src: [
                             'build/main.css', 'build/main.css.map', 'src/img/*',
-                            'data-out/historical/*.png', 'data-out/dashboard/*.png'
+                            'data-out/historical/*.png'
                         ].concat(embeds.map(function (embed) { return 'build/' + embed + '.js'; })),
                         dest: deploy.versionedPath,
                         params: { CacheControl: 'max-age=600' }
