@@ -10,7 +10,18 @@
             <li class="sy-past">
                 <div class="sy-past__text">
                     <h4 class="sy-past__headline">{{=section.headline}}</h4>
-                    <h4 class="sy-past__subheadline">{{=section.subheadline}}</h4>
+                    <ul class="sy-calendars">
+                        {{~section.calendar :calendar:j}}
+                            <li class="sy-calendar">
+                                <span class="sy-calendar__year">{{=calendar.year}}</span>
+                                {{~calendar.months: month}}
+                                    <span class="sy-calendar__month {{?month.active}}is-active{{?}}" title="{{=month.name}}">
+                                        {{=month.name[0]}}
+                                    </span>
+                                {{~}}
+                            </li>
+                        {{~}}
+                    </ul>
                     <p class="sy-copy sy-past__copy">{{=section.copy}}</p>
                 </div>
                 <div class="sy-past__imgs">

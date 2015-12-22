@@ -19,21 +19,45 @@ const CONTROLLERS = [
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
     'October', 'November', 'December'];
 
-function formatDate(date) {
-    return MONTHS[date.getUTCMonth()] + ' ' + date.getUTCFullYear();
+const START = new Date(Date.UTC(2014, 8, 1));
+const END = new Date(Date.UTC(2016, 0, 1));
+const CALENDAR = (function () {
+    var ret = [];
+    var date = START;
+    while (date < END) {
+        ret.push(date);
+        date = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 1));
+    }
+    return ret;
+})();
+
+function calendar(start, end) {
+    var lastYear, current;
+    var ret = [];
+    CALENDAR.forEach(date => {
+        var year = date.getUTCFullYear();
+        if (year !== lastYear) {
+            current = {'year': year, months: []};
+            ret.push(current);
+            lastYear = year;
+        }
+        current.months.push({
+            'name': MONTHS[date.getUTCMonth()],
+            'active': date >= start && date < end
+        });
+    });
+    return ret;
 }
 
 function render(el, data, config) {
     data.past.sections.forEach(section => {
         section.labels = section.labels.map(l => locations[l]);
-        var start = new Date(section.start);
-        var end = new Date(+new Date(section.end) - 24 * 60 * 60);
-        section.subheadline = `${formatDate(start)} - ${formatDate(end)}`;
+        section.calendar = calendar(new Date(section.start), new Date(section.end));
     });
 
     var ctx = {
         assetPath: config.assetPath,
-        past: data.past,
+        past: data.past
     };
 
     el.innerHTML = doT.template(pastHTML)(ctx);
