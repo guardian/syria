@@ -112,34 +112,32 @@
         padding-left: 0;
         margin-left: 0;
         border-left: 0;
+
+        & .sy-calendar__year {
+            text-align: right;
+        }
     }
 }
 
-.sy-calendar__year,
-.sy-calendar__month {
-    @include fs-textSans(1);
-}
-
 .sy-calendar__year {
+    @include fs-textSans(1);
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
+    left: 3px;
+    right: 2px;
 }
 
 .sy-calendar__month {
     display: inline-block;
     width: 16px;
-    height: 16px;
+    height: 5px;
     line-height: 16px;
     text-align: center;
-    border: 1px solid #eaeaea;
+    border: 1px solid white;
+    background-color: #dcdcdc;
     margin-left: -1px;
 
     &.is-active {
         background-color: #005689;
-        border-color: #005689;
-        color: white;
     }
 }

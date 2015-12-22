@@ -122,7 +122,7 @@ function main() {
     var frameDates = [
         '2014-09-01', '2015-01-01',
         '2015-05-01', '2015-07-01',
-        '2016-01-01'
+        '2015-12-01'
     ];
     var frameMoments = frameDates.map(d => moment(d));
 

@@ -15,9 +15,7 @@
                             <li class="sy-calendar">
                                 <span class="sy-calendar__year">{{=calendar.year}}</span>
                                 {{~calendar.months: month}}
-                                    <span class="sy-calendar__month {{?month.active}}is-active{{?}}" title="{{=month.name}}">
-                                        {{=month.name[0]}}
-                                    </span>
+                                    <span class="sy-calendar__month {{?month.active}}is-active{{?}}" title="{{=month.name}}"></span>
                                 {{~}}
                             </li>
                         {{~}}
