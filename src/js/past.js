@@ -16,9 +16,19 @@ const CONTROLLERS = [
     {'id': 'kurds', 'name': 'Kurdish forces'}
 ];
 
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+    'October', 'November', 'December'];
+
+function formatDate(date) {
+    return MONTHS[date.getUTCMonth()] + ' ' + date.getUTCFullYear();
+}
+
 function render(el, data, config) {
     data.past.sections.forEach(section => {
         section.labels = section.labels.map(l => locations[l]);
+        section.start = new Date(section.start);
+        section.end = new Date(+new Date(section.end) - 24 * 60 * 60);
+        section.subheadline = `${formatDate(section.start)} - ${formatDate(section.end)}`;
     });
 
     var ctx = {
@@ -32,7 +42,7 @@ function render(el, data, config) {
     data.past.places.forEach(place => placesById[place.id] = place);
 
     keyPlaces.locations.forEach(loc => {
-        loc.furniture = placesById[loc.meta.id];
+        loc.furniture = placesById[loc.meta.id] || {'headline': '', 'copy': ''};
     });
 
     var keyCtx = {

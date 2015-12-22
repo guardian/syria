@@ -112,10 +112,11 @@ function processAirstrikes(areas, locationLookup, fn, outfn) {
         .filter(row => START_DATE.isBefore(row.date))
         .filter(row => !!locationLookup[row.place]) // Syria only
         .groupBy('place')
+        .pick(['Ar Raqqah', 'Dayr Az Zawr', 'Kobani', 'Al Hasakah'])
         .map(getPlaceStats)
-        .sortByAll(['span', 'freq'])
+        /*.sortByAll(['span', 'freq'])
         .reverse()
-        .slice(0, 4)
+        .slice(0, 4)*/
         .value();
 
     var minStart = _.sortBy(keyPlaces, 'start')[0].start;
