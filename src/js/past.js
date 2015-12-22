@@ -26,9 +26,9 @@ function formatDate(date) {
 function render(el, data, config) {
     data.past.sections.forEach(section => {
         section.labels = section.labels.map(l => locations[l]);
-        section.start = new Date(section.start);
-        section.end = new Date(+new Date(section.end) - 24 * 60 * 60);
-        section.subheadline = `${formatDate(section.start)} - ${formatDate(section.end)}`;
+        var start = new Date(section.start);
+        var end = new Date(+new Date(section.end) - 24 * 60 * 60);
+        section.subheadline = `${formatDate(start)} - ${formatDate(end)}`;
     });
 
     var ctx = {
