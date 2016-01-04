@@ -44,20 +44,11 @@ p {
     position: relative;
     margin-bottom: 24px;
 
-    &.sy-container--divider {
-        border-top: 1px solid #bdbdbd;
-        padding-top: 12px;
-    }
-
     &::after {
         content: "";
         display: block;
         clear: both;
     }
-}
-
-.sy-main {
-    margin-bottom: 24px;
 
     @include mq(leftCol) {
         padding-left: 160px;
@@ -66,6 +57,13 @@ p {
     @include mq(wide) {
         padding-left: 240px;
     }
+}
+
+.sy-divider {
+    margin: 0;
+    padding-top: 12px;
+    border: 0;
+    border-top: 1px solid #bdbdbd;
 }
 
 .sy-header {
