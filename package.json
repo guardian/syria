@@ -43,7 +43,7 @@
     "jit-grunt": "^0.9.1",
     "jspm": "^0.16.15",
     "lodash": "^3.10.1",
-    "moment": "^2.10.6",
+    "moment": "^2.10.7",
     "moment-range": "^2.0.3",
     "through": "^2.3.8",
     "topojson": "^1.6.19"

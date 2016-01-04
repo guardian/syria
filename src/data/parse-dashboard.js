@@ -4,7 +4,7 @@ import moment from 'moment';
 import 'moment-range';
 import {filepath, projectFile, parseTSV, dims} from './common';
 
-const START_DATE = moment.utc().subtract(6, 'months');
+const START_DATE = moment().subtract(6, 'months').startOf('day');
 
 var project = projectFile('data-out/dashboard-geo.json', dims.dashboard.WIDTH, dims.dashboard.HEIGHT);
 
@@ -86,6 +86,8 @@ function processDashboardLocations(fn, outfn) {
 
     fs.writeFileSync(filepath(outfn), JSON.stringify(locations));
 }
+
+console.log('Start date is', START_DATE.format());
 
 var iraqLocations = processLocations('iraq', 'data-in/iraq-locations.tsv');
 var syriaLocations = processLocations('syria', 'data-in/syria-locations.tsv');

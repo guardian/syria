@@ -6,8 +6,9 @@ import moment from 'moment';
 import 'moment-range';
 import {filepath, parseTSV, projectFile, writePNG, dims} from './common';
 
-const START_DATE = moment.utc('2015-07-01T00:00:00')
-const END_DATE = moment.utc('2015-12-31T23:59:59')
+const START_DATE = moment('2015-07-01T00:00:00')
+const END_DATE = moment('2015-12-31T23:59:59')
+const PERIOD = moment.range(START_DATE, END_DATE)
 
 const R = 6371000; // metres
 const MAX_D = 40000 // metres
@@ -72,9 +73,9 @@ function getPlaceStats(rows, place) {
     return {'name': place, rows, start, end, span, total, 'freq': total / span};
 }
 
-function generateLabels(period) {
+function generateLabels() {
     var labels = [], i = 0;
-    period.by('day', date => {
+    PERIOD.by('day', date => {
         if (date.date() === 1) {
             labels.push({'month': date.format('MMM'), 'pos': i});
         }
@@ -83,12 +84,12 @@ function generateLabels(period) {
     return labels;
 }
 
-function generateCountsAndControls(countsByDate, nearbyAreas, period) {
+function generateCountsAndControls(countsByDate, nearbyAreas) {
     var counts = [];
     var controls = [];
     var lastControllers = {};
 
-    period.by('day', date => {
+    PERIOD.by('day', date => {
         var count = countsByDate[date.format('YYYY-MM-DD')] || 0;
 
         var controllers = _(nearbyAreas)
@@ -111,7 +112,7 @@ function processAirstrikes(areas, locationLookup, fn, outfn) {
     var input = fs.readFileSync(filepath(fn)).toString();
 
     var keyPlaces = _(parseTSV(input))
-        .filter(row => START_DATE.isBefore(row.date))
+        .filter(row => START_DATE.isSameOrBefore(row.date) && END_DATE.isAfter(row.date))
         .filter(row => !!locationLookup[row.place]) // Syria only
         .groupBy('place')
         .pick(['Ar Raqqah', 'Dayr Az Zawr', 'Kobani', 'Al Hasakah'])
@@ -120,10 +121,6 @@ function processAirstrikes(areas, locationLookup, fn, outfn) {
         .reverse()
         .slice(0, 4)*/
         .value();
-
-    var minStart = _.sortBy(keyPlaces, 'start')[0].start;
-    var maxEnd = _.sortBy(keyPlaces, 'end').reverse()[0].end;
-    var period = moment.range(minStart, maxEnd);
 
     var locations = keyPlaces.map((place, placeI) => {
         var loc = locationLookup[place.name];
@@ -139,7 +136,7 @@ function processAirstrikes(areas, locationLookup, fn, outfn) {
             .mapValues(dateRows => _.sum(dateRows, 'strikes'))
             .value();
 
-        var {counts, controls} = generateCountsAndControls(countsByDate, nearbyAreas, period);
+        var {counts, controls} = generateCountsAndControls(countsByDate, nearbyAreas);
 
         var meta = {
             'id': place.name.replace(/ /g, '-').toLowerCase(),
@@ -151,9 +148,12 @@ function processAirstrikes(areas, locationLookup, fn, outfn) {
         return {meta, counts, controls};
     });
 
-    var out = {'labels': generateLabels(period), locations};
+    var out = {'labels': generateLabels(), locations};
     fs.writeFileSync(filepath(outfn), JSON.stringify(out));
 }
+
+console.log('Start date:', START_DATE.format());
+console.log('End date:', END_DATE.format());
 
 var areas = processAreas('data-out/areas.json');
 var locationLookup = processLocations('syria', 'data-in/syria-locations.tsv');
