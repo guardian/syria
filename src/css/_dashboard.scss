@@ -62,7 +62,7 @@ $ratio: 76.9%;
     @include mq(desktop) {
         clear: left;
         margin-right: 0;
-        margin-top: -180px;
+        margin-top: -170px;
 
         transition: opacity 0.1s ease-out;
         .is-in-past & {
@@ -119,7 +119,7 @@ $ratio: 76.9%;
 }
 
 .sy-width__spacing {
-    margin-top: calc(#{$ratio} + 36px);
+    margin-top: calc(#{$ratio} + 51px);
     @include mq(desktop) {
         margin-top: 0;
     }
@@ -127,8 +127,8 @@ $ratio: 76.9%;
 
 .sy-dashboard-map {
     overflow: hidden;
-    margin-bottom: 99px;
-    margin-top: calc(-#{$ratio} - 108px);
+    margin-bottom: 125px;
+    margin-top: calc(-#{$ratio} - 165px);
 
     @include mq(desktop) {
         margin: 0;

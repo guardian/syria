@@ -20,6 +20,11 @@
     display: inline-block;
     vertical-align: bottom;
     pointer-events: none;
+
+    &.is-empty {
+        height: 100%;
+        background-color: #bdbdbd;
+    }
 }
 
 .sy-timeline__day__country {
@@ -97,5 +102,37 @@
         content: "";
         display: inline-block;
         height: 100%;
+    }
+}
+
+.sy-timeline-key {
+    @include fs-textSans(2);
+    color: #767676;
+    list-style: none;
+    margin: 6px 0 12px;
+    padding: 0;
+}
+
+.sy-timeline-key__item {
+    display: inline-block;
+    margin-right: 10px;
+
+    &::before {
+        content: "";
+        display: inline-block;
+        margin-right: 5px;
+        width: 7px;
+        height: 7px;
+        border-radius: 100px;
+    }
+
+    @each $country, $color in $country-colors {
+        &.is-#{$country}::before {
+            background-color: $color;
+        }
+    }
+
+    &.is-no-data::before {
+        background-color: #bdbdbd;
     }
 }
