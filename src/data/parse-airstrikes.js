@@ -2,7 +2,7 @@ import csv from 'csv';
 import fs from 'fs';
 import es from 'event-stream'
 import CombinedStream from 'combined-stream'
-import {filepath} from './config'
+import {filepath} from './common'
 
 var russianAirstrikes = fs.createReadStream(filepath('data-in/russian-airstrikes.csv'));
 var coalitionAirstrikes = fs.createReadStream(filepath('data-in/coalition-airstrikes.csv'));

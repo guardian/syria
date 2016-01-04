@@ -3,7 +3,7 @@ import Canvas from 'canvas';
 import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
-import {filepath, writePNG, projectGeo, cfg} from './config';
+import {filepath, writePNG, projectGeo, dims} from './common';
 
 const Image = Canvas.Image;
 
@@ -28,11 +28,11 @@ function getLocationsAtDate(areas, date) {
 
 function render(areas, airstrikes, geo, date, diffDate) {
     var canvas = new Canvas();
-    canvas.width = cfg.past.WIDTH;
-    canvas.height = cfg.past.HEIGHT;
+    canvas.width = dims.past.WIDTH;
+    canvas.height = dims.past.HEIGHT;
     var context = canvas.getContext('2d');
 
-    var projection = projectGeo(geo, cfg.past.WIDTH, cfg.past.HEIGHT);
+    var projection = projectGeo(geo, dims.past.WIDTH, dims.past.HEIGHT);
     var path = d3.geo.path().projection(projection).context(context);
 
     var previousPoints = diffDate && getLocationsAtDate(areas, diffDate);
@@ -41,7 +41,7 @@ function render(areas, airstrikes, geo, date, diffDate) {
     function clearCanvas() {
         // white clear
         context.fillStyle="white";
-        context.fillRect(0, 0, cfg.past.WIDTH, cfg.past.HEIGHT);
+        context.fillRect(0, 0, dims.past.WIDTH, dims.past.HEIGHT);
         // GEO
         context.fillStyle = context.strokeStyle = '#f1f1f1';
         path(geo);

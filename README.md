@@ -11,12 +11,12 @@ $ mkdir -p data-out/dashboard
 Data processing
 ---------------
 ```
+$ npm run geo
 $ npm run parseterritory
 $ npm run parseairstrikes
 $ npm run parselocations
 $ npm run parsedashboard
 $ npm run parsekeyplaces
-$ npm run geo
 ```
 
 

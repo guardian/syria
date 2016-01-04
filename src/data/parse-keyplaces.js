@@ -4,13 +4,15 @@ import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
 import 'moment-range';
-import {filepath, parseTSV, projectFile, writePNG, cfg} from './config';
+import {filepath, parseTSV, projectFile, writePNG, dims} from './common';
 
-const START_DATE = moment.utc().subtract(cfg.dashboard.WINDOW);
+const START_DATE = moment.utc('2015-07-01T00:00:00')
+const END_DATE = moment.utc('2015-12-31T23:59:59')
+
 const R = 6371000; // metres
 const MAX_D = 40000 // metres
 
-var project = projectFile('data-out/historical-geo.json', cfg.past.WIDTH, cfg.past.HEIGHT);
+var project = projectFile('data-out/historical-geo.json', dims.past.WIDTH, dims.past.HEIGHT);
 
 function deg2rad(deg) {
     return deg * Math.PI / 180;
@@ -56,7 +58,7 @@ function processLocations(country, fn) {
         locationLookup[row['name']] = {
             'lat': parseFloat(row['lat']),
             'lng': parseFloat(row['lng']),
-            'coord': [100 - coord[0] / cfg.past.WIDTH * 100, coord[1] / cfg.past.HEIGHT * 100]
+            'coord': [100 - coord[0] / dims.past.WIDTH * 100, coord[1] / dims.past.HEIGHT * 100]
         };
     });
     return locationLookup;

@@ -2,7 +2,7 @@ import csv from 'csv';
 import fs from 'fs';
 import _ from 'lodash';
 import through from 'through'
-import {filepath} from './config';
+import {filepath} from './common';
 
 var input = fs.createReadStream(filepath('data-in/areas.csv'));
 var output = fs.createWriteStream(filepath('data-out/areas.json'), {defaultEncoding: 'utf8'})

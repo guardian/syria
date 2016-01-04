@@ -39,10 +39,9 @@ export function writePNG(canvas, filename) {
     fs.writeFileSync(filename, canvas.toBuffer());
 };
 
-export var cfg = {
+export var dims = {
     dashboard: {
-        WIDTH: 650, HEIGHT: 500,
-        WINDOW: moment.duration(6, 'months')
+        WIDTH: 650, HEIGHT: 500
     },
     past: {
         WIDTH: 300, HEIGHT: 260

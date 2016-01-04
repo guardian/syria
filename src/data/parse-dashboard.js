@@ -2,11 +2,11 @@ import fs from 'fs';
 import _ from 'lodash'
 import moment from 'moment';
 import 'moment-range';
-import {filepath, projectFile, parseTSV, cfg} from './config';
+import {filepath, projectFile, parseTSV, dims} from './common';
 
-const START_DATE = moment().subtract(cfg.dashboard.WINDOW);
+const START_DATE = moment.utc().subtract(6, 'months');
 
-var project = projectFile('data-out/dashboard-geo.json', cfg.dashboard.WIDTH, cfg.dashboard.HEIGHT);
+var project = projectFile('data-out/dashboard-geo.json', dims.dashboard.WIDTH, dims.dashboard.HEIGHT);
 
 function processLocations(country, fn) {
     var input = fs.readFileSync(filepath(fn)).toString();
@@ -75,10 +75,10 @@ function processDashboardLocations(fn, outfn) {
 
     var locations = parseTSV(input).map(row => {
         var coord = project(row['lat'], row['lng']);
-        var left = coord[0] / cfg.dashboard.WIDTH * 100;
+        var left = coord[0] / dims.dashboard.WIDTH * 100;
         return {
             'name': row['name'],
-            'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / cfg.dashboard.HEIGHT * 100],
+            'coord': [row['anchor'] === 'right' ? 100 - left : left, coord[1] / dims.dashboard.HEIGHT * 100],
             'style': row['style'],
             'anchor': row['anchor'] || 'left'
         };
