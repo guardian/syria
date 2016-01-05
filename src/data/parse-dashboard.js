@@ -54,9 +54,13 @@ function processAirstrikes(locations, fn, outfn) {
                 console.warn(`Unknown location ${placeName}, ignoring...`);
                 return undefined;
             }
-            var strikes = placeRows.map(row => {
-                return {'count': parseInt(row.strikes), 'date': row.date};
-            });
+            var strikes = _(placeRows)
+                .groupBy('date')
+                .map((placeDateRows, date) => {
+                    var count = _.sum(placeDateRows.map(r => parseInt(r.strikes)));
+                    return {count, date};
+                })
+                .value();
             return {geo, strikes};
         })
         .filter(r => r)
