@@ -19,7 +19,7 @@ const CONTROLLERS = [
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
     'October', 'November', 'December'];
 
-const START = new Date(Date.UTC(2014, 8, 1));
+const START = new Date(Date.UTC(2014, 5, 1));
 const END = new Date(Date.UTC(2016, 0, 1));
 const CALENDAR = (function () {
     var ret = [];
