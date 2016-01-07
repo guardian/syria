@@ -16,8 +16,7 @@ const CONTROLLERS = [
     {'id': 'kurds', 'name': 'Kurdish forces'}
 ];
 
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-    'October', 'November', 'December'];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 const START = new Date(Date.UTC(2014, 5, 1));
 const END = new Date(Date.UTC(2016, 0, 1));
@@ -32,19 +31,22 @@ const CALENDAR = (function () {
 })();
 
 function calendar(start, end) {
-    var lastYear, current;
+    var lastYear, current, hasEnd = false;
     var ret = [];
-    CALENDAR.forEach(date => {
+    CALENDAR.forEach((date, i) => {
         var year = date.getUTCFullYear();
         if (year !== lastYear) {
             current = {'year': year, months: []};
             ret.push(current);
             lastYear = year;
         }
+        var ended = +CALENDAR[i+1] === +end;
         current.months.push({
             'name': MONTHS[date.getUTCMonth()],
+            'label': +date === +start || ended || !hasEnd && !CALENDAR[i+1],
             'active': date >= start && date < end
         });
+        hasEnd = hasEnd || ended;
     });
     return ret;
 }

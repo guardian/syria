@@ -16,7 +16,9 @@
                             <li class="sy-calendar">
                                 <span class="sy-calendar__year">{{=calendar.year}}</span>
                                 {{~calendar.months: month}}
-                                    <span class="sy-calendar__month {{?month.active}}is-active{{?}}" title="{{=month.name}}"></span>
+                                    <span class="sy-calendar__month {{?month.active}}is-active{{?}}" title="{{=month.name}}">
+                                        <span>{{?month.label}}{{=month.name}}{{?}}</span>
+                                    </span>
                                 {{~}}
                             </li>
                         {{~}}
@@ -25,6 +27,13 @@
                 </div>
                 <div class="sy-past__imgs">
                     <div class="sy-past__img-container sy-past__img-container--airstrike">
+                        <div class="sy-past__img-key">
+                            <b>Airstrikes</b>
+                            <span><img src="{{=it.assetPath}}src/img/airstrike-coalition.png" /> Coalition</span>
+                            {{?i > 2}}
+                                <span><img src="{{=it.assetPath}}src/img/airstrike-russia.png" /> Russian</span>
+                            {{?}}
+                        </div>
                         <div class="sy-map">
                             <img src="{{=it.assetPath}}data-out/historical/{{=section.end}}-airstrikes.png">
                             {{~section.labels :l}}
@@ -34,14 +43,14 @@
                                 </span>
                             {{~}}
                         </div>
-                        <div class="sy-past__img-key">
-                            <div><img src="{{=it.assetPath}}src/img/airstrike-coalition.png" /> Coalition airstrikes</div>
-                            {{?i > 2}}
-                                <div><img src="{{=it.assetPath}}src/img/airstrike-russia.png" /> Russian airstrikes</div>
-                            {{?}}
-                        </div>
                     </div>
                     <div class="sy-past__img-container sy-past__img-container--territory">
+                        <div class="sy-past__img-key">
+                            <b>Isis control</b>
+                            <span><i class="sy-past__img-key__held"></i> Held</span>
+                            <span><i class="sy-past__img-key__losses"></i> Lost</span>
+                            <span><i class="sy-past__img-key__gains"></i> Gained</span>
+                        </div>
                         <div class="sy-map">
                             <img src="{{=it.assetPath}}data-out/historical/{{=section.end}}-territory.png">
                             {{~section.labels :l}}
@@ -50,10 +59,6 @@
                                     {{=l.name}}
                                 </span>
                             {{~}}
-                        </div>
-                        <div class="sy-past__img-key">
-                            <div><i class="sy-past__img-key__losses"></i> Lost control</div>
-                            <div><i class="sy-past__img-key__gains"></i> Gained control</div>
                         </div>
                     </div>
                 </div>

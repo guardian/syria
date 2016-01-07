@@ -36,9 +36,9 @@
 }
 
 .sy-past__subheadline {
-    @include fs-header(2);
-    color: #767676;
-    margin: 0 0 6px;
+    @include fs-textSans(2);
+    color: #bdbdbd;
+    margin: 0;
 }
 
 .sy-past__imgs {
@@ -46,6 +46,10 @@
     font-size: 0;
     max-width: 660px;
     overflow: hidden;
+    margin-bottom: 24px;
+    @include mq(tablet) {
+        margin-bottom: 0;
+    }
 }
 
 .sy-past__img-container {
@@ -61,6 +65,18 @@
     @include mq(tablet) {
         margin-left: 18px;
     }
+
+    b {
+        display: block;
+        @include mq(mobileLandscape) {
+            display: inline-block;
+        }
+    }
+
+    span {
+        margin-left: 5px;
+        display: inline-block;
+    }
 }
 
 .sy-past__img-key__asterisk {
@@ -73,6 +89,7 @@
     margin-top: -4px;
 }
 
+.sy-past__img-key__held,
 .sy-past__img-key__gains,
 .sy-past__img-key__losses {
     width: 7px;
@@ -86,6 +103,10 @@
     background-color: #29619a;
 }
 
+.sy-past__img-key__held {
+    background-color: #79bae2;
+}
+
 .sy-past__img-key__losses {
     background-color: #d22e0a;
 }
@@ -96,7 +117,7 @@
     padding: 0;
     font-size: 0;
     line-height: 0;
-    margin: 3px 0 8px;
+    margin: 3px 0 30px 3px;
 }
 
 .sy-calendar {
@@ -128,6 +149,7 @@
 }
 
 .sy-calendar__month {
+    position: relative;
     display: inline-block;
     width: 14px;
     height: 5px;
@@ -139,5 +161,15 @@
 
     &.is-active {
         background-color: #005689;
+    }
+
+    & > span {
+        @include fs-textSans(1);
+        position: absolute;
+        left: -5px;
+        right: -5px;
+        top: 100%;
+        margin-top: 2px;
+        text-align: center;
     }
 }
