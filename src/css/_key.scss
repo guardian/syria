@@ -80,11 +80,11 @@ $control-h: 40px;
 }
 
 .sy-key-place__timeline-lbl {
-    background-color: transparentize(white, 0.2);
+    background-color: white;
     color: #333;
     top: 0;
     @include mq(desktop) {
-        top: 6px;
+        padding-top: 6px;
     }
 }
 
