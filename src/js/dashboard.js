@@ -23,6 +23,8 @@ const LIVE = ts2date(END, -TIMELINE_WINDOW * 2);
 
 const COLORS = {'syria': '#83003c', 'iraq': '#d37da3'};
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
 function renderLocation(ctx, loc, radius) {
     ctx.beginPath();
     ctx.arc(loc.geo.coord[0], loc.geo.coord[1], radius, 0, 2 * Math.PI);
@@ -32,6 +34,9 @@ function renderLocation(ctx, loc, radius) {
 window.init = function init(el, config) {
     iframeMessenger.enableAutoResize();
 
+    var parts = airstrikes.meta.start.split('-').map(d => d.replace(/^0/, ''));
+    var startDate = [parts[2], MONTHS[parseInt(parts[1]) - 1], parts[0]].join(' ');
+
     var ctx = {
         assetPath: config.assetPath,
         locations,
@@ -39,8 +44,13 @@ window.init = function init(el, config) {
         countLen: airstrikes.timeline.counts.length,
         countMax: Math.max.apply(null, airstrikes.timeline.counts.map(c => (c.iraq || 0) + (c.syria || 0))),
         windowSize: TIMELINE_WINDOW * 2 + 1,
-        timelineHeight: TIMELINE_HEIGHT
+        timelineHeight: TIMELINE_HEIGHT,
+        startDate,
+        syriaTotal: airstrikes.timeline.counts.reduce((t, c) => t + (c.syria || 0), 0),
+        iraqTotal: airstrikes.timeline.counts.reduce((t, c) => t + (c.iraq || 0), 0)
     };
+
+    console.log(airstrikes);
 
     el.innerHTML = doT.template(dashboardHTML)(ctx);
 
@@ -50,8 +60,8 @@ window.init = function init(el, config) {
     var timelineWindowEl = el.querySelector('.js-timeline-window');
     var analysisEl = el.querySelector('.js-analysis');
     var periodEl = el.querySelector('.js-period');
-    var syriaTotalEl = el.querySelector('.js-syria-total');
-    var iraqTotalEl = el.querySelector('.js-iraq-total');
+    var syriaPeriodEl = el.querySelector('.js-syria-period');
+    var iraqPeriodEl = el.querySelector('.js-iraq-period');
     var analysisEl = el.querySelector('.js-analysis');
 
     function renderMap(start, end) {
@@ -73,8 +83,8 @@ window.init = function init(el, config) {
         });
 
         periodEl.innerHTML = `from ${start.display} to ${end.display}`;
-        syriaTotalEl.textContent = totals.syria;
-        iraqTotalEl.textContent = totals.iraq;
+        syriaPeriodEl.textContent = totals.syria;
+        iraqPeriodEl.textContent = totals.iraq;
         el.classList.toggle('is-in-past', end.cmp < LIVE.cmp);
     }
 

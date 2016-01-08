@@ -61,7 +61,7 @@ p {
 
 .sy-divider {
     margin: 0;
-    padding-top: 12px;
+    padding-top: 24px;
     border: 0;
     border-top: 1px solid #bdbdbd;
 }
@@ -106,6 +106,14 @@ p {
     margin: 24px 0 0;
     @include mq(tablet) {
         text-align: right;
+    }
+
+    a {
+        &,
+        &:hover {
+            text-decoration: underline;
+            color: inherit;
+        }
     }
 }
 

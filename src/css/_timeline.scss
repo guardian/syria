@@ -106,21 +106,26 @@
 }
 
 .sy-timeline-key {
+    display: inline-block;
     @include fs-textSans(2);
     color: #767676;
     list-style: none;
-    margin: 6px 0 12px;
+    margin: 0;
     padding: 0;
 }
 
 .sy-timeline-key__item {
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 5px;
+    @include mq(desktop) {
+        margin-left: 5px;
+        margin-right: 0;
+    }
 
     &::before {
         content: "";
         display: inline-block;
-        margin-right: 5px;
+        margin-right: 3px;
         width: 7px;
         height: 7px;
         border-radius: 100px;

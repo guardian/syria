@@ -43,7 +43,11 @@ $ratio: 76.9%;
 }
 
 .sy-dashboard-strike {
-    font-size: 36px;
+    font-weight: bold;
+    .sy-header & {
+        font-size: 36px;
+        font-weight: inherit;
+    }
 
     @each $country, $color in $country-colors {
         &.is-#{$country} {
@@ -127,8 +131,8 @@ $ratio: 76.9%;
 
 .sy-dashboard-map {
     overflow: hidden;
-    margin-bottom: 156px;
-    margin-top: calc(-#{$ratio} - 170px);
+    margin-bottom: 188px;
+    margin-top: calc(-#{$ratio} - 208px);
 
     @include mq(desktop) {
         margin: 0;
@@ -234,6 +238,35 @@ $ratio: 76.9%;
 }
 
 .sy-dashboard-prod {
+    display: table;
+    border-spacing: 0;
+    width: 100%;
+    margin-bottom: 3px;
     @include fs-textSans(2);
     color: #767676;
+    span {
+        display: block;
+        @include mq(desktop) {
+            display: table-cell;
+            vertical-align: top;
+        }
+    }
+}
+
+.sy-dashboard-prod__key {
+    @include mq(desktop) {
+        text-align: right;
+    }
+}
+
+.sy-dashboard-totals {
+    @include fs-textSans(2);
+    color: #767676;
+    margin: 6px 0 12px;
+
+    @include mq(desktop) {
+        br {
+            display: none;
+        }
+    }
 }

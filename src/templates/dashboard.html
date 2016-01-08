@@ -4,13 +4,22 @@
         <h2 class="sy-header">
             Coalition airstrikes
             <div class="sy-dashboard-period js-period"></div>
-            <span class="sy-dashboard-strike is-syria js-syria-total"></span> in Syria<br />
-            <span class="sy-dashboard-strike is-iraq js-iraq-total"></span> in Iraq
+            <span class="sy-dashboard-strike is-syria js-syria-period"></span> in Syria<br />
+            <span class="sy-dashboard-strike is-iraq js-iraq-period"></span> in Iraq
         </h2>
         <div class="sy-width">
             <div class="sy-width__spacing"></div>
         </div>
-        <p class="sy-dashboard-prod">Use timeline to explore data</p>
+        <div class="sy-dashboard-prod">
+            <span>Use timeline to explore data</span>
+            <span class="sy-dashboard-prod__key">
+                <ul class="sy-timeline-key">
+                    <li class="sy-timeline-key__item is-syria">Syria</li>
+                    <li class="sy-timeline-key__item is-iraq">Iraq</li>
+                    <li class="sy-timeline-key__item is-no-data">No data</li>
+                </ul>
+            </span>
+        </div>
         <div class="sy-timeline sy-timeline--interactive js-timeline">
             {{~it.timeline.counts :count}}
                 <span class="sy-timeline__day {{?count.iraq + count.syria === 0}}is-empty{{?}}"
@@ -24,11 +33,11 @@
                 <span class="sy-timeline__lbl" style="left: {{=label.pos * 100 / it.countLen}}%">{{=label.month}}</span>
             {{~}}
         </div>
-        <ul class="sy-timeline-key">
-            <li class="sy-timeline-key__item is-syria">Syria</li>
-            <li class="sy-timeline-key__item is-iraq">Iraq</li>
-            <li class="sy-timeline-key__item is-no-data">No data</li>
-        </ul>
+        <p class="sy-dashboard-totals">
+            Total airstrikes since {{=it.startDate}}:<br />
+            <span class="sy-dashboard-strike is-syria">{{=it.syriaTotal}}</span> in Syria,
+            <span class="sy-dashboard-strike is-iraq">{{=it.iraqTotal}}</span> in Iraq
+        </p>
     </div>
     <div class="sy-width">
         <div class="sy-dashboard-map">
@@ -44,7 +53,8 @@
                 </ul>
             </div>
             <p class="sy-source sy-dashboard-source">
-                Data from US Department of Defense
+                Data from
+                <a href="http://www.defense.gov/News/Special-Reports/0814_Inherent-Resolve">US Department of Defense</a>
             </p>
         </div>
     </div>
