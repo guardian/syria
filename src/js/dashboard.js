@@ -50,8 +50,6 @@ window.init = function init(el, config) {
         iraqTotal: airstrikes.timeline.counts.reduce((t, c) => t + (c.iraq || 0), 0)
     };
 
-    console.log(airstrikes);
-
     el.innerHTML = doT.template(dashboardHTML)(ctx);
 
     var strikesEl = el.querySelector('.js-dashboard-strikes');
