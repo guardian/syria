@@ -95,7 +95,7 @@ window.init = function init(el, config) {
 
     renderMap(ts2date(END, -TIMELINE_WINDOW * 2), ts2date(END, 0));
 
-    var dataURL = sheetURL('1pOi6PRFbTW4rA5WwlCJcB0QniUW6AX-PAwZlojYeAHE', true); // TODO: remove test
+    var dataURL = sheetURL('1pOi6PRFbTW4rA5WwlCJcB0QniUW6AX-PAwZlojYeAHE');
     fetchJSON(dataURL).then(resp => {
         analysisEl.innerHTML = doT.template(analysisHTML)(resp);
     });

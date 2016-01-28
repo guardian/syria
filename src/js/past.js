@@ -89,6 +89,6 @@ function render(el, data, config) {
 window.init = function init(el, config) {
     iframeMessenger.enableAutoResize();
 
-    var dataURL = sheetURL('1pOi6PRFbTW4rA5WwlCJcB0QniUW6AX-PAwZlojYeAHE', true); // TODO: remove test
+    var dataURL = sheetURL('1pOi6PRFbTW4rA5WwlCJcB0QniUW6AX-PAwZlojYeAHE');
     fetchJSON(dataURL).then(data => render(el, data, config))
 };
