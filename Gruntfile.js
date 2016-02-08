@@ -1,6 +1,7 @@
 var fs = require('fs');
 var ini = require('ini')
 var path = require('path')
+var moment = require('moment');
 
 function getAWSCredentials(grunt, cfg) {
     var awsCredentialsFilePath = cfg.credentialsFile.replace('$HOME', process.env['HOME']);
@@ -19,6 +20,8 @@ function getAWSCredentials(grunt, cfg) {
 }
 
 var embeds = ['dashboard', 'past'];
+
+var buildTime = moment().format('dddd D MMMM YYYY');
 
 module.exports = function(grunt) {
 
@@ -45,14 +48,16 @@ module.exports = function(grunt) {
         };
 
         var files = {};
+        var assetPath = deploy.domain + deploy.versionedPath + '/';
+
         files[embed + '.html'] = ['src/embed.html'];
 
         template[embed + 'dev'] = {
-            'options': { 'data': { 'assetPath': '', 'embed': embed } },
+            'options': { 'data': { 'assetPath': '', 'embed': embed, 'buildTime': buildTime } },
             'files': files
         }
         template[embed + 'prod'] = {
-            'options': { 'data': { 'assetPath': deploy.domain + deploy.versionedPath + '/', 'embed': embed } },
+            'options': { 'data': { 'assetPath': assetPath, 'embed': embed, 'buildTime': buildTime } },
             'files': files
         }
     });
