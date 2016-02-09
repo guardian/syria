@@ -4,7 +4,7 @@ import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
 import 'moment-range';
-import {filepath, parseTSV, projectFile, writePNG, dims} from './common';
+import {filepath, projectFile, dims} from './common';
 
 const START_DATE = moment('2015-07-01T00:00:00')
 const END_DATE = moment('2015-12-31T23:59:59')
@@ -35,6 +35,16 @@ function distance(latlng1, latlng2) {
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
     return R * c;
+}
+
+function parseTSV(s) {
+    var rows = s.replace(/\n+$/, '').split('\n');
+    var headers = rows[0].split('\t');
+    return rows.slice(1).map(function (row) {
+        var ret = {};
+        row.split('\t').forEach(function (cell, i) { ret[headers[i]] = cell.trim() });
+        return ret;
+    });
 }
 
 function processAreas(fn) {

@@ -1,21 +1,10 @@
-import fs from 'fs';
-import path from 'path';
-import moment from 'moment';
-import d3 from 'd3';
+var path = require('path');
+var moment = require('moment');
+var d3 = require('d3');
 
-export function filepath(file) { return path.join(__dirname, '../..', file); };
+function filepath(file) { return path.join(__dirname, '../..', file); }
 
-export function parseTSV(s) {
-    var rows = s.replace(/\n+$/, '').split('\n');
-    var headers = rows[0].split('\t');
-    return rows.slice(1).map(row => {
-        var ret = {};
-        row.split('\t').forEach((cell, i) => ret[headers[i]] = cell.trim());
-        return ret;
-    });
-}
-
-export function projectGeo(geo, width, height) {
+function projectGeo(geo, width, height) {
     var projection = d3.geo.mercator().scale(1).translate([0, 0]);
     var path = d3.geo.path().projection(projection);
 
@@ -27,26 +16,20 @@ export function projectGeo(geo, width, height) {
     return projection;
 }
 
-export function projectFile(geoFile, width, height) {
-    var geo = require(filepath(geoFile));
-    var projection = projectGeo(geo, width, height);
+module.exports = {
+    'filepath': filepath,
+    'projectGeo': projectGeo,
+    'projectFile': function (geoFile, width, height) {
+        var geo = require(filepath(geoFile));
+        var projection = projectGeo(geo, width, height);
 
-    return (lat, lng) => projection([lng, lat].map(l => parseFloat(l)));
-};
-
-export function writePNG(canvas, filename) {
-    console.log(`Writing ${filename}`)
-    fs.writeFileSync(filename, canvas.toBuffer());
-};
-
-export var dims = {
-    dashboard: {
-        WIDTH: 650, HEIGHT: 500
+        return function (lat, lng) {
+            return projection([lng, lat].map(function (l) { return parseFloat(l); }));
+        };
     },
-    past: {
-        WIDTH: 300, HEIGHT: 260
-    },
-    key: {
-        WIDTH: 60, HEIGHT: 60
+    'dims': {
+        'past': {
+            'WIDTH': 300, 'HEIGHT': 260
+        }
     }
 };

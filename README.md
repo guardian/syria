@@ -28,7 +28,7 @@ Campaign analysis
 Analysis from June 2014 to December 2015, based on data released by US Department of Defense and [The Carter Centre](http://www.cartercenter.org/SyriaMappingProject) using Palantir Technologies
 
 Data used:
-- `data-in/historical-locations.tsv`: Locations to be shown on rendered territory/airstrike maps
+- `data-in/historical-locations.json`: Locations to be shown on rendered territory/airstrike maps
 - The Carter Centre data
 
 Steps:

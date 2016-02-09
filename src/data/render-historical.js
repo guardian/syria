@@ -3,7 +3,7 @@ import Canvas from 'canvas';
 import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
-import {filepath, writePNG, projectGeo, dims} from './common';
+import {filepath, projectGeo, dims} from './common';
 
 const Image = Canvas.Image;
 
@@ -24,6 +24,11 @@ function getLocationsAtDate(areas, date) {
             return _.findLast(locationRows, row => date >= row.moment)
         })
         .value();
+}
+
+function writePNG(canvas, filename) {
+    console.log(`Writing ${filename}`)
+    fs.writeFileSync(filename, canvas.toBuffer());
 }
 
 function render(areas, airstrikes, geo, date, diffDate) {

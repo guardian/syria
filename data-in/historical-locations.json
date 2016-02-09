@@ -1,0 +1,44 @@
+[
+  {
+    "lat": 36.202105,
+    "lng": 37.13426,
+    "name": "Aleppo",
+    "style": "",
+    "anchor": ""
+  },
+  {
+    "lat": 35.959411,
+    "lng": 38.998105,
+    "name": "Raqqa",
+    "style": "",
+    "anchor": ""
+  },
+  {
+    "lat": 36.890343,
+    "lng": 38.350011,
+    "name": "Kobani",
+    "style": "",
+    "anchor": ""
+  },
+  {
+    "lat": 36.511304,
+    "lng": 40.743107,
+    "name": "Hasakah",
+    "style": "",
+    "anchor": ""
+  },
+  {
+    "lat": 34.732427,
+    "lng": 36.713696,
+    "name": "Homs",
+    "style": "",
+    "anchor": ""
+  },
+  {
+    "lat": 34.570012,
+    "lng": 38.292165,
+    "name": "Palmyra",
+    "style": "",
+    "anchor": ""
+  }
+]
