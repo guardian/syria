@@ -2,7 +2,7 @@ var path = require('path');
 var moment = require('moment');
 var d3 = require('d3');
 
-function filepath(file) { return path.join(__dirname, '../..', file); }
+function filepath(file) { return path.join(process.cwd(), file); }
 
 function projectGeo(geo, width, height) {
     var projection = d3.geo.mercator().scale(1).translate([0, 0]);

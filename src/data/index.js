@@ -3,6 +3,9 @@ var moment = require('moment');
 require('moment-range');
 var projectFile = require('./common').projectFile;
 
+var aws = require('aws-sdk');
+var s3 = new aws.S3({ apiVersion: '2006-03-01' });
+
 var START_DATE = moment().subtract(6, 'months').startOf('day');
 
 var MAP_WIDTH = 650, MAP_HEIGHT = 500;
@@ -83,7 +86,7 @@ function processDashboardLocations(locations) {
 }
 
 function process(data) {
-    console.error('Start date is', START_DATE.format());
+    console.log('Start date is', START_DATE.format());
 
     var iraqLocations = processLocations('iraq', data.sheets.iraq);
     var syriaLocations = processLocations('syria', data.sheets.syria);
@@ -98,3 +101,30 @@ function process(data) {
         'map': map
     };
 }
+
+exports.handler = function(evt, context) {
+    var bucket = evt.Records[0].s3.bucket.name;
+    var key = decodeURIComponent(evt.Records[0].s3.object.key.replace(/\+/g, ' '));
+
+    s3.getObject({'Bucket': bucket, 'Key': key}, function (err, data) {
+        if (err) {
+            console.log(key, err);
+            return;
+        }
+
+        var newKey = key.replace('docsdata', 'docsprocessed');
+        var newBody = process(JSON.parse(data.Body.toString()));
+        console.log('Uploading to', newKey);
+
+        s3.putObject({
+            'Bucket': bucket,
+            'Key': newKey,
+            'Body': JSON.stringify(newBody),
+            'ACL': 'public-read',
+            'ContentType': 'application/json',
+            'CacheControl': 'max-age=30'
+        }, function (err, data) {
+            if (err) console.log(key, err);
+        });
+    });
+};

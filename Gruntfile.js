@@ -97,6 +97,17 @@ module.exports = function(grunt) {
         'shell': shell,
         'template': template,
 
+        'lambda_package': {
+            'default': {
+                'options': {
+                    'package_folder': 'src/data',
+                    'dist_folder': 'build',
+                    'include_time': false,
+                    'include_files': ['../../data-out/dashboard-geo.json']
+                }
+            }
+        },
+
         aws_s3: {
             options: {
                 accessKeyId: awsCredentials.aws_access_key_id,
@@ -175,5 +186,6 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['dev']);
 
     grunt.loadNpmTasks('grunt-aws');
+    grunt.loadNpmTasks('grunt-aws-lambda');
 
 }
