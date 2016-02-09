@@ -1,0 +1,14 @@
+{
+  "Records": [
+    {
+      "s3": {
+        "object": {
+          "key": "docsdata-test/1yjhDkO2KbBD57eM0SPio_IKCs24rbPWi7nP_Nfw1dak.json"
+        },
+        "bucket": {
+          "name": "gdn-cdn"
+        }
+      }
+    }
+  ]
+}

@@ -10,16 +10,9 @@ import sheetURL from './lib/sheetURL'
 
 import dashboardHTML from '../templates/dashboard.html!text'
 import analysisHTML from '../templates/analysis.html!text'
-import airstrikes from '../../data-out/dashboard-airstrikes.json!json'
-import locations from '../../data-out/dashboard-locations.json!json'
 
 const TIMELINE_WINDOW = 3;
 const TIMELINE_HEIGHT = 60; // keep in sync with _dashboard.scss
-
-const START = +new Date(airstrikes.meta.start);
-const END = +new Date(airstrikes.meta.end);
-
-const LIVE = ts2date(END, -TIMELINE_WINDOW * 2);
 
 const COLORS = {'syria': '#83003c', 'iraq': '#d37da3'};
 
@@ -31,14 +24,20 @@ function renderLocation(ctx, loc, radius) {
     ctx.fill();
 }
 
-window.init = function init(el, config) {
+function app(el, config, data) {
     iframeMessenger.enableAutoResize();
+
+    var airstrikes = data.airstrikes, locations = data.map;
+
+    const START = +new Date(airstrikes.meta.start);
+    const END = +new Date(airstrikes.meta.end);
+    const LIVE = ts2date(END, -TIMELINE_WINDOW * 2);
 
     var parts = airstrikes.meta.start.split('-').map(d => d.replace(/^0/, ''));
     var startDate = [parts[2], MONTHS[parseInt(parts[1]) - 1], parts[0]].join(' ');
 
     var ctx = {
-        updated: '', // TODO
+        updated: data.updated,
         locations,
         timeline: airstrikes.timeline,
         countLen: airstrikes.timeline.counts.length,
@@ -100,3 +99,9 @@ window.init = function init(el, config) {
         analysisEl.innerHTML = doT.template(analysisHTML)(resp);
     });
 };
+
+window.init = function init(el, config) {
+    fetchJSON(sheetURL('1yjhDkO2KbBD57eM0SPio_IKCs24rbPWi7nP_Nfw1dak', 'docsprocessed')).then(resp => {
+        app(el, config, resp);
+    });
+}

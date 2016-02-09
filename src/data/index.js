@@ -46,9 +46,9 @@ function processAirstrikes(locations, input) {
         counts.push(strikesByDate[date.format('YYYY-MM-DD')] || {'syria': 0, 'iraq': 0})
     });
 
-    var locations = _(rows)
+    var locationsOut = _(rows)
         .groupBy('place')
-        .filter(function (_, placeName) {
+        .pick(function (_, placeName) {
             var geo = locations[placeName];
             if (!geo) console.warn('Unknown location ' + placeName + ', ignoring...');
             return geo;
@@ -68,7 +68,7 @@ function processAirstrikes(locations, input) {
     return {
         'meta': {'start': start, 'end': end, 'days': moment.range(start, end).diff('days') + 1},
         'timeline': {'counts': counts, 'labels': labels},
-        'locations': locations
+        'locations': locationsOut
     };
 }
 

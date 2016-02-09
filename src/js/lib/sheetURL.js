@@ -1,4 +1,4 @@
-export default function sheetURL(sheetID, test=false) {
+export default function sheetURL(sheetID, type='docsdata') {
     var protocol = window.location.protocol === 'file:' ? 'https://' : '//';
-    return `${protocol}interactive.guim.co.uk/docsdata${test ? '-test': ''}/${sheetID}.json`;
+    return `${protocol}interactive.guim.co.uk/${type}/${sheetID}.json`;
 }

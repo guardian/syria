@@ -11,17 +11,15 @@ Dashboard
 Source: http://www.centcom.mil/ and http://www.defense.gov/News/Special-Reports/0814_Inherent-Resolve
 
 Data used:
-- `data-in/dashboard-airstrikes.tsv`: Structured airstrike data based on above links
-- `data-in/dashboard-locations.tsv`: Locations to be shown on dashboard map
-- `data-in/iraq-locations.tsv`: Locations of airstrikes in Iraq
-- `data-in/syria-locations.tsv`: Locations of airstrikes in Syria
+https://docs.google.com/spreadsheets/d/1yjhDkO2KbBD57eM0SPio_IKCs24rbPWi7nP_Nfw1dak/pubhtml
 
-Steps:
-```
-$ mkdir -p data-out/dashboard
-$ npm run geo
-$ npm run parsedashboard
-```
+Uses an AWS lambda which automatically triggers when the docs tool uploads a new version of the spreadsheet
+to S3.
+
+To build and test:
+1. `npm run geo && grunt lambda_package`
+1. Upload `build/lambda_0-0-1_latest.zip` to the AWS lambda
+1. Use `test.json` to test
 
 Campaign analysis
 --------------------
