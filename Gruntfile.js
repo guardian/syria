@@ -21,8 +21,6 @@ function getAWSCredentials(grunt, cfg) {
 
 var embeds = ['dashboard', 'past'];
 
-var buildTime = moment().format('dddd D MMMM YYYY');
-
 module.exports = function(grunt) {
 
     require('jit-grunt')(grunt);
@@ -53,11 +51,11 @@ module.exports = function(grunt) {
         files[embed + '.html'] = ['src/embed.html'];
 
         template[embed + 'dev'] = {
-            'options': { 'data': { 'assetPath': '', 'embed': embed, 'buildTime': buildTime } },
+            'options': { 'data': { 'assetPath': '', 'embed': embed } },
             'files': files
         }
         template[embed + 'prod'] = {
-            'options': { 'data': { 'assetPath': assetPath, 'embed': embed, 'buildTime': buildTime } },
+            'options': { 'data': { 'assetPath': assetPath, 'embed': embed } },
             'files': files
         }
     });

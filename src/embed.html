@@ -8,10 +8,7 @@
     <div class="interactive-container js-interactive"></div>
     <script src="<%= assetPath %>build/<%= embed %>.js"></script>
     <script>
-        init(document.body.querySelector('.js-interactive'), {
-            'assetPath': '<%= assetPath %>',
-            'buildTime': '<%= buildTime %>'
-        });
+        init(document.body.querySelector('.js-interactive'), {'assetPath': '<%= assetPath %>'});
     </script>
 </body>
 </html>

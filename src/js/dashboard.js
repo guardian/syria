@@ -38,7 +38,7 @@ window.init = function init(el, config) {
     var startDate = [parts[2], MONTHS[parseInt(parts[1]) - 1], parts[0]].join(' ');
 
     var ctx = {
-        buildTime: config.buildTime,
+        updated: '', // TODO
         locations,
         timeline: airstrikes.timeline,
         countLen: airstrikes.timeline.counts.length,
