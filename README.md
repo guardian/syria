@@ -17,6 +17,7 @@ Uses an AWS lambda which automatically triggers when the docs tool uploads a new
 to S3.
 
 To build and test:
+
 1. `npm run geo && grunt lambda_package`
 1. Upload `build/lambda_0-0-1_latest.zip` to the AWS lambda
 1. Use `test.json` to test
