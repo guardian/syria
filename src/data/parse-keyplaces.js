@@ -2,13 +2,16 @@ import fs from 'fs';
 import Canvas from 'canvas';
 import d3 from 'd3';
 import _ from 'lodash';
+import request from 'request';
 import moment from 'moment';
 import 'moment-range';
 import {filepath, projectFile, dims} from './common';
 
-const START_DATE = moment('2015-07-01T00:00:00')
-const END_DATE = moment('2015-12-31T23:59:59')
-const PERIOD = moment.range(START_DATE, END_DATE)
+const START_DATE = moment('2015-07-01T00:00:00');
+const END_DATE = moment('2015-12-31T23:59:59');
+const PERIOD = moment.range(START_DATE, END_DATE);
+
+const DATA_URL = 'https://interactive.guim.co.uk/docsdata/1yjhDkO2KbBD57eM0SPio_IKCs24rbPWi7nP_Nfw1dak.json';
 
 const R = 6371000; // metres
 const MAX_D = 40000 // metres
@@ -37,16 +40,6 @@ function distance(latlng1, latlng2) {
     return R * c;
 }
 
-function parseTSV(s) {
-    var rows = s.replace(/\n+$/, '').split('\n');
-    var headers = rows[0].split('\t');
-    return rows.slice(1).map(function (row) {
-        var ret = {};
-        row.split('\t').forEach(function (cell, i) { ret[headers[i]] = cell.trim() });
-        return ret;
-    });
-}
-
 function processAreas(fn) {
     var areas = require(filepath(fn));
 
@@ -61,10 +54,9 @@ function processAreas(fn) {
         .value();
 }
 
-function processLocations(country, fn) {
-    var input = fs.readFileSync(filepath(fn)).toString();
+function processLocations(input) {
     var locationLookup = {};
-    parseTSV(input).forEach(row => {
+    input.forEach(row => {
         var coord = project(row['lat'], row['lng']);
         locationLookup[row['name']] = {
             'lat': parseFloat(row['lat']),
@@ -118,10 +110,8 @@ function generateCountsAndControls(countsByDate, nearbyAreas) {
     return {counts, controls};
 }
 
-function processAirstrikes(areas, locationLookup, fn, outfn) {
-    var input = fs.readFileSync(filepath(fn)).toString();
-
-    var keyPlaces = _(parseTSV(input))
+function processAirstrikes(areas, locationLookup, input, outfn) {
+    var keyPlaces = _(input)
         .filter(row => START_DATE.isSameOrBefore(row.date) && END_DATE.isAfter(row.date))
         .filter(row => !!locationLookup[row.place]) // Syria only
         .groupBy('place')
@@ -166,6 +156,9 @@ console.log('Start date:', START_DATE.format());
 console.log('End date:', END_DATE.format());
 
 var areas = processAreas('data-out/areas.json');
-var locationLookup = processLocations('syria', 'data-in/syria-locations.tsv');
 
-processAirstrikes(areas, locationLookup, 'data-in/dashboard-airstrikes.tsv', 'data-out/key-places.json');
+request(DATA_URL, (err, res, body) => {
+    var data = JSON.parse(body);
+    var locationLookup = processLocations(data.sheets.syria);
+    processAirstrikes(areas, locationLookup, data.sheets.airstrikes, 'data-out/key-places.json');
+});
