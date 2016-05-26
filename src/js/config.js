@@ -22,8 +22,8 @@ System.config({
     "reqwest": "github:ded/reqwest@1.1.5",
     "samsonjs/strftime": "github:samsonjs/strftime@0.9.2",
     "text": "github:systemjs/plugin-text@0.0.2",
-    "traceur": "github:jmcriffey/bower-traceur@0.0.91",
-    "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.91",
+    "traceur": "github:jmcriffey/bower-traceur@0.0.93",
+    "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.93",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
